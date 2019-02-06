@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lv_drivers\display\fbdev.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -472,6 +469,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples\lv_tests\lv_test_theme\lv_test_theme_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -86,6 +86,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\SDL2\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -278,7 +279,7 @@
     <ClCompile Include="lv_examples\lv_tutorial\7_fonts\lv_tutorial_fonts.c" />
     <ClCompile Include="lv_examples\lv_tutorial\8_animations\lv_tutorial_animations.c" />
     <ClCompile Include="lv_examples\lv_tutorial\9_responsive\lv_tutorial_responsive.c" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\lvgl.h" />
