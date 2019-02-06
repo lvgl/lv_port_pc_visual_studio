@@ -210,6 +210,9 @@
     <ClCompile Include="lvgl\lv_core\lv_indev.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl\lv_core\lv_lang.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl\lv_core\lv_obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -256,6 +259,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\lv_misc\lv_fs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\lv_misc\lv_gc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\lv_misc\lv_ll.c">
@@ -339,13 +345,22 @@
     <ClCompile Include="lvgl\lv_objx\lv_slider.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl\lv_objx\lv_spinbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl\lv_objx\lv_sw.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\lv_objx\lv_ta.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl\lv_objx\lv_table.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl\lv_objx\lv_tabview.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\lv_objx\lv_tileview.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\lv_objx\lv_win.c">
@@ -400,6 +415,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\lv_objx\lv_calendar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\lv_objx\lv_canvas.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\lv_objx\lv_imgbtn.c">
@@ -656,6 +674,9 @@
     <ClInclude Include="lvgl\lv_core\lv_indev.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lvgl\lv_core\lv_lang.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="lvgl\lv_core\lv_obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -705,6 +726,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lv_misc\lv_fs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\lv_misc\lv_gc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lv_misc\lv_ll.h">
@@ -788,13 +812,22 @@
     <ClInclude Include="lvgl\lv_objx\lv_slider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lvgl\lv_objx\lv_spinbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="lvgl\lv_objx\lv_sw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lv_objx\lv_ta.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lvgl\lv_objx\lv_table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="lvgl\lv_objx\lv_tabview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\lv_objx\lv_tileview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lv_objx\lv_win.h">
@@ -828,6 +861,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lvgl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\lv_conf_checker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\lv_version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_conf.h">
@@ -867,6 +906,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lv_objx\lv_calendar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\lv_objx\lv_canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lv_objx\lv_imgbtn.h">

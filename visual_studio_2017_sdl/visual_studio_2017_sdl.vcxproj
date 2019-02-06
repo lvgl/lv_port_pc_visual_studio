@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="lvgl\lv_core\lv_group.c" />
     <ClCompile Include="lvgl\lv_core\lv_indev.c" />
+    <ClCompile Include="lvgl\lv_core\lv_lang.c" />
     <ClCompile Include="lvgl\lv_core\lv_obj.c" />
     <ClCompile Include="lvgl\lv_core\lv_refr.c" />
     <ClCompile Include="lvgl\lv_core\lv_style.c" />
@@ -169,6 +170,7 @@
     <ClCompile Include="lvgl\lv_misc\lv_color.c" />
     <ClCompile Include="lvgl\lv_misc\lv_font.c" />
     <ClCompile Include="lvgl\lv_misc\lv_fs.c" />
+    <ClCompile Include="lvgl\lv_misc\lv_gc.c" />
     <ClCompile Include="lvgl\lv_misc\lv_ll.c" />
     <ClCompile Include="lvgl\lv_misc\lv_log.c" />
     <ClCompile Include="lvgl\lv_misc\lv_math.c" />
@@ -182,6 +184,7 @@
     <ClCompile Include="lvgl\lv_objx\lv_btn.c" />
     <ClCompile Include="lvgl\lv_objx\lv_btnm.c" />
     <ClCompile Include="lvgl\lv_objx\lv_calendar.c" />
+    <ClCompile Include="lvgl\lv_objx\lv_canvas.c" />
     <ClCompile Include="lvgl\lv_objx\lv_cb.c" />
     <ClCompile Include="lvgl\lv_objx\lv_chart.c" />
     <ClCompile Include="lvgl\lv_objx\lv_cont.c" />
@@ -201,9 +204,12 @@
     <ClCompile Include="lvgl\lv_objx\lv_preload.c" />
     <ClCompile Include="lvgl\lv_objx\lv_roller.c" />
     <ClCompile Include="lvgl\lv_objx\lv_slider.c" />
+    <ClCompile Include="lvgl\lv_objx\lv_spinbox.c" />
     <ClCompile Include="lvgl\lv_objx\lv_sw.c" />
     <ClCompile Include="lvgl\lv_objx\lv_ta.c" />
+    <ClCompile Include="lvgl\lv_objx\lv_table.c" />
     <ClCompile Include="lvgl\lv_objx\lv_tabview.c" />
+    <ClCompile Include="lvgl\lv_objx\lv_tileview.c" />
     <ClCompile Include="lvgl\lv_objx\lv_win.c" />
     <ClCompile Include="lvgl\lv_themes\lv_theme.c" />
     <ClCompile Include="lvgl\lv_themes\lv_theme_alien.c" />
@@ -283,9 +289,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\lvgl.h" />
+    <ClInclude Include="lvgl\lv_conf_checker.h" />
+    <ClInclude Include="lvgl\lv_version.h" />
     <ClInclude Include="lvgl\lv_conf_templ.h" />
     <ClInclude Include="lvgl\lv_core\lv_group.h" />
     <ClInclude Include="lvgl\lv_core\lv_indev.h" />
+    <ClInclude Include="lvgl\lv_core\lv_lang.h" />
     <ClInclude Include="lvgl\lv_core\lv_obj.h" />
     <ClInclude Include="lvgl\lv_core\lv_refr.h" />
     <ClInclude Include="lvgl\lv_core\lv_style.h" />
@@ -310,6 +319,7 @@
     <ClInclude Include="lvgl\lv_misc\lv_color.h" />
     <ClInclude Include="lvgl\lv_misc\lv_font.h" />
     <ClInclude Include="lvgl\lv_misc\lv_fs.h" />
+    <ClInclude Include="lvgl\lv_misc\lv_gc.h" />
     <ClInclude Include="lvgl\lv_misc\lv_ll.h" />
     <ClInclude Include="lvgl\lv_misc\lv_log.h" />
     <ClInclude Include="lvgl\lv_misc\lv_math.h" />
@@ -324,6 +334,7 @@
     <ClInclude Include="lvgl\lv_objx\lv_btn.h" />
     <ClInclude Include="lvgl\lv_objx\lv_btnm.h" />
     <ClInclude Include="lvgl\lv_objx\lv_calendar.h" />
+    <ClInclude Include="lvgl\lv_objx\lv_canvas.h" />
     <ClInclude Include="lvgl\lv_objx\lv_cb.h" />
     <ClInclude Include="lvgl\lv_objx\lv_chart.h" />
     <ClInclude Include="lvgl\lv_objx\lv_cont.h" />
@@ -343,9 +354,12 @@
     <ClInclude Include="lvgl\lv_objx\lv_preload.h" />
     <ClInclude Include="lvgl\lv_objx\lv_roller.h" />
     <ClInclude Include="lvgl\lv_objx\lv_slider.h" />
+    <ClInclude Include="lvgl\lv_objx\lv_spinbox.h" />
     <ClInclude Include="lvgl\lv_objx\lv_sw.h" />
     <ClInclude Include="lvgl\lv_objx\lv_ta.h" />
+    <ClInclude Include="lvgl\lv_objx\lv_table.h" />
     <ClInclude Include="lvgl\lv_objx\lv_tabview.h" />
+    <ClInclude Include="lvgl\lv_objx\lv_tileview.h" />
     <ClInclude Include="lvgl\lv_objx\lv_win.h" />
     <ClInclude Include="lvgl\lv_themes\lv_theme.h" />
     <ClInclude Include="lvgl\lv_themes\lv_theme_alien.h" />
