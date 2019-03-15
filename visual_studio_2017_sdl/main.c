@@ -53,16 +53,23 @@ int main(int argc, char** argv)
     /*Initialize the HAL for LittlevGL*/
     hal_init();
 
-    /*Load a demo*/
+    /*
+     * Demo, benchmark, tests and tutorial.
+     *
+     * Uncomment any one (and only one) of the functions below to run that
+     * particular demo, test or tutorial.
+     */
+
     demo_create();
-
-    /*Try the benchmark to see how fast is your GUI*/
     //benchmark_create();
-
-    /*Check the themes too*/
     //lv_test_theme_1(lv_theme_night_init(210, NULL));
-
-    /*A keyboard control example*/
+    //lv_test_theme_1(lv_theme_night_init(100, NULL));
+    //lv_test_theme_1(lv_theme_material_init(210, NULL));
+    //lv_test_theme_1(lv_theme_alien_init(210, NULL));
+    //lv_test_theme_1(lv_theme_zen_init(210, NULL));
+    //lv_test_theme_1(lv_theme_nemo_init(210, NULL));
+    //lv_test_theme_1(lv_theme_mono_init(210, NULL));
+    //lv_test_theme_1(lv_theme_default_init(210, NULL));
     //lv_tutorial_keyboard(kb_indev);
 
     while (1) {
