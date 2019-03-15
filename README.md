@@ -1,8 +1,8 @@
-# Visual Studio 2017 using SDL on x64 architecture
+# LittlevGL - PC Simulator using Visual Studio 2017
 
-A pre-configured Visual Studio Project to try LittlevGL on PC. The project uses the [SDL](https://www.libsdl.org/) library which is copied and linked to the project, so you can compile it without any extra steps. The 64 bit libraries are used so it will work out-of-the-box on 64-bit systems.
+This is a pre-configured Visual Studio project to try LittlevGL on a Windows PC. The project uses the [SDL](https://www.libsdl.org/) library which is copied and linked to the project, so you can compile it without any extra dependencies. The 64 bit libraries are used so it will work out-of-the-box on 64-bit systems.
 
-Instructions for cloning, building and running the demo are found below.
+Instructions for cloning, building and running the application are found below.
 
 ## How to Clone
 
@@ -35,3 +35,7 @@ Open the `pc_simulator_sdl_visual_studio` solution file in Visual Studio. Click 
 There are a list of possible test applications in the [main.c](visual_studio_2017_sdl/main.c) file.  Each test or demo is launched via a single function call.  By default the `demo_create` function is the one that runs, but you can comment that one out and choose any of the others to compile and run.
 
 Use these examples to start building your own application testing code inside this pc_simulator.
+
+## A Note About Versions
+
+This repository usually has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/littlevgl/lvgl) project.  If you need to pull in bug fixes in those sub-modules in between major releases you will have to update the references on your own.  Be aware that if source files are added or removed in those sub-modules then the visual studio project will most likely need adjusting.  See the commit log for this repo for examples of the changes needed when sub-module references are updated.
