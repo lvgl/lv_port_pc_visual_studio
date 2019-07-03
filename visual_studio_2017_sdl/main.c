@@ -95,11 +95,16 @@ static void hal_init(void)
     /* Add a display
     * Use the 'monitor' driver which creates window on PC's monitor to simulate a display*/
     monitor_init();
+
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);            /*Basic initialization*/
-    disp_drv.disp_flush = monitor_flush;
-    disp_drv.disp_fill = monitor_fill;
-    disp_drv.disp_map = monitor_map;
+
+    static lv_disp_buf_t disp_buf1;
+    static lv_color_t buf1_1[LV_HOR_RES_MAX*LV_VER_RES_MAX];
+    lv_disp_buf_init(&disp_buf1, buf1_1, NULL, LV_HOR_RES_MAX*LV_VER_RES_MAX);
+
+    disp_drv.buffer = &disp_buf1;
+    disp_drv.flush_cb = monitor_flush;
     lv_disp_drv_register(&disp_drv);
 
     /* Add the mouse (or touchpad) as input device
@@ -108,7 +113,7 @@ static void hal_init(void)
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);          /*Basic initialization*/
     indev_drv.type = LV_INDEV_TYPE_POINTER;
-    indev_drv.read = mouse_read;         /*This function will be called periodically (by the library) to get the mouse position and state*/
+    indev_drv.read_cb = mouse_read;         /*This function will be called periodically (by the library) to get the mouse position and state*/
     lv_indev_drv_register(&indev_drv);
 
     /* If the PC keyboard driver is enabled in`lv_drv_conf.h`
@@ -116,7 +121,7 @@ static void hal_init(void)
 #if USE_KEYBOARD
     lv_indev_drv_t kb_drv;
     kb_drv.type = LV_INDEV_TYPE_KEYPAD;
-    kb_drv.read = keyboard_read;
+    kb_drv.read_cb = keyboard_read;
     kb_indev = lv_indev_drv_register(&kb_drv);
 #endif
 
