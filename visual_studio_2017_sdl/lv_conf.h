@@ -29,7 +29,7 @@
  * - 16: RGB565
  * - 32: ARGB8888
  */
-#define LV_COLOR_DEPTH     16
+#define LV_COLOR_DEPTH     32
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
@@ -152,7 +152,7 @@ typedef void * lv_fs_drv_user_data_t;
 #endif
 
 /*1: Add a `user_data` to drivers and objects*/
-#define LV_USE_USER_DATA        0
+#define LV_USE_USER_DATA        1
 
 /*========================
  * Image decoder and cache
@@ -213,7 +213,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  *===============*/
 
 /*1: Enable the log module*/
-#define LV_USE_LOG      0
+#define LV_USE_LOG      1
 #if LV_USE_LOG
 /* How important log should be added:
  * LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
@@ -226,7 +226,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 
 /* 1: Print the log with 'printf';
  * 0: user need to register a callback with `lv_log_register_print`*/
-#  define LV_LOG_PRINTF   0
+#  define LV_LOG_PRINTF   1
 #endif  /*LV_USE_LOG*/
 
 /*================
