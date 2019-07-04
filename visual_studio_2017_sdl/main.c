@@ -120,6 +120,7 @@ static void hal_init(void)
     * add this as an input device. It might be used in some examples. */
 #if USE_KEYBOARD
     lv_indev_drv_t kb_drv;
+	lv_indev_drv_init(&kb_drv);
     kb_drv.type = LV_INDEV_TYPE_KEYPAD;
     kb_drv.read_cb = keyboard_read;
     kb_indev = lv_indev_drv_register(&kb_drv);
