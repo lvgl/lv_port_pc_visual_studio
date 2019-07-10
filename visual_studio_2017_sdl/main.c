@@ -140,8 +140,8 @@ static void hal_init(void)
 static int tick_thread(void *data)
 {
     while (1) {
-        lv_tick_inc(1);
-        SDL_Delay(1);   /*Sleep for 1 millisecond*/
+        lv_tick_inc(5);
+        SDL_Delay(5);   /*Sleep for 1 millisecond*/
     }
 
     return 0;
