@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lvgl\src\lv_core\lv_debug.c" />
     <ClCompile Include="lvgl\src\lv_core\lv_disp.c" />
     <ClCompile Include="lvgl\src\lv_core\lv_group.c" />
     <ClCompile Include="lvgl\src\lv_core\lv_indev.c" />
@@ -148,9 +149,11 @@
     <ClCompile Include="lvgl\src\lv_font\lv_font.c" />
     <ClCompile Include="lvgl\src\lv_font\lv_font_fmt_txt.c" />
     <ClCompile Include="lvgl\src\lv_font\lv_font_roboto_12.c" />
+    <ClCompile Include="lvgl\src\lv_font\lv_font_roboto_12_subpx.c" />
     <ClCompile Include="lvgl\src\lv_font\lv_font_roboto_16.c" />
     <ClCompile Include="lvgl\src\lv_font\lv_font_roboto_22.c" />
     <ClCompile Include="lvgl\src\lv_font\lv_font_roboto_28.c" />
+    <ClCompile Include="lvgl\src\lv_font\lv_font_roboto_28_compressed.c" />
     <ClCompile Include="lvgl\src\lv_font\lv_font_unscii_8.c" />
     <ClCompile Include="lvgl\src\lv_hal\lv_hal_disp.c" />
     <ClCompile Include="lvgl\src\lv_hal\lv_hal_indev.c" />
@@ -158,6 +161,7 @@
     <ClCompile Include="lvgl\src\lv_misc\lv_anim.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_area.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_async.c" />
+    <ClCompile Include="lvgl\src\lv_misc\lv_bidi.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_circ.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_color.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_fs.c" />
@@ -166,6 +170,7 @@
     <ClCompile Include="lvgl\src\lv_misc\lv_log.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_math.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_mem.c" />
+    <ClCompile Include="lvgl\src\lv_misc\lv_printf.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_task.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_templ.c" />
     <ClCompile Include="lvgl\src\lv_misc\lv_txt.c" />
@@ -179,6 +184,7 @@
     <ClCompile Include="lvgl\src\lv_objx\lv_cb.c" />
     <ClCompile Include="lvgl\src\lv_objx\lv_chart.c" />
     <ClCompile Include="lvgl\src\lv_objx\lv_cont.c" />
+    <ClCompile Include="lvgl\src\lv_objx\lv_cpicker.c" />
     <ClCompile Include="lvgl\src\lv_objx\lv_ddlist.c" />
     <ClCompile Include="lvgl\src\lv_objx\lv_gauge.c" />
     <ClCompile Include="lvgl\src\lv_objx\lv_img.c" />
@@ -214,8 +220,10 @@
     <ClCompile Include="lv_drivers\display\fbdev.c" />
     <ClCompile Include="lv_drivers\display\monitor.c" />
     <ClCompile Include="lv_drivers\display\R61581.c" />
+    <ClCompile Include="lv_drivers\display\SHARP_MIP.c" />
     <ClCompile Include="lv_drivers\display\SSD1963.c" />
     <ClCompile Include="lv_drivers\display\ST7565.c" />
+    <ClCompile Include="lv_drivers\display\UC1610.c" />
     <ClCompile Include="lv_drivers\indev\AD_touch.c" />
     <ClCompile Include="lv_drivers\indev\evdev.c" />
     <ClCompile Include="lv_drivers\indev\FT5406EE8.c" />
@@ -243,6 +251,7 @@
     <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_cb\lv_test_cb.c" />
     <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_chart\lv_test_chart.c" />
     <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_cont\lv_test_cont.c" />
+    <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_cpicker\lv_test_cpicker.c" />
     <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_ddlist\lv_test_ddlist.c" />
     <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_gauge\lv_test_gauge.c" />
     <ClCompile Include="lv_examples\lv_tests\lv_test_objx\lv_test_img\img_flower_icon.c" />
@@ -291,6 +300,7 @@
   <ItemGroup>
     <ClInclude Include="lvgl\lvgl.h" />
     <ClInclude Include="lvgl\src\lv_conf_checker.h" />
+    <ClInclude Include="lvgl\src\lv_core\lv_debug.h" />
     <ClInclude Include="lvgl\src\lv_core\lv_disp.h" />
     <ClInclude Include="lvgl\src\lv_core\lv_group.h" />
     <ClInclude Include="lvgl\src\lv_core\lv_indev.h" />
@@ -317,6 +327,7 @@
     <ClInclude Include="lvgl\src\lv_misc\lv_anim.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_area.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_async.h" />
+    <ClInclude Include="lvgl\src\lv_misc\lv_bidi.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_circ.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_color.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_fs.h" />
@@ -325,6 +336,7 @@
     <ClInclude Include="lvgl\src\lv_misc\lv_log.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_math.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_mem.h" />
+    <ClInclude Include="lvgl\src\lv_misc\lv_printf.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_task.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_templ.h" />
     <ClInclude Include="lvgl\src\lv_misc\lv_txt.h" />
@@ -339,6 +351,7 @@
     <ClInclude Include="lvgl\src\lv_objx\lv_cb.h" />
     <ClInclude Include="lvgl\src\lv_objx\lv_chart.h" />
     <ClInclude Include="lvgl\src\lv_objx\lv_cont.h" />
+    <ClInclude Include="lvgl\src\lv_objx\lv_cpicker.h" />
     <ClInclude Include="lvgl\src\lv_objx\lv_ddlist.h" />
     <ClInclude Include="lvgl\src\lv_objx\lv_gauge.h" />
     <ClInclude Include="lvgl\src\lv_objx\lv_img.h" />
@@ -376,8 +389,10 @@
     <ClInclude Include="lv_drivers\display\fbdev.h" />
     <ClInclude Include="lv_drivers\display\monitor.h" />
     <ClInclude Include="lv_drivers\display\R61581.h" />
+    <ClInclude Include="lv_drivers\display\SHARP_MIP.h" />
     <ClInclude Include="lv_drivers\display\SSD1963.h" />
     <ClInclude Include="lv_drivers\display\ST7565.h" />
+    <ClInclude Include="lv_drivers\display\UC1610.h" />
     <ClInclude Include="lv_drivers\indev\AD_touch.h" />
     <ClInclude Include="lv_drivers\indev\evdev.h" />
     <ClInclude Include="lv_drivers\indev\FT5406EE8.h" />
@@ -407,6 +422,7 @@
     <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_cb\lv_test_cb.h" />
     <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_chart\lv_test_chart.h" />
     <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_cont\lv_test_cont.h" />
+    <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_cpicker\lv_test_cpicker.h" />
     <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_ddlist\lv_test_ddlist.h" />
     <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_gauge\lv_test_gauge.h" />
     <ClInclude Include="lv_examples\lv_tests\lv_test_objx\lv_test_img\lv_test_img.h" />
