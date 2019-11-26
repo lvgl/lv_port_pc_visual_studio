@@ -14,13 +14,13 @@ supported, but you can use the "android-project-ant" directory as a template.
  Requirements
 ================================================================================
 
-Android SDK (version 19 or later)
+Android SDK (version 26 or later)
 https://developer.android.com/sdk/index.html
 
-Android NDK r10e or later
+Android NDK r15c or later
 https://developer.android.com/tools/sdk/ndk/index.html
 
-Minimum API level supported by SDL: 14 (Android 4.0.1)
+Minimum API level supported by SDL: 16 (Android 4.1)
 
 
 ================================================================================
@@ -77,18 +77,16 @@ For more complex projects, follow these instructions:
    and rename it to the name of your project.
 2. Move or symlink this SDL directory into the "<project>/app/jni" directory
 3. Edit "<project>/app/jni/src/Android.mk" to include your source files
-4. Run 'ndk-build' (a script provided by the NDK). This compiles the C source
 
-If you want to use Android Studio (recommended), skip to the Android Studio section below.
+4a. If you want to use Android Studio, simply open your <project> directory and start building.
 
-5. Run './gradlew installDebug' in the project directory. This compiles the .java, creates an .apk with the native code embedded, and installs it on any connected Android device
+4b. If you want to build manually, run './gradlew installDebug' in the project directory. This compiles the .java, creates an .apk with the native code embedded, and installs it on any connected Android device
 
 Here's an explanation of the files in the Android project, so you can customize them:
 
     android-project/app
         build.gradle            - build info including the application version and SDK
-        src/main/AndroidManifest.xml	- package manifest. Among others, it contains the class name
-        			  of the main Activity and the package name of the application.
+        src/main/AndroidManifest.xml	- package manifest. Among others, it contains the class name of the main Activity and the package name of the application.
         jni/			- directory holding native code
         jni/Application.mk	- Application JNI settings, including target platform and STL library
         jni/Android.mk		- Android makefile that can call recursively the Android.mk files in all subdirectories
@@ -176,7 +174,7 @@ http://ponystyle.com/blog/2010/03/26/dealing-with-asset-compression-in-android-a
  Pause / Resume behaviour
 ================================================================================
 
-If SDL is compiled with SDL_ANDROID_BLOCK_ON_PAUSE defined (the default),
+If SDL_HINT_ANDROID_BLOCK_ON_PAUSE hint is set (the default),
 the event loop will block itself when the app is paused (ie, when the user
 returns to the main Android dashboard). Blocking is better in terms of battery
 use, and it allows your app to spring back to life instantaneously after resume
@@ -216,26 +214,10 @@ detach it.
 You can use STL in your project by creating an Application.mk file in the jni
 folder and adding the following line:
 
-    APP_STL := stlport_static
+    APP_STL := c++_shared
 
-For more information check out CPLUSPLUS-SUPPORT.html in the NDK documentation.
-
-
-================================================================================
- Additional documentation
-================================================================================
-
-The documentation in the NDK docs directory is very helpful in understanding the
-build process and how to work with native code on the Android platform.
-
-The best place to start is with docs/OVERVIEW.TXT
-
-
-================================================================================
- Using Android Studio
-================================================================================
-
-You can open your project directory with Android Studio and run it normally.
+For more information go here:
+	https://developer.android.com/ndk/guides/cpp-support
 
 
 ================================================================================
@@ -291,7 +273,10 @@ You can see the complete command line that ndk-build is using by passing V=1 on 
 
     ndk-build V=1
 
-If your application crashes in native code, you can use addr2line to convert the
+If your application crashes in native code, you can use ndk-stack to get a symbolic stack trace:
+	https://developer.android.com/ndk/guides/ndk-stack
+
+If you want to go through the process manually, you can use addr2line to convert the
 addresses in the stack trace to lines in your code.
 
 For example, if your crash looks like this:
@@ -395,13 +380,13 @@ https://developer.nvidia.com/tegra-graphics-debugger
 
 
 ================================================================================
- Why is API level 14 the minimum required?
+ Why is API level 16 the minimum required?
 ================================================================================
 
-The latest NDK toolchain doesn't support targeting earlier than API level 14.
+The latest NDK toolchain doesn't support targeting earlier than API level 16.
 As of this writing, according to https://developer.android.com/about/dashboards/index.html
-about 99% of the Android devices accessing Google Play support API level 14 or
-higher (October 2017).
+about 99% of the Android devices accessing Google Play support API level 16 or
+higher (January 2018).
 
 
 ================================================================================
@@ -422,6 +407,24 @@ screen each frame.
 
 Reference: http://www.khronos.org/registry/egl/specs/EGLTechNote0001.html
 
+
+================================================================================
+ Ending your application
+================================================================================
+
+Two legitimate ways:
+
+- return from your main() function. Java side will automatically terminate the
+Activity by calling Activity.finish().
+
+- Android OS can decide to terminate your application by calling onDestroy()
+(see Activity life cycle). Your application will receive a SDL_QUIT event you 
+can handle to save things and quit.
+
+Don't call exit() as it stops the activity badly.
+
+NB: "Back button" can be handled as a SDL_KEYDOWN/UP events, with Keycode
+SDLK_AC_BACK, for any purpose.
 
 ================================================================================
  Known issues
