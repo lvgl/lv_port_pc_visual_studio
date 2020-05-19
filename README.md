@@ -13,7 +13,7 @@ This repos contains other, necessary LittleVGL software repositories as [git sub
 This command will clone this top level repo and all submodules in a single step.
 
 ```
-git clone --recurse-submodules https://github.com/littlevgl/lv_sim_visual_studio_sdl.git
+git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio_sdl.git
 ```
 
 ### Main Repo First, Sub-modules Second
@@ -21,7 +21,7 @@ git clone --recurse-submodules https://github.com/littlevgl/lv_sim_visual_studio
 If you've already cloned the main repo you can pull in the sub-modules with a second command.  Both commands are shown below.
 
 ```
-git clone https://github.com/littlevgl/lv_sim_visual_studio_sdl.git
+git clone https://github.com/lvgl/lv_sim_visual_studio_sdl.git
 cd lv_sim_visual_studio_sdl
 git submodule update --init --recursive
 ```
@@ -38,4 +38,4 @@ Use these examples to start building your own application testing code inside th
 
 ## A Note About Versions
 
-This repository usually has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/littlevgl/lvgl) project.  If you need to pull in bug fixes in those sub-modules in between major releases you will have to update the references on your own.  Be aware that if source files are added or removed in those sub-modules then the visual studio project will most likely need adjusting.  See the commit log for this repo for examples of the changes needed when sub-module references are updated.
+This repository usually has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  If you need to pull in bug fixes in those sub-modules in between major releases you will have to update the references on your own.  Be aware that if source files are added or removed in those sub-modules then the visual studio project will most likely need adjusting.  See the commit log for this repo for examples of the changes needed when sub-module references are updated.
