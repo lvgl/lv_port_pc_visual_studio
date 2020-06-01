@@ -13,10 +13,7 @@
 #include "lv_drivers/display/monitor.h"
 #include "lv_drivers/indev/mouse.h"
 #include "lv_drivers/indev/keyboard.h"
-#include "lv_examples/lv_apps/demo/demo.h"
-#include "lv_examples/lv_apps/benchmark/benchmark.h"
-#include "lv_examples/lv_tests/lv_test_theme/lv_test_theme_1.h"
-#include "lv_examples/lv_tutorial/10_keyboard/lv_tutorial_keyboard.h"
+#include "lv_examples/lv_examples.h"
 
 /*********************
 *      DEFINES
@@ -54,23 +51,43 @@ int main(int argc, char** argv)
     hal_init();
 
     /*
-     * Demo, benchmark, tests and tutorial.
+     * Demos, benchmarks, and tests.
      *
      * Uncomment any one (and only one) of the functions below to run that
-     * particular demo, test or tutorial.
+     * item.
      */
 
-    demo_create();
-    //benchmark_create();
-    //lv_test_theme_1(lv_theme_night_init(210, NULL));
-    //lv_test_theme_1(lv_theme_night_init(100, NULL));
-    //lv_test_theme_1(lv_theme_material_init(210, NULL));
-    //lv_test_theme_1(lv_theme_alien_init(210, NULL));
-    //lv_test_theme_1(lv_theme_zen_init(210, NULL));
-    //lv_test_theme_1(lv_theme_nemo_init(210, NULL));
-    //lv_test_theme_1(lv_theme_mono_init(210, NULL));
-    //lv_test_theme_1(lv_theme_default_init(210, NULL));
-    //lv_tutorial_keyboard(kb_indev);
+    lv_demo_widgets();
+    //lv_demo_benchmark();
+    //lv_demo_keypad_encoder();
+    //lv_demo_printer();
+    //lv_demo_stress();
+    //lv_ex_get_started_1();
+    //lv_ex_get_started_2();
+    //lv_ex_get_started_3();
+
+    //lv_ex_style_1();
+    //lv_ex_style_2();
+    //lv_ex_style_3();
+    //lv_ex_style_4();
+    //lv_ex_style_5();
+    //lv_ex_style_6();
+    //lv_ex_style_7();
+    //lv_ex_style_8();
+    //lv_ex_style_9();
+    //lv_ex_style_10();
+    //lv_ex_style_11();
+
+    /*
+     * There are many examples of individual widgets found under the
+     * lv_examples/src/lv_ex_widgets directory.  Here are a few sample test
+     * functions.  Look in that directory to find all the rest.
+     */
+    //lv_ex_arc_1();
+    //lv_ex_cpicker_1();
+    //lv_ex_gauge_1();
+    //lv_ex_img_1();
+    //lv_ex_tileview_1();
 
     while (1) {
         /* Periodically call the lv_task handler.
@@ -96,13 +113,12 @@ static void hal_init(void)
     * Use the 'monitor' driver which creates window on PC's monitor to simulate a display*/
     monitor_init();
 
+    static lv_disp_buf_t disp_buf1;
+    static lv_color_t buf1_1[LV_HOR_RES_MAX * 120];
+    lv_disp_buf_init(&disp_buf1, buf1_1, NULL, LV_HOR_RES_MAX * 120);
+
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);            /*Basic initialization*/
-
-    static lv_disp_buf_t disp_buf1;
-    static lv_color_t buf1_1[LV_HOR_RES_MAX*LV_VER_RES_MAX];
-    lv_disp_buf_init(&disp_buf1, buf1_1, NULL, LV_HOR_RES_MAX*LV_VER_RES_MAX);
-
     disp_drv.buffer = &disp_buf1;
     disp_drv.flush_cb = monitor_flush;
     lv_disp_drv_register(&disp_drv);

@@ -32,10 +32,10 @@ Open the `lv_sim_visual_studio_sdl` solution file in Visual Studio. Click on the
 
 ## Trying Things Out
 
-There are a list of possible test applications in the [main.c](visual_studio_2017_sdl/main.c) file.  Each test or demo is launched via a single function call.  By default the `demo_create` function is the one that runs, but you can comment that one out and choose any of the others to compile and run.
+There are a list of possible test applications in the [main.c](visual_studio_2017_sdl/main.c) file.  Each test or demo is launched via a single function call.  By default the `lv_demo_widgets` function is the one that runs, but you can comment that one out and choose any of the others to compile and run.
 
-Use these examples to start building your own application testing code inside this simulator.
+Use these examples to start building your own application test code inside the simulator.
 
 ## A Note About Versions
 
-This repository usually has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  If you need to pull in bug fixes in those sub-modules in between major releases you will have to update the references on your own.  Be aware that if source files are added or removed in those sub-modules then the visual studio project will most likely need adjusting.  See the commit log for this repo for examples of the changes needed when sub-module references are updated.
+This repository has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  If you need to pull in bug fixes in the sub-modules in between major releases you will have to update the references on your own.  If source files are added or removed in the sub-modules then the visual studio project will likely need adjusting.  See the commit log for examples of sub-module updates and associated visual studio file changes.
