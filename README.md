@@ -6,19 +6,19 @@ Instructions for cloning, building and running the application are found below.
 
 ## How to Clone
 
-This repos contains other, necessary LittleVGL software repositories as [git sub-modules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  Those sub-modules are not pulled in with the basic git clone command and they will be needed.  There are a couple of ways to pull in those submodules.
+This repository contains other, necessary LittleVGL software repositories as [git sub-modules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  Those sub-modules are not pulled in with the normal git clone command and they will be needed.  There are a couple of techniques to pull in the submodules.
 
 ### Everything at Once
 
-This command will clone this top level repo and all submodules in a single step.
+This command will clone the lv_sim_visual_studio_sdl repository and all submodules in a single step.
 
 ```
 git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio_sdl.git
 ```
 
-### Main Repo First, Sub-modules Second
+### Main Repository First, Sub-modules Second
 
-If you've already cloned the main repo you can pull in the sub-modules with a second command.  Both commands are shown below.
+If you've already cloned the main repository you can pull in the sub-modules with a second command.  Both commands are shown below.
 
 ```
 git clone https://github.com/lvgl/lv_sim_visual_studio_sdl.git
@@ -28,7 +28,7 @@ git submodule update --init --recursive
 
 ## How To Build & Run
 
-Open the `lv_sim_visual_studio_sdl` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
+Open the `lv_sim_visual_studio_sdl.sln` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
 
 ## Trying Things Out
 
