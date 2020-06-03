@@ -1,12 +1,14 @@
-# LittlevGL - PC Simulator using Visual Studio 2017
+# LVGL - PC Simulator using Visual Studio 2017
 
-This is a pre-configured Visual Studio project to try LittlevGL on a Windows PC. The project uses the [SDL](https://www.libsdl.org/) library which is copied and linked to the project, so you can compile it without any extra dependencies. The 64 bit libraries are used so it will work out-of-the-box on 64-bit systems.
+This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The project uses the [SDL](https://www.libsdl.org/) library which is copied and linked to the project, so you can compile it without any extra dependencies. The 64 bit libraries are used so it will work out-of-the-box on 64-bit systems.
 
 Instructions for cloning, building and running the application are found below.
 
+**This project is not for Visual Sutio Code but Visual Studio 2017.**
+
 ## How to Clone
 
-This repository contains other, necessary LittleVGL software repositories as [git sub-modules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  Those sub-modules are not pulled in with the normal git clone command and they will be needed.  There are a couple of techniques to pull in the submodules.
+This repository contains other, necessary LVGL software repositories as [git sub-modules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  Those sub-modules are not pulled in with the normal git clone command and they will be needed.  There are a couple of techniques to pull in the submodules.
 
 ### Everything at Once
 
