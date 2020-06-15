@@ -444,12 +444,10 @@
     <ClInclude Include="lv_drivers/display/monitor.h" />
     <ClInclude Include="lv_drivers/display/R61581.h" />
     <ClInclude Include="lv_drivers/display/SHARP_MIP.h" />
-    <ClInclude Include="lv_drivers/display/SSD1306.h" />
     <ClInclude Include="lv_drivers/display/SSD1963.h" />
     <ClInclude Include="lv_drivers/display/ST7565.h" />
     <ClInclude Include="lv_drivers/display/UC1610.h" />
     <ClInclude Include="lv_drivers/indev/AD_touch.h" />
-    <ClInclude Include="lv_drivers/indev/AR10XX.h" />
     <ClInclude Include="lv_drivers/indev/evdev.h" />
     <ClInclude Include="lv_drivers/indev/FT5406EE8.h" />
     <ClInclude Include="lv_drivers/indev/keyboard.h" />
@@ -457,7 +455,6 @@
     <ClInclude Include="lv_drivers/indev/mouse.h" />
     <ClInclude Include="lv_drivers/indev/mousewheel.h" />
     <ClInclude Include="lv_drivers/indev/XPT2046.h" />
-    <ClInclude Include="lv_drivers/lv_drv_common.h" />
     <ClInclude Include="lv_drivers/lv_drv_conf_templ.h" />
     <ClInclude Include="lv_drivers/win_drv.h" />
     <ClInclude Include="lv_examples/lv_examples.h" />
@@ -465,9 +462,6 @@
     <ClInclude Include="lv_examples/src/lv_demo_benchmark/lv_demo_benchmark.h" />
     <ClInclude Include="lv_examples/src/lv_demo_keypad_encoder/lv_demo_keypad_encoder.h" />
     <ClInclude Include="lv_examples/src/lv_demo_printer/lv_demo_printer.h" />
-    <ClInclude Include="lv_examples/src/lv_demo_printer/lv_demo_printer_home.h" />
-    <ClInclude Include="lv_examples/src/lv_demo_printer/lv_demo_printer_print.h" />
-    <ClInclude Include="lv_examples/src/lv_demo_printer/lv_demo_printer_scr.h" />
     <ClInclude Include="lv_examples/src/lv_demo_printer/lv_demo_printer_theme.h" />
     <ClInclude Include="lv_examples/src/lv_demo_stress/lv_demo_stress.h" />
     <ClInclude Include="lv_examples/src/lv_demo_widgets/lv_demo_widgets.h" />
@@ -480,9 +474,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="lvgl\src\lv_font\lv_font.mk" />
-    <None Include="lv_examples\lv_tutorial\6_images\blue_flower_16.bin" />
-    <None Include="lv_examples\lv_tutorial\6_images\blue_flower_32.bin" />
-    <None Include="lv_examples\lv_tutorial\6_images\blue_flower_8.bin" />
     <None Include="SDL2.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
