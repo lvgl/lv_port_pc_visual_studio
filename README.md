@@ -4,7 +4,7 @@ This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The 
 
 Instructions for cloning, building and running the application are found below.
 
-**This project is not for Visual Sutio Code but Visual Studio 2017.**
+**This project is not for Visual Studio Code, it is for Visual Studio 2017.**
 
 ## How to Clone
 
