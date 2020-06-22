@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lvgl/src/lv_core/lv_debug.c">
+    <ClCompile Include="lvgl/src/lv_misc/lv_debug.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl/src/lv_core/lv_disp.c">
@@ -423,7 +423,16 @@
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_wifi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg.c">
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_cloud.c">
@@ -689,7 +698,7 @@
     <ClInclude Include="lvgl/src/lv_conf_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lvgl/src/lv_core/lv_debug.h">
+    <ClInclude Include="lvgl/src/lv_misc/lv_debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_core/lv_disp.h">

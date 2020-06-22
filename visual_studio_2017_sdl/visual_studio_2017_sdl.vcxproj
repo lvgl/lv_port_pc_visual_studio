@@ -77,7 +77,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\SDL2\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -103,10 +110,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\SDL2\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,7 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lvgl/src/lv_core/lv_debug.c" />
+    <ClCompile Include="lvgl/src/lv_misc/lv_debug.c" />
     <ClCompile Include="lvgl/src/lv_core/lv_disp.c" />
     <ClCompile Include="lvgl/src/lv_core/lv_group.c" />
     <ClCompile Include="lvgl/src/lv_core/lv_indev.c" />
@@ -265,7 +277,10 @@
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_pc.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_tel.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_wifi.c" />
-    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_1.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_2.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_3.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_4.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_cloud.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_copy.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_internet.c" />
@@ -355,7 +370,7 @@
     <ClInclude Include="lvgl/lvgl.h" />
     <ClInclude Include="lvgl/src/lv_api_map.h" />
     <ClInclude Include="lvgl/src/lv_conf_internal.h" />
-    <ClInclude Include="lvgl/src/lv_core/lv_debug.h" />
+    <ClInclude Include="lvgl/src/lv_misc/lv_debug.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_disp.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_group.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_indev.h" />
