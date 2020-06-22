@@ -129,7 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lvgl/src/lv_core/lv_debug.c" />
+    <ClCompile Include="lvgl/src/lv_misc/lv_debug.c" />
     <ClCompile Include="lvgl/src/lv_core/lv_disp.c" />
     <ClCompile Include="lvgl/src/lv_core/lv_group.c" />
     <ClCompile Include="lvgl/src/lv_core/lv_indev.c" />
@@ -265,7 +265,10 @@
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_pc.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_tel.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_wifi.c" />
-    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_1.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_2.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_3.c" />
+    <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_btn_bg_4.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_cloud.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_copy.c" />
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_img_internet.c" />
@@ -355,7 +358,7 @@
     <ClInclude Include="lvgl/lvgl.h" />
     <ClInclude Include="lvgl/src/lv_api_map.h" />
     <ClInclude Include="lvgl/src/lv_conf_internal.h" />
-    <ClInclude Include="lvgl/src/lv_core/lv_debug.h" />
+    <ClInclude Include="lvgl/src/lv_misc/lv_debug.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_disp.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_group.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_indev.h" />
