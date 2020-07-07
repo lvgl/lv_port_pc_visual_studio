@@ -100,9 +100,6 @@
 /*Eclipse: <SDL2/SDL.h>    Visual Studio: <SDL.h>*/
 #  define MONITOR_SDL_INCLUDE_PATH    <SDL.h>
 
-/*Different rendering might be used if running in a Virtual machine*/
-#  define MONITOR_VIRTUAL_MACHINE 0
-
 /*Open two windows to test multi display support*/
 #  define MONITOR_DUAL            0
 #endif
@@ -114,10 +111,16 @@
 #  define USE_WINDOWS       0
 #endif
 
-#define USE_WINDOWS         0
 #if USE_WINDOWS
 #  define WINDOW_HOR_RES      480
 #  define WINDOW_VER_RES      320
+#endif
+
+/*----------------------------------------
+ *  GTK drivers (monitor, mouse, keyboard
+ *---------------------------------------*/
+#ifndef USE_GTK
+#  define USE_GTK       0
 #endif
 
 /*----------------
@@ -230,11 +233,11 @@
  *  FreeBSD frame buffer device (/dev/fbx)
  *.........................................*/
 #ifndef USE_BSD_FBDEV
-#  define USE_BSD_FBDEV     0
+#  define USE_BSD_FBDEV		0
 #endif
 
 #if USE_BSD_FBDEV
-# define FBDEV_PATH     "/dev/fb0"
+# define FBDEV_PATH		"/dev/fb0"
 #endif
 
 /*********************
@@ -256,7 +259,9 @@
 #  define XPT2046_X_MAX       3800
 #  define XPT2046_Y_MAX       3800
 #  define XPT2046_AVG         4
-#  define XPT2046_INV         0
+#  define XPT2046_X_INV       0
+#  define XPT2046_Y_INV       0
+#  define XPT2046_XY_SWAP     0
 #endif
 
 /*-----------------
@@ -322,23 +327,22 @@
 #  define USE_EVDEV           0
 #endif
 
-#if USE_EVDEV
+#ifndef USE_BSD_EVDEV
+#  define USE_BSD_EVDEV       0
+#endif
+
+#if USE_EVDEV || USE_BSD_EVDEV
 #  define EVDEV_NAME   "/dev/input/event0"        /*You can use the "evtest" Linux tool to get the list of devices and test them*/
 #  define EVDEV_SWAP_AXES         0               /*Swap the x and y axes of the touchscreen*/
 
-#  define EVDEV_SCALE             0               /* Scale input, e.g. if touchscreen resolution does not match display resolution */
-#  if EVDEV_SCALE
-#    define EVDEV_SCALE_HOR_RES     (4096)          /* Horizontal resolution of touchscreen */
-#    define EVDEV_SCALE_VER_RES     (4096)          /* Vertical resolution of touchscreen */
-#  endif  /*EVDEV_SCALE*/
-
 #  define EVDEV_CALIBRATE         0               /*Scale and offset the touchscreen coordinates by using maximum and minimum values for each axis*/
+
 #  if EVDEV_CALIBRATE
-#    define EVDEV_HOR_MIN   3800                    /*If EVDEV_XXX_MIN > EVDEV_XXX_MAX the XXX axis is automatically inverted*/
-#    define EVDEV_HOR_MAX   200
-#    define EVDEV_VER_MIN   200
-#    define EVDEV_VER_MAX   3800
-#  endif  /*EVDEV_SCALE*/
+#    define EVDEV_HOR_MIN         0               /*to invert axis swap EVDEV_XXX_MIN by EVDEV_XXX_MAX*/
+#    define EVDEV_HOR_MAX      4096               /*"evtest" Linux tool can help to get the correct calibraion values>*/
+#    define EVDEV_VER_MIN         0
+#    define EVDEV_VER_MAX      4096
+#  endif  /*EVDEV_CALIBRATE*/
 #endif  /*USE_EVDEV*/
 
 /*-------------------------------
