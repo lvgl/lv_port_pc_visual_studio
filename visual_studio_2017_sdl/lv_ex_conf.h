@@ -2,6 +2,11 @@
  * @file lv_ex_conf.h
  *
  */
+/*
+ * COPY THIS FILE AS lv_ex_conf.h
+ */
+
+#if 1 /*Set it to "1" to enable the content*/
 
 #ifndef LV_EX_CONF_H
 #define LV_EX_CONF_H
@@ -35,5 +40,8 @@
 
 /*Stress test for LVGL*/
 #define LV_USE_DEMO_STRESS      1
+
 #endif /*LV_EX_CONF_H*/
+
+#endif /*End of "Content enable"*/
 
