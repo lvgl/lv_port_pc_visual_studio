@@ -30,7 +30,7 @@ git submodule update --init --recursive
 
 ## How To Build & Run
 
-Open the `lv_sim_visual_studio_sdl.sln` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
+Open the `visual_studio_2017_sdl.sln` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
 
 ## Trying Things Out
 
