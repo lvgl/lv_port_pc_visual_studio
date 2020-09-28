@@ -1,6 +1,6 @@
 /**
  * @file lv_drv_conf.h
- *
+ * Configuration file for v7.6.0
  */
 
 /*
@@ -217,6 +217,20 @@
 #  define SHARP_MIP_SOFT_COM_INVERSION  0
 #  define SHARP_MIP_REV_BYTE(b)         /*((uint8_t) __REV(__RBIT(b)))*/  /*Architecture / compiler dependent byte bits order reverse*/
 #endif  /*USE_SHARP_MIP*/
+
+/*-------------------------------------------------
+ *  ILI9341 240X320 TFT LCD
+ *------------------------------------------------*/
+#ifndef USE_ILI9341
+#  define USE_ILI9341       0
+#endif
+
+#if USE_ILI9341
+#  define ILI9341_HOR_RES       LV_HOR_RES
+#  define ILI9341_VER_RES       LV_VER_RES
+#  define ILI9341_GAMMA         1
+#  define ILI9341_TEARING       0
+#endif  /*USE_ILI9341*/
 
 /*-----------------------------------------
  *  Linux frame buffer device (/dev/fbx)

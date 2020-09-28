@@ -78,6 +78,9 @@
     <ClCompile Include="lvgl/src/lv_font/lv_font_fmt_txt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl/src/lv_font/lv_font_loader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_12.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -330,6 +333,9 @@
     <ClCompile Include="lv_drivers/display/fbdev.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lv_drivers/display/ILI9341.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lv_drivers/display/monitor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -388,6 +394,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples/assets/img_cogwheel_rgb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/assets/img_hand.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples/assets/lv_font_montserrat_12_compr_az.c">
@@ -585,6 +594,9 @@
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_gauge/lv_ex_gauge_1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_gauge/lv_ex_gauge_2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_img/lv_ex_img_1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -762,6 +774,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_font/lv_font_fmt_txt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl/src/lv_font/lv_font_loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_font/lv_symbol_def.h">
@@ -956,6 +971,9 @@
     <ClInclude Include="lv_drivers/display/fbdev.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lv_drivers/display/ILI9341.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="lv_drivers/display/monitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -996,9 +1014,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers/indev/XPT2046.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers/lv_drv_conf_templ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers/win_drv.h">
