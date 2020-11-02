@@ -81,6 +81,9 @@
     <ClCompile Include="lvgl/src/lv_font/lv_font_loader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_10.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_12.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -144,10 +147,22 @@
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_48.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl/src/lv_font/lv_font_simsun_16_cjk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl/src/lv_font/lv_font_unscii_8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp_osa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_nxp_vglite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_stm32_dma2d.c">
@@ -328,6 +343,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lvgl/src/lv_widgets/lv_win.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_drivers/display/drm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_drivers/display/fbdev.c">
@@ -782,6 +800,15 @@
     <ClInclude Include="lvgl/src/lv_font/lv_symbol_def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp_osa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_nxp_vglit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_stm32_dma2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -966,6 +993,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_widgets/lv_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_drivers/display/drm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers/display/fbdev.h">

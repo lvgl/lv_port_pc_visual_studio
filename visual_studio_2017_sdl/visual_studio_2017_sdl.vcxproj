@@ -163,6 +163,7 @@
     <ClCompile Include="lvgl/src/lv_font/lv_font_dejavu_16_persian_hebrew.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_fmt_txt.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_loader.c" />
+    <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_10.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_12.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_12_subpx.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_14.c" />
@@ -184,8 +185,12 @@
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_44.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_46.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_48.c" />
+    <ClCompile Include="lvgl/src/lv_font/lv_font_montserrat_8.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_simsun_16_cjk.c" />
     <ClCompile Include="lvgl/src/lv_font/lv_font_unscii_8.c" />
+    <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp.c" />
+    <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp_osa.c" />
+    <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_nxp_vglite.c" />
     <ClCompile Include="lvgl/src/lv_gpu/lv_gpu_stm32_dma2d.c" />
     <ClCompile Include="lvgl/src/lv_hal/lv_hal_disp.c" />
     <ClCompile Include="lvgl/src/lv_hal/lv_hal_indev.c" />
@@ -246,6 +251,7 @@
     <ClCompile Include="lvgl/src/lv_widgets/lv_textarea.c" />
     <ClCompile Include="lvgl/src/lv_widgets/lv_tileview.c" />
     <ClCompile Include="lvgl/src/lv_widgets/lv_win.c" />
+    <ClCompile Include="lv_drivers/display/drm.c" />
     <ClCompile Include="lv_drivers/display/fbdev.c" />
     <ClCompile Include="lv_drivers/display/ILI9341.c" />
     <ClCompile Include="lv_drivers/display/monitor.c" />
@@ -398,6 +404,9 @@
     <ClInclude Include="lvgl/src/lv_font/lv_font_fmt_txt.h" />
     <ClInclude Include="lvgl/src/lv_font/lv_font_loader.h" />
     <ClInclude Include="lvgl/src/lv_font/lv_symbol_def.h" />
+    <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp.h" />
+    <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_nxp_pxp_osa.h" />
+    <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_nxp_vglit.h" />
     <ClInclude Include="lvgl/src/lv_gpu/lv_gpu_stm32_dma2d.h" />
     <ClInclude Include="lvgl/src/lv_hal/lv_hal.h" />
     <ClInclude Include="lvgl/src/lv_hal/lv_hal_disp.h" />
@@ -460,6 +469,7 @@
     <ClInclude Include="lvgl/src/lv_widgets/lv_textarea.h" />
     <ClInclude Include="lvgl/src/lv_widgets/lv_tileview.h" />
     <ClInclude Include="lvgl/src/lv_widgets/lv_win.h" />
+    <ClInclude Include="lv_drivers/display/drm.h" />
     <ClInclude Include="lv_drivers/display/fbdev.h" />
     <ClInclude Include="lv_drivers/display/ILI9341.h" />
     <ClInclude Include="lv_drivers/display/monitor.h" />
