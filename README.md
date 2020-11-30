@@ -8,7 +8,7 @@ Instructions for cloning, building and running the application are found below.
 
 ## How to Clone
 
-This repository contains other, necessary LVGL software repositories as [git sub-modules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  Those sub-modules are not pulled in with the normal git clone command and they will be needed.  There are a couple of techniques to pull in the submodules.
+This repository contains other, necessary LVGL software repositories as [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  Those submodules are not pulled in with the normal git clone command and they will be needed.  There are a couple of techniques to pull in the submodules.
 
 ### Everything at Once
 
@@ -18,14 +18,24 @@ This command will clone the lv_sim_visual_studio_sdl repository and all submodul
 git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio_sdl.git
 ```
 
-### Main Repository First, Sub-modules Second
+### Main Repository First, Submodules Second
 
-If you've already cloned the main repository you can pull in the sub-modules with a second command.  Both commands are shown below.
+If you've already cloned the main repository you can pull in the submodules with a second command.  Both commands are shown below.
 
 ```
 git clone https://github.com/lvgl/lv_sim_visual_studio_sdl.git
 cd lv_sim_visual_studio_sdl
 git submodule update --init --recursive
+```
+
+### Keeping Your Copy Up-To-Date
+
+If you have cloned this repository and its submodules, and would like to pull in the latest changes, you will have to do this in two steps.  The first step will pull in updates to the main repo, including updated _references_ to the submodules.  The second step will update the code in the submodules to match those references.  The two commands needed to accomplish this are shown below, run these commands from inside the main repository's directory (top level lv_sim_visual_studio_sdl directory works fine).
+
+```
+git pull
+git submodule update --init --recursive
+
 ```
 
 ## How To Build & Run
@@ -42,4 +52,4 @@ Use these examples to start building your own application test code inside the s
 
 This repository has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  Occasionally it is updated to work with minor version updates as well.  When sub-module updates take place a matching version tag is added to the repository.
 
-If you need to pull in bug fixes in more recent changes to the sub-modules you will have to update the references on your own.  If source files are added or removed in the sub-modules then the visual studio project will likely need adjusting.  See the commit log for examples of sub-module updates and associated visual studio file changes to guide you.
+If you need to pull in bug fixes in more recent changes to the submodules you will have to update the references on your own.  If source files are added or removed in the submodules then the visual studio project will likely need adjusting.  See the commit log for examples of sub-module updates and associated visual studio file changes to guide you.
