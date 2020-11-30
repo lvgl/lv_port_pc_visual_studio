@@ -253,6 +253,7 @@
     <ClCompile Include="lvgl/src/lv_widgets/lv_win.c" />
     <ClCompile Include="lv_drivers/display/drm.c" />
     <ClCompile Include="lv_drivers/display/fbdev.c" />
+    <ClCompile Include="lv_drivers/display/GC9A01.c" />
     <ClCompile Include="lv_drivers/display/ILI9341.c" />
     <ClCompile Include="lv_drivers/display/monitor.c" />
     <ClCompile Include="lv_drivers/display/R61581.c" />
@@ -369,7 +370,6 @@
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_switch/lv_ex_switch_1.c" />
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_table/lv_ex_table_1.c" />
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_tabview/lv_ex_tabview_1.c" />
-    <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_templ.c" />
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_textarea/lv_ex_textarea_1.c" />
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_textarea/lv_ex_textarea_2.c" />
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_tileview/lv_ex_tileview_1.c" />
@@ -380,6 +380,7 @@
     <ClInclude Include="lvgl/lvgl.h" />
     <ClInclude Include="lvgl/src/lv_api_map.h" />
     <ClInclude Include="lvgl/src/lv_conf_internal.h" />
+    <ClInclude Include="lvgl/src/lv_conf_kconfig.h" />
     <ClInclude Include="lvgl/src/lv_misc/lv_debug.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_disp.h" />
     <ClInclude Include="lvgl/src/lv_core/lv_group.h" />
@@ -471,6 +472,7 @@
     <ClInclude Include="lvgl/src/lv_widgets/lv_win.h" />
     <ClInclude Include="lv_drivers/display/drm.h" />
     <ClInclude Include="lv_drivers/display/fbdev.h" />
+    <ClInclude Include="lv_drivers/display/GC9A01.h" />
     <ClInclude Include="lv_drivers/display/ILI9341.h" />
     <ClInclude Include="lv_drivers/display/monitor.h" />
     <ClInclude Include="lv_drivers/display/R61581.h" />

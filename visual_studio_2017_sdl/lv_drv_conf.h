@@ -1,6 +1,6 @@
 /**
  * @file lv_drv_conf.h
- * Configuration file for v7.7.0
+ * Configuration file for v7.7.2
  */
 
 /*
@@ -181,6 +181,17 @@
 #if USE_ST7565
 /*No settings*/
 #endif  /*USE_ST7565*/
+
+/*------------------------------
+ *  GC9A01 (color, low res.)
+ *-----------------------------*/
+#ifndef USE_GC9A01
+#  define USE_GC9A01          0
+#endif
+
+#if USE_GC9A01
+/*No settings*/
+#endif  /*USE_GC9A01*/
 
 /*------------------------------------------
  *  UC1610 (4 gray 160*[104|128])

@@ -351,6 +351,9 @@
     <ClCompile Include="lv_drivers/display/fbdev.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lv_drivers/display/GC9A01.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lv_drivers/display/ILI9341.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -699,9 +702,6 @@
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_tabview/lv_ex_tabview_1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_templ.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lv_examples/src/lv_ex_widgets/lv_ex_textarea/lv_ex_textarea_1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -726,6 +726,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_conf_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl/src/lv_conf_kconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_misc/lv_debug.h">
@@ -999,6 +1002,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers/display/fbdev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_drivers/display/GC9A01.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers/display/ILI9341.h">

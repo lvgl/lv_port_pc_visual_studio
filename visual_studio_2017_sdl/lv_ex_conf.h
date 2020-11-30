@@ -1,6 +1,6 @@
 /**
  * @file lv_ex_conf.h
- * Configuration file for v7.7.0
+ * Configuration file for v7.7.2
  *
  */
 /*
