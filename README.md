@@ -35,10 +35,9 @@ If you have cloned this repository and its submodules, and would like to pull in
 ```
 git pull
 git submodule update --init --recursive
-
 ```
 
-The instructions above are for the case where you have cloned the main lvgl copy of this repository.  If you have chosen to create your own fork then updating from upstream will require a different procedure and is more involved.
+If you have chosen to create your own fork then updating your fork from upstream will require a different procedure that is more involved.
 
 ## How To Build & Run
 
