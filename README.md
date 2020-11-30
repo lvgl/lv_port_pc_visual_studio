@@ -38,6 +38,8 @@ git submodule update --init --recursive
 
 ```
 
+The instructions above are for the case where you have cloned the main lvgl copy of this repository.  If you have chosen to create your own fork then updating from upstream will require a different procedure and is more involved.
+
 ## How To Build & Run
 
 Open the `lv_sim_visual_studio_sdl.sln` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
