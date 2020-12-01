@@ -28,16 +28,16 @@ cd lv_sim_visual_studio_sdl
 git submodule update --init --recursive
 ```
 
-### Keeping Your Copy Up-To-Date
+### Keeping Your Clone Up-To-Date
 
-If you have cloned this repository and its submodules, and would like to pull in the latest changes, you will have to do this in two steps.  The first step will pull in updates to the main repo, including updated _references_ to the submodules.  The second step will update the code in the submodules to match those references.  The two commands needed to accomplish this are shown below, run these commands from inside the main repository's directory (top level lv_sim_visual_studio_sdl directory works fine).
+If you have cloned this repository and would like to pull in the latest changes, you will have to do this in two steps.  The first step will pull in updates to the main repo, including updated _references_ to the submodules.  The second step will update the code in the submodules to match those references.  The two commands needed to accomplish this are shown below, run these commands from inside the main repository's directory (top level lv_sim_visual_studio_sdl directory works fine).
 
 ```
 git pull
 git submodule update --init --recursive
 ```
 
-If you have chosen to create your own fork then updating your fork from upstream will require a different procedure that is more involved.
+If you have chosen to fork this repository then updating the fork from upstream will require a different, more involved procedure.
 
 ## How To Build & Run
 
@@ -51,6 +51,6 @@ Use these examples to start building your own application test code inside the s
 
 ## A Note About Versions
 
-This repository has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  Occasionally it is updated to work with minor version updates as well.  When sub-module updates take place a matching version tag is added to the repository.
+This repository has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  Occasionally it is updated to work with minor version updates.  When sub-module updates take place a matching version tag is added to this repository.
 
 If you need to pull in bug fixes in more recent changes to the submodules you will have to update the references on your own.  If source files are added or removed in the submodules then the visual studio project will likely need adjusting.  See the commit log for examples of sub-module updates and associated visual studio file changes to guide you.
