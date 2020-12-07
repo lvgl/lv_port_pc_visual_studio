@@ -153,6 +153,9 @@
     <ClCompile Include="lvgl/src/lv_font/lv_font_simsun_16_cjk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl/src/lv_font/lv_font_unscii_16.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="lvgl/src/lv_font/lv_font_unscii_8.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -402,37 +405,115 @@
     <ClCompile Include="lv_drivers/win_drv.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/img_cogwheel_alpha16.c">
+    <ClCompile Include="lv_examples/src/assets/img_cogwheel_alpha16.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/img_cogwheel_argb.c">
+    <ClCompile Include="lv_examples/src/assets/img_cogwheel_argb.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/img_cogwheel_chroma_keyed.c">
+    <ClCompile Include="lv_examples/src/assets/img_cogwheel_chroma_keyed.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/img_cogwheel_indexed16.c">
+    <ClCompile Include="lv_examples/src/assets/img_cogwheel_indexed16.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/img_cogwheel_rgb.c">
+    <ClCompile Include="lv_examples/src/assets/img_cogwheel_rgb.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/img_hand.c">
+    <ClCompile Include="lv_examples/src/assets/img_hand.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/lv_font_montserrat_12_compr_az.c">
+    <ClCompile Include="lv_examples/src/assets/lv_font_montserrat_12_compr_az.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/lv_font_montserrat_16_compr_az.c">
+    <ClCompile Include="lv_examples/src/assets/lv_font_montserrat_16_compr_az.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lv_examples/assets/lv_font_montserrat_28_compr_az.c">
+    <ClCompile Include="lv_examples/src/assets/lv_font_montserrat_28_compr_az.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples/src/lv_demo_benchmark/lv_demo_benchmark.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples/src/lv_demo_keypad_encoder/lv_demo_keypad_encoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_list_pause.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_list_play.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_loop.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_next.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_pause.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_play.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_prev.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_btn_rnd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_corner_left.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_corner_right.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_cover_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_cover_2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_cover_3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_icon_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_icon_2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_icon_3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_icon_4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_list_border.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_logo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_slider_knob.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_wave_bottom.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/img_lv_demo_music_wave_top.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/assets/lv_demo_music_font_16_bold.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/lv_demo_music.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/lv_demo_music_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples/src/lv_demo_music/lv_demo_music_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples/src/lv_demo_printer/images/lv_demo_printer_icon_bright.c">
@@ -729,6 +810,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_conf_kconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl/src/lv_conf_zephyr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lvgl/src/lv_misc/lv_debug.h">
@@ -1065,6 +1149,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_examples/src/lv_demo_keypad_encoder/lv_demo_keypad_encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples/src/lv_demo_music/assets/spectrum_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples/src/lv_demo_music/assets/spectrum_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples/src/lv_demo_music/assets/spectrum_3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples/src/lv_demo_music/lv_demo_music.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples/src/lv_demo_music/lv_demo_music_list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples/src/lv_demo_music/lv_demo_music_main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lv_examples/src/lv_demo_printer/lv_demo_printer.h">
