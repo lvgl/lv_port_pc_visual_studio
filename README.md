@@ -51,6 +51,6 @@ Use these examples to start building your own application test code inside the s
 
 ## A Note About Versions
 
-This repository has its sub-module references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  Occasionally it is updated to work with minor version updates.  When sub-module updates take place a matching version tag is added to this repository.
+This repository has its submodule references updated shortly after the release of new, major releases of LittlevGL's core [lvgl](https://github.com/lvgl/lvgl) project.  Occasionally it is updated to work with minor version updates.  When submodule updates take place a matching version tag is added to this repository.
 
-If you need to pull in bug fixes in more recent changes to the submodules you will have to update the references on your own.  If source files are added or removed in the submodules then the visual studio project will likely need adjusting.  See the commit log for examples of sub-module updates and associated visual studio file changes to guide you.
+If you need to pull in bug fixes in more recent changes to the submodules you will have to update the references on your own.  If source files are added or removed in the submodules then the visual studio project will likely need adjusting.  See the commit log for examples of submodule updates and associated visual studio file changes to guide you.
