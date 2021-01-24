@@ -36,7 +36,7 @@ If you have cloned this repository and would like to pull in the latest changes,
 
 ```
 git pull
-git submodule update --recursive
+git submodule update --init --recursive
 ```
 
 If you have chosen to fork this repository then updating the fork from upstream will require a different, more involved procedure.
