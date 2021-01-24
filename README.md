@@ -1,10 +1,12 @@
-# LVGL - PC Simulator using Visual Studio 2017
+# LVGL - PC Simulator using Visual Studio
 
 This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The project uses the [SDL](https://www.libsdl.org/) library which is copied and linked to the project, so you can compile it without any extra dependencies. The 64 bit libraries are used so it will work out-of-the-box on 64-bit systems.
 
-Instructions for cloning, building and running the application are found below.
+The project is currently maintained using Visual Studio 2019.  It may well work without modification on Visual Studio 2017 but it is not actively maintained to work with that version, so please upgrade to 2019 before reporting any bugs.
 
-**This project is not for Visual Studio Code, it is for Visual Studio 2017.**
+**This project is not for Visual Studio Code, it is for Visual Studio 2019.**
+
+Instructions for cloning, building and running the application are found below.
 
 ## How to Clone
 
@@ -34,7 +36,7 @@ If you have cloned this repository and would like to pull in the latest changes,
 
 ```
 git pull
-git submodule update --init --recursive
+git submodule update --recursive
 ```
 
 If you have chosen to fork this repository then updating the fork from upstream will require a different, more involved procedure.
