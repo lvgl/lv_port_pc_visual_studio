@@ -1,5 +1,23 @@
 # LVGL - PC Simulator using Visual Studio
 
+## Notice by MouriNaruto
+
+Some one will notice that this repository had been renamed from lv_sim_visual_studio_sdl to lv_sim_visual_studio. You can read [here](https://github.com/lvgl/lvgl/issues/2043) and know why.
+
+I will re-implement this repo without SDL. The new implementation will only depend on Win32 API, C Runtime and C++ STL. But the old implementation based on SDL will be kept at least until I have implemented most features of the new implementation.
+
+Here is the features in the new implementation or called it road map.
+
+- [ ] Only depends on Win32 API, C Runtime and C++ STL.
+- [ ] Native support for x86, x64, ARM and ARM64 Windows.
+- [ ] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) toolchain make the binary size as smaller as using MinGW.
+- [ ] Support resizing the Window in the HAL level.
+- [ ] Support Per-monitor DPI Aware in the HAL level.
+- [ ] Support Windows keyboard and mouse wheel event in the HAL level.
+- [ ] Provide the easy way to reference lvgl, lv_examples project for Visual Studio.
+
+## Introduction
+
 This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The project uses the [SDL](https://www.libsdl.org/) library which is copied and linked to the project, so you can compile it without any extra dependencies. The 64 bit libraries are used so it will work out-of-the-box on 64-bit systems.
 
 The project is currently maintained using Visual Studio 2019.  It may well work without modification in Visual Studio 2017 but it is not actively supported with that version, so please install and test with Visual Studio 2019 before reporting any bugs.
@@ -17,7 +35,7 @@ This repository contains other, necessary LVGL software repositories as [git sub
 This command will clone the lv_sim_visual_studio_sdl repository and all submodules in a single step.
 
 ```
-git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio_sdl.git
+git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio.git
 ```
 
 ### Main Repository First, Submodules Second
@@ -25,7 +43,7 @@ git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio_sdl.
 If you've already cloned the main repository you can pull in the submodules with a second command.  Both commands are shown below.
 
 ```
-git clone https://github.com/lvgl/lv_sim_visual_studio_sdl.git
+git clone https://github.com/lvgl/lv_sim_visual_studio.git
 cd lv_sim_visual_studio_sdl
 git submodule update --init --recursive
 ```
@@ -43,7 +61,7 @@ If you have chosen to fork this repository then updating the fork from upstream 
 
 ## How To Build & Run
 
-Open the `lv_sim_visual_studio_sdl.sln` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
+Open the `lv_sim/lv_sim_visual_studio_sdl.sln` solution file in Visual Studio. Click on the _Local windows Debugger_ button in the top toolbar.  The included project will be built and run, launching from a cmd window.
 
 ## Trying Things Out
 
