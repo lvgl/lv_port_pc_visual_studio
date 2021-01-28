@@ -6,8 +6,6 @@
 /*********************
 *      INCLUDES
 *********************/
-#include <stdlib.h>
-#include <Windows.h>
 #include <SDL.h>
 #include "lvgl/lvgl.h"
 #include "lv_drivers/display/monitor.h"
@@ -27,7 +25,6 @@
 *  STATIC PROTOTYPES
 **********************/
 static void hal_init(void);
-static int tick_thread(void *data);
 
 /**********************
 *  STATIC VARIABLES
@@ -93,7 +90,7 @@ int main(int argc, char** argv)
         /* Periodically call the lv_task handler.
         * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
-        Sleep(10);       /*Just to let the system breathe */
+        SDL_Delay(10);       /*Just to let the system breathe */
     }
 
     return 0;
@@ -141,24 +138,4 @@ static void hal_init(void)
     kb_drv.read_cb = keyboard_read;
     kb_indev = lv_indev_drv_register(&kb_drv);
 #endif
-
-    /* Tick init.
-    * You have to call 'lv_tick_inc()' in every milliseconds
-    * Create an SDL thread to do this*/
-    SDL_CreateThread(tick_thread, "tick", NULL);
-}
-
-/**
-* A task to measure the elapsed time for LittlevGL
-* @param data unused
-* @return never return
-*/
-static int tick_thread(void *data)
-{
-    while (1) {
-        lv_tick_inc(5);
-        SDL_Delay(5);   /*Sleep for 1 millisecond*/
-    }
-
-    return 0;
 }
