@@ -72,7 +72,7 @@ void win_drv_flush(
 
     if (::lv_disp_flush_is_last(disp_drv))
     {
-        ::InvalidateRect(g_WindowHandle, NULL, FALSE);
+        ::InvalidateRect(g_WindowHandle, nullptr, FALSE);
         ::UpdateWindow(g_WindowHandle);
     }
 
@@ -256,6 +256,11 @@ LRESULT CALLBACK WndProc(
         }
         break;
     }
+    case WM_ERASEBKGND:
+    {
+        ::lv_refr_now(lv_windows_disp);
+        return TRUE;
+    }
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
@@ -314,7 +319,7 @@ bool win_hal_init(
 
     WindowClass.cbSize = sizeof(WNDCLASSEX);
 
-    WindowClass.style = CS_HREDRAW | CS_VREDRAW;
+    WindowClass.style = 0;
     WindowClass.lpfnWndProc = ::WndProc;
     WindowClass.cbClsExtra = 0;
     WindowClass.cbWndExtra = 0;
@@ -333,30 +338,11 @@ bool win_hal_init(
 
     g_InstanceHandle = hInstance;
 
-    constexpr DWORD WindowStyle = WS_OVERLAPPEDWINDOW;
-        //WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
-
-    /*RECT WindowRectangle;
-    WindowRectangle.left = 0;
-    WindowRectangle.right = ::g_WindowWidth - 1;
-    WindowRectangle.top = 0;
-    WindowRectangle.bottom = ::g_WindowHeight - 1;
-
-    ::AdjustWindowRectEx(
-        &WindowRectangle,
-        WindowStyle,
-        FALSE,
-        WS_EX_CLIENTEDGE);
-    ::OffsetRect(
-        &WindowRectangle,
-        -WindowRectangle.left,
-        -WindowRectangle.top);*/
-
     g_WindowHandle = CreateWindowExW(
         WS_EX_CLIENTEDGE,
         WindowClass.lpszClassName,
         L"LVGL ported to Windows Desktop",
-        WindowStyle,
+        WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         0,
         CW_USEDEFAULT,
