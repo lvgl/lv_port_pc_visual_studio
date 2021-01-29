@@ -40,4 +40,25 @@ EXTERN_C HDC WINAPI LvglCreateFrameBuffer(
 */
 EXTERN_C UINT64 WINAPI LvglGetTickCount();
 
+/**
+ * @brief Returns the dots per inch (dpi) value for the associated window.
+ * @param WindowHandle The window you want to get information about.
+ * @return The DPI for the window.
+*/
+EXTERN_C UINT WINAPI LvglGetDpiForWindow(
+    _In_ HWND WindowHandle);
+
+/**
+ * @brief Enables WM_DPICHANGED message for child window for the associated
+ *        window.
+ * @param WindowHandle The window you want to enable WM_DPICHANGED message for
+ *                     child window.
+ * @return If the function succeeds, the return value is non-zero. If the
+ *         function fails, the return value is zero.
+ * @remarks You need to use this function in Windows 10 Threshold 1 or Windows
+ *          10 Threshold 2.
+*/
+EXTERN_C BOOL WINAPI LvglEnableChildWindowDpiMessage(
+    _In_ HWND WindowHandle);
+
 #endif // !LVGL_WINDOWS

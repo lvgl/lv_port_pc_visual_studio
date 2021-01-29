@@ -12,7 +12,7 @@ Here is the features in the new implementation or called it road map.
 - [x] Native support for x86, x64, ARM and ARM64 Windows.
 - [x] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) toolchain make the binary size as smaller as using MinGW.
 - [x] Support resizing the Window in the HAL level.
-- [ ] Support Per-monitor DPI Aware in the HAL level.
+- [x] Support Per-monitor DPI Aware in the HAL level.
 - [ ] Support Windows keyboard and mouse wheel event in the HAL level.
 - [x] Provide the easy way to reference lvgl, lv_examples project for Visual Studio.
 

@@ -23,6 +23,7 @@ static HINSTANCE g_InstanceHandle = nullptr;
 static int volatile g_WindowWidth = 0;
 static int volatile g_WindowHeight = 0;
 static HWND g_WindowHandle = nullptr;
+static int volatile g_WindowDPI = USER_DEFAULT_SCREEN_DPI;
 
 static HDC g_BufferDCHandle = nullptr;
 static UINT32* g_PixelBuffer = nullptr;
@@ -97,6 +98,7 @@ void lv_create_display_driver(
     disp_drv->ver_res = ver_res;
     disp_drv->flush_cb = ::win_drv_flush;
     disp_drv->buffer = disp_buf;
+    disp_drv->dpi = g_WindowDPI;
 }
 
 bool win_drv_read(
@@ -261,6 +263,24 @@ LRESULT CALLBACK WndProc(
         ::lv_refr_now(lv_windows_disp);
         return TRUE;
     }
+    case WM_DPICHANGED:
+    {
+        g_WindowDPI = HIWORD(wParam);
+
+        // Resize the window
+        auto lprcNewScale = reinterpret_cast<RECT*>(lParam);
+
+        ::SetWindowPos(
+            hWnd,
+            nullptr,
+            lprcNewScale->left,
+            lprcNewScale->top,
+            lprcNewScale->right - lprcNewScale->left,
+            lprcNewScale->bottom - lprcNewScale->top,
+            SWP_NOZORDER | SWP_NOACTIVATE);
+
+        break;
+    }
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
@@ -338,7 +358,7 @@ bool win_hal_init(
 
     g_InstanceHandle = hInstance;
 
-    g_WindowHandle = CreateWindowExW(
+    g_WindowHandle = ::CreateWindowExW(
         WS_EX_CLIENTEDGE,
         WindowClass.lpszClassName,
         L"LVGL ported to Windows Desktop",
@@ -358,6 +378,9 @@ bool win_hal_init(
     }
 
     ::lv_task_create(win_msg_handler, 0, LV_TASK_PRIO_HIGHEST, nullptr);
+
+    ::LvglEnableChildWindowDpiMessage(g_WindowHandle);
+    g_WindowDPI = ::LvglGetDpiForWindow(g_WindowHandle);
 
     lv_disp_drv_t disp_drv;
     ::lv_create_display_driver(&disp_drv, g_WindowWidth, g_WindowHeight);
@@ -380,17 +403,6 @@ bool win_hal_init(
     enc_drv.type = LV_INDEV_TYPE_ENCODER;
     enc_drv.read_cb = win_mousewheel_read;
     ::lv_indev_drv_register(&enc_drv);
-
-    /*g_BufferDCHandle = ::MileCreateFrameBuffer(
-        g_WindowHandle,
-        g_WindowWidth,
-        g_WindowHeight,
-        &g_PixelBuffer,
-        &g_PixelBufferSize);
-    if (!g_BufferDCHandle)
-    {
-        return false;
-    }*/
 
     ::ShowWindow(g_WindowHandle, nShowCmd);
     ::UpdateWindow(g_WindowHandle);
@@ -418,11 +430,11 @@ int WINAPI wWinMain(
     //::lv_demo_keypad_encoder();
 
     UINT32 PeriodTick = 10;
-    UINT64 OldTick = LvglGetTickCount();
+    UINT64 OldTick = ::LvglGetTickCount();
     while(!g_WindowQuitSignal)
     {
         ::lv_task_handler();
-        UINT64 NewTick = LvglGetTickCount();
+        UINT64 NewTick = ::LvglGetTickCount();
         UINT32 PastTick = NewTick - OldTick;
         ::lv_tick_inc(PastTick);
         int WaitTime = static_cast<int>(PeriodTick - PastTick);
