@@ -1,0 +1,604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="lv_examples\lv_ex_conf_template.h">
+      <Filter>lv_examples</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\lv_examples.h">
+      <Filter>lv_examples</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.h">
+      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.h">
+      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_music\assets\spectrum_1.h">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_music\assets\spectrum_2.h">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_music\assets\spectrum_3.h">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_music\lv_demo_music.h">
+      <Filter>lv_examples\src\lv_demo_music</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_music\lv_demo_music_list.h">
+      <Filter>lv_examples\src\lv_demo_music</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_music\lv_demo_music_main.h">
+      <Filter>lv_examples\src\lv_demo_music</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_printer\lv_demo_printer.h">
+      <Filter>lv_examples\src\lv_demo_printer</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_printer\lv_demo_printer_theme.h">
+      <Filter>lv_examples\src\lv_demo_printer</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_stress\lv_demo_stress.h">
+      <Filter>lv_examples\src\lv_demo_stress</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_demo_widgets\lv_demo_widgets.h">
+      <Filter>lv_examples\src\lv_demo_widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_ex_get_started\lv_ex_get_started.h">
+      <Filter>lv_examples\src\lv_ex_get_started</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_ex_style\lv_ex_style.h">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_ex_widgets\lv_ex_widgets.h">
+      <Filter>lv_examples\src\lv_ex_widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_examples\src\lv_examples.h">
+      <Filter>lv_examples\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_ex_conf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lv_examples\src\assets\img_cogwheel_alpha16.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\img_cogwheel_argb.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\img_cogwheel_chroma_keyed.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\img_cogwheel_indexed16.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\img_cogwheel_rgb.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\img_hand.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\lv_font_montserrat_12_compr_az.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\lv_font_montserrat_16_compr_az.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\assets\lv_font_montserrat_28_compr_az.c">
+      <Filter>lv_examples\src\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.c">
+      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.c">
+      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_list_pause.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_list_play.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_loop.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_next.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_pause.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_play.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_prev.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_rnd.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_corner_left.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_corner_right.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_cover_1.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_cover_2.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_cover_3.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_1.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_2.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_3.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_4.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_list_border.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_logo.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_slider_knob.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_bottom.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_top.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\assets\lv_demo_music_font_16_bold.c">
+      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music.c">
+      <Filter>lv_examples\src\lv_demo_music</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music_list.c">
+      <Filter>lv_examples\src\lv_demo_music</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music_main.c">
+      <Filter>lv_examples\src\lv_demo_music</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_icon_bright.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_icon_eco.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_icon_hue.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_icon_pc.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_icon_tel.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_icon_wifi.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_btn_bg_1.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_btn_bg_2.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_btn_bg_3.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_btn_bg_4.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_cloud.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_copy.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_internet.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_mobile.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_no_internet.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_phone.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_print.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_printer2.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_ready.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_scan.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_scan_example.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_setup.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_usb.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\images\lv_demo_printer_img_wave.c">
+      <Filter>lv_examples\src\lv_demo_printer\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\lv_demo_printer.c">
+      <Filter>lv_examples\src\lv_demo_printer</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_printer\lv_demo_printer_theme.c">
+      <Filter>lv_examples\src\lv_demo_printer</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_stress\lv_demo_stress.c">
+      <Filter>lv_examples\src\lv_demo_stress</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_demo_widgets\lv_demo_widgets.c">
+      <Filter>lv_examples\src\lv_demo_widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_get_started\lv_ex_get_started_1.c">
+      <Filter>lv_examples\src\lv_ex_get_started</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_get_started\lv_ex_get_started_2.c">
+      <Filter>lv_examples\src\lv_ex_get_started</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_get_started\lv_ex_get_started_3.c">
+      <Filter>lv_examples\src\lv_ex_get_started</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_1.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_2.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_3.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_4.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_5.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_6.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_7.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_8.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_9.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_10.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_style\lv_ex_style_11.c">
+      <Filter>lv_examples\src\lv_ex_style</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_arc\lv_ex_arc_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_arc</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_arc\lv_ex_arc_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_arc</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_bar\lv_ex_bar_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_bar</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_btn\lv_ex_btn_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_btn</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_btn\lv_ex_btn_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_btn</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_btnmatrix\lv_ex_btnmatrix_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_btnmatrix</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_calendar\lv_ex_calendar_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_calendar</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_canvas\lv_ex_canvas_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_canvas\lv_ex_canvas_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_chart\lv_ex_chart_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_chart</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_chart\lv_ex_chart_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_chart</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_checkbox\lv_ex_checkbox_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_checkbox</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_cont\lv_ex_cont_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_cont</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_cpicker\lv_ex_cpicker_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_cpicker</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_cpicker\lv_ex_cpicker_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_cpicker</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_dropdown\lv_ex_dropdown_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_dropdown</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_dropdown\lv_ex_dropdown_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_dropdown</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_gauge\lv_ex_gauge_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_gauge\lv_ex_gauge_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_img\lv_ex_img_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_img</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_img\lv_ex_img_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_img</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_img\lv_ex_img_3.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_img</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_imgbtn\imgbtn_blue.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_imgbtn</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_imgbtn\imgbtn_green.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_imgbtn</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_imgbtn\lv_ex_imgbtn_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_imgbtn</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_keyboard\lv_ex_keyboard_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_label\lv_ex_label_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_label</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_label\lv_ex_label_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_label</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_label\lv_ex_label_3.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_label</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_led\lv_ex_led_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_led</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_line\lv_ex_line_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_line</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_linemeter\lv_ex_linemeter_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_linemeter</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_list\lv_ex_list_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_list</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_msgbox\lv_ex_msgbox_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_msgbox</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_msgbox\lv_ex_msgbox_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_msgbox</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_obj\lv_ex_obj_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_obj</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_objmask\lv_ex_objmask_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_objmask</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_objmask\lv_ex_objmask_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_objmask</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_page\lv_ex_page_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_page</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_roller\lv_ex_roller_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_roller</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_slider\lv_ex_slider_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_slider</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_slider\lv_ex_slider_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_slider</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_spinbox\lv_ex_spinbox_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_spinbox</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_spinner\lv_ex_spinner_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_spinner</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_switch\lv_ex_switch_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_switch</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_table\lv_ex_table_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_table</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_tabview\lv_ex_tabview_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_tabview</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_textarea\lv_ex_textarea_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_textarea</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_textarea\lv_ex_textarea_2.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_textarea</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_textarea\lv_ex_textarea_3.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_textarea</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_tileview\lv_ex_tileview_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_tileview</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_examples\src\lv_ex_widgets\lv_ex_win\lv_ex_win_1.c">
+      <Filter>lv_examples\src\lv_ex_widgets\lv_ex_win</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="lv_examples">
+      <UniqueIdentifier>{5702dfa3-3cd9-4844-9649-f7cc7e5ba1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src">
+      <UniqueIdentifier>{2a4f4e61-af4b-461f-a25e-3a4edeaa9069}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\assets">
+      <UniqueIdentifier>{59046feb-606c-4556-aa21-55851a67cf34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_benchmark">
+      <UniqueIdentifier>{81b4d1d1-28b0-4e2a-92fb-d0ee4802b3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_keypad_encoder">
+      <UniqueIdentifier>{571be714-b243-42b9-a831-313c7ca31292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_music">
+      <UniqueIdentifier>{359c5ce1-0dbb-418b-bc79-4796beba5667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_music\assets">
+      <UniqueIdentifier>{5a639af0-1e48-42fc-b959-6521ca083705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_printer">
+      <UniqueIdentifier>{68933e06-c96d-40c0-9587-7f6a4cbd61eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_printer\images">
+      <UniqueIdentifier>{8aba7556-785b-4ad4-945b-cd02c6198152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_stress">
+      <UniqueIdentifier>{bf77eab3-1bef-4b54-af8e-63c3301e85b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_demo_widgets">
+      <UniqueIdentifier>{0d3d21fb-8bea-4c12-8131-11ba62c3d1f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_get_started">
+      <UniqueIdentifier>{1d1a8414-91a8-44ef-a0d1-d4bdaa657262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_style">
+      <UniqueIdentifier>{a470e88e-46f6-469a-b66f-ecec1055fc0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets">
+      <UniqueIdentifier>{5b64f13d-278a-4f08-80e7-23749d38f100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_arc">
+      <UniqueIdentifier>{4c7e3162-e9c7-4a4e-8d11-561e4358509a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_bar">
+      <UniqueIdentifier>{a04151ab-6553-44e1-98cb-932d875cee13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_btn">
+      <UniqueIdentifier>{db70a0d1-f4db-4f5d-a53d-7bbb1c525922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_btnmatrix">
+      <UniqueIdentifier>{cb25ffda-1708-4e6e-a070-163314f71ea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_calendar">
+      <UniqueIdentifier>{a8f9ecd1-5e4c-424a-8c95-a5984220aada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_canvas">
+      <UniqueIdentifier>{05457413-d9bf-48bb-8266-fdafa2fb0368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_chart">
+      <UniqueIdentifier>{4cc7824f-1b5f-4e66-baa5-721e3ac2b4ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_checkbox">
+      <UniqueIdentifier>{344975c9-10c6-488c-a0de-ba7404c57dd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_cont">
+      <UniqueIdentifier>{8027e59a-80d1-4cbb-9841-404c07024cdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_cpicker">
+      <UniqueIdentifier>{0e72c280-5363-43f6-9f62-ef50b36fb531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_dropdown">
+      <UniqueIdentifier>{36a340ea-076d-4b0c-813a-efd88220ddcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_gauge">
+      <UniqueIdentifier>{d4940e45-f978-4eb4-ac5f-10b33841d6d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_img">
+      <UniqueIdentifier>{73f30584-f163-4f07-8b93-71eaa5eaf7bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_imgbtn">
+      <UniqueIdentifier>{1fb761e3-4f06-44e6-91f8-2725fab1af89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_keyboard">
+      <UniqueIdentifier>{0e24bbe3-67c8-4b37-b3bc-8a97681c115d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_label">
+      <UniqueIdentifier>{1e2486b1-c349-4ca5-90f7-6b0289280eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_led">
+      <UniqueIdentifier>{11ec9547-ea12-4643-8082-55afccf9572f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_line">
+      <UniqueIdentifier>{448e7154-ac4e-48e4-bc9a-6535627dcc6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_linemeter">
+      <UniqueIdentifier>{0eb05ab1-0de2-4c94-8ebf-e8eb2e0fec77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_list">
+      <UniqueIdentifier>{cd078ecc-1eae-4835-aac9-75bf8d8cef75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_msgbox">
+      <UniqueIdentifier>{b3ce8725-eea0-4606-9d06-1e71e10585fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_obj">
+      <UniqueIdentifier>{6f8d42ed-2ba6-4d5f-a798-36f89837957b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_objmask">
+      <UniqueIdentifier>{f856f4a3-f03d-4b09-98da-6842ee708e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_page">
+      <UniqueIdentifier>{7abbfd81-08c2-4675-a53f-f4f955e560a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_roller">
+      <UniqueIdentifier>{66c56f36-c304-4ea8-8d4a-7a45717a2a38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_slider">
+      <UniqueIdentifier>{7c94bb06-f75e-4fa2-8108-b88b1ba55643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_spinbox">
+      <UniqueIdentifier>{3521e11c-39a8-4232-9ab6-17aa6f52e880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_spinner">
+      <UniqueIdentifier>{81639eea-a83b-4c6e-91f8-abe867195ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_switch">
+      <UniqueIdentifier>{b79ccd51-8348-4e3e-92ea-5be062e76c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_table">
+      <UniqueIdentifier>{930f5b5d-85f8-406a-a4c8-34b341d47142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_tabview">
+      <UniqueIdentifier>{378091bd-4113-422f-a046-0d261d2a1923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_textarea">
+      <UniqueIdentifier>{d5cb9e65-c4de-44e1-83b9-7724655a6c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_tileview">
+      <UniqueIdentifier>{815a2185-258c-4ee1-8257-629bcfcefd7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_examples\src\lv_ex_widgets\lv_ex_win">
+      <UniqueIdentifier>{82791db6-65d7-4909-8d6d-12b3b758320e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LVGL.Examples.props" />
+  </ItemGroup>
+</Project>
