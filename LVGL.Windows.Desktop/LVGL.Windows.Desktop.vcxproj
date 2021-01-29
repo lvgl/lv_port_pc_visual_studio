@@ -28,9 +28,11 @@
     <Manifest Include="LVGL.Windows.Desktop.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LVGL.Windows.h" />
     <ClInclude Include="Mile.Project.Properties.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LVGL.Windows.cpp" />
     <ClCompile Include="LVGL.Windows.Desktop.cpp" />
   </ItemGroup>
   <Import Project="..\Mile.Project\Mile.Project.Cpp.targets" />

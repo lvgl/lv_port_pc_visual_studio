@@ -1,85 +1,20 @@
 ﻿/*
- * PROJECT:   LVGL ported to Windows
- * FILE:      lv_port_windows.cpp
- * PURPOSE:   Implementation for LVGL ported to Windows
+ * PROJECT:   LVGL ported to Windows Desktop
+ * FILE:      LVGL.Windows.Desktop.cpp
+ * PURPOSE:   Implementation for LVGL ported to Windows Desktop
  *
  * LICENSE:   The MIT License
  *
  * DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
  */
 
-#define NOMINMAX
+#include "LVGL.Windows.h"
+
 #include <Windows.h>
 #include <windowsx.h>
 
 #include <cstring>
 #include <utility>
-
-/**
- * @brief Creates a B8G8R8A8 frame buffer.
- * @param WindowHandle A handle to the window for the creation of the frame
- *                     buffer. If this value is nullptr, the entire screen will
- *                     be referenced.
- * @param Width The width of the frame buffer.
- * @param Height The height of the frame buffer.
- * @param PixelBuffer The raw pixel buffer of the frame buffer you created.
- * @param PixelBufferSize The size of the frame buffer you created.
- * @return If the function succeeds, the return value is a handle to the device
- *         context (DC) for the frame buffer. If the function fails, the return
- *         value is nullptr, and PixelBuffer parameter is nullptr.
-*/
-HDC MileCreateFrameBuffer(
-    _In_opt_ HWND WindowHandle,
-    _In_ LONG Width,
-    _In_ LONG Height,
-    _Out_ UINT32** PixelBuffer,
-    _Out_ SIZE_T* PixelBufferSize)
-{
-    HDC hFrameBufferDC = nullptr;
-
-    if (PixelBuffer && PixelBufferSize)
-    {
-        HDC hWindowDC = ::GetDC(WindowHandle);
-        if (hWindowDC)
-        {
-            hFrameBufferDC = ::CreateCompatibleDC(hWindowDC);
-            ::ReleaseDC(WindowHandle, hWindowDC);
-        }
-
-        if (hFrameBufferDC)
-        {
-            BITMAPINFO BitmapInfo;
-            std::memset(&BitmapInfo, 0, sizeof(BITMAPINFO));
-            BitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-            BitmapInfo.bmiHeader.biWidth = Width;
-            BitmapInfo.bmiHeader.biHeight = -Height;
-            BitmapInfo.bmiHeader.biPlanes = 1;
-            BitmapInfo.bmiHeader.biBitCount = 32;
-            BitmapInfo.bmiHeader.biCompression = BI_RGB;
-
-            HBITMAP hBitmap = ::CreateDIBSection(
-                hFrameBufferDC,
-                &BitmapInfo,
-                DIB_RGB_COLORS,
-                reinterpret_cast<void**>(PixelBuffer),
-                nullptr,
-                0);
-            if (hBitmap)
-            {
-                *PixelBufferSize = Width * Height * sizeof(UINT32);
-                ::DeleteObject(::SelectObject(hFrameBufferDC, hBitmap));
-                ::DeleteObject(hBitmap);
-            }
-            else
-            {
-                ::DeleteDC(hFrameBufferDC);
-                hFrameBufferDC = nullptr;
-            }
-        }
-    }
-
-    return hFrameBufferDC;
-}
 
 #include "lvgl/lvgl.h"
 #include "lv_examples/lv_examples.h"
@@ -308,7 +243,7 @@ LRESULT CALLBACK WndProc(
                 delete[] old_disp_buf->buf1;
                 delete old_disp_buf;
 
-                HDC hNewBufferDC = ::MileCreateFrameBuffer(
+                HDC hNewBufferDC = ::LvglCreateFrameBuffer(
                     g_WindowHandle,
                     g_WindowWidth,
                     g_WindowHeight,
@@ -370,23 +305,6 @@ static void win_msg_handler(lv_task_t* param)
         }
     }
 }
-
-ULONGLONG WINAPI MileGetTickCount()
-{
-    LARGE_INTEGER Frequency, PerformanceCount;
-
-    if (::QueryPerformanceFrequency(&Frequency))
-    {
-        if (::QueryPerformanceCounter(&PerformanceCount))
-        {
-            return (PerformanceCount.QuadPart * 1000 / Frequency.QuadPart);
-        }
-    }
-
-    return ::GetTickCount64();
-}
-
-
 
 bool win_hal_init(
     _In_ HINSTANCE hInstance,
@@ -514,11 +432,11 @@ int WINAPI wWinMain(
     //::lv_demo_keypad_encoder();
 
     UINT32 PeriodTick = 10;
-    UINT64 OldTick = MileGetTickCount();
+    UINT64 OldTick = LvglGetTickCount();
     while(!g_WindowQuitSignal)
     {
         ::lv_task_handler();
-        UINT64 NewTick = MileGetTickCount();
+        UINT64 NewTick = LvglGetTickCount();
         UINT32 PastTick = NewTick - OldTick;
         ::lv_tick_inc(PastTick);
         int WaitTime = static_cast<int>(PeriodTick - PastTick);

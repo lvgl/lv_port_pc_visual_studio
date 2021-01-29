@@ -5,8 +5,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
+    <ClInclude Include="LVGL.Windows.h">
+      <Filter>LVGL.Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Windows.Desktop.cpp" />
+    <ClCompile Include="LVGL.Windows.cpp">
+      <Filter>LVGL.Windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="LVGL.Windows">
+      <UniqueIdentifier>{ddee68e6-b582-4a67-a5d2-cd2d172e40a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
