@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
+    <RootNamespace>LVGL</RootNamespace>
+    <MileProjectType>WindowsApplication</MileProjectType>
+    <MileProjectManifestFile>LVGL.Windows.Desktop.manifest</MileProjectManifestFile>
+  </PropertyGroup>
+  <Import Project="..\Mile.Project\Mile.Project.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="..\LVGL.Core\LVGL.Core.props" />
+    <Import Project="..\LVGL.Examples\LVGL.Examples.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <PackageReference Include="VC-LTL">
+      <Version>4.1.1-Beta7</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="LVGL.Windows.Desktop.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Mile.Project.Properties.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LVGL.Windows.Desktop.cpp" />
+  </ItemGroup>
+  <Import Project="..\Mile.Project\Mile.Project.Cpp.targets" />
+</Project>
