@@ -13,8 +13,12 @@
 #include <Windows.h>
 #include <windowsx.h>
 
+#include <cstdint>
 #include <cstring>
+#include <mutex>
+#include <queue>
 #include <utility>
+#include <vector>
 
 #include "lvgl/lvgl.h"
 #include "lv_examples/lv_examples.h"
@@ -111,11 +115,76 @@ bool win_drv_read(
     return false;
 }
 
+std::queue<std::pair<std::uint32_t, ::lv_indev_state_t>> key_queue;
+std::queue<std::pair<std::uint32_t, ::lv_indev_state_t>> char_queue;
+std::mutex kb_mutex;
+
 bool win_kb_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
 {
     (void)indev_drv;      /*Unused*/
-    data->state = state;
-    data->key = last_key;
+
+    std::lock_guard guard(kb_mutex);
+
+    if (!char_queue.empty())
+    {
+        auto current = char_queue.front();
+
+        data->key = current.first;
+        data->state = current.second;
+
+        char_queue.pop();
+    }
+    else if (!key_queue.empty())
+    {
+        auto current = key_queue.front();
+
+        switch (current.first)
+        {
+        case VK_UP:
+            data->key = LV_KEY_UP;
+            break;
+        case VK_DOWN:
+            data->key = LV_KEY_DOWN;
+            break;
+        case VK_LEFT:
+            data->key = LV_KEY_LEFT;
+            break;
+        case VK_RIGHT:
+            data->key = LV_KEY_RIGHT;
+            break;
+        case VK_ESCAPE:
+            data->key = LV_KEY_ESC;
+            break;
+        case VK_DELETE:
+            data->key = LV_KEY_DEL;
+            break;
+        case VK_BACK:
+            data->key = LV_KEY_BACKSPACE;
+            break;
+        case VK_RETURN:
+            data->key = LV_KEY_ENTER;
+            break;
+        case VK_NEXT:
+            data->key = LV_KEY_NEXT;
+            break;
+        case VK_PRIOR:
+            data->key = LV_KEY_PREV;
+            break;
+        case VK_HOME:
+            data->key = LV_KEY_HOME;
+            break;
+        case VK_END:
+            data->key = LV_KEY_END;
+            break;
+        default:
+            data->key = 0;
+            break;
+        }
+        
+        data->state = current.second;
+
+        key_queue.pop();
+    }
 
     return false;
 }
@@ -152,72 +221,23 @@ LRESULT CALLBACK WndProc(
         return 0;
     }
     case WM_KEYDOWN:
-    {
-        switch (wParam)
-        {
-        case VK_UP:
-            last_key = LV_KEY_UP;
-            break;
-        case VK_DOWN:
-            last_key = LV_KEY_DOWN;
-            break;
-        case VK_LEFT:
-            last_key = LV_KEY_LEFT;
-            break;
-        case VK_RIGHT:
-            last_key = LV_KEY_RIGHT;
-            break;
-        case VK_ESCAPE:
-            last_key = LV_KEY_ESC;
-            break;
-        case VK_DELETE:
-            last_key = LV_KEY_DEL;
-            break;
-        case VK_BACK:
-            last_key = LV_KEY_BACKSPACE;
-            break;
-        case VK_RETURN:
-            last_key = LV_KEY_ENTER;
-            break;
-        case VK_NEXT:
-            last_key = LV_KEY_NEXT;
-            break;
-        case VK_PRIOR:
-            last_key = LV_KEY_PREV;
-            break;
-        case VK_HOME:
-            last_key = LV_KEY_HOME;
-            break;
-        case VK_END:
-            last_key = LV_KEY_END;
-            break;
-        default:
-        {
-           /* int ch = ::MapVirtualKeyW(wParam, MAPVK_VK_TO_CHAR);
-            if (ch)
-            {
-                if ((ch >= 'A' && ch <= 'Z') &&
-                    !(
-                        (::GetKeyState(VK_SHIFT) & 0x8000) ^
-                        (::GetKeyState(VK_CAPITAL) & 0x0001)))
-                {
-                    last_key = ch + 0x20;
-                }
-                else
-                {
-                    last_key = ch;
-                }
-            }*/
-            break;
-        }
-        }
-
-        state = LV_INDEV_STATE_PR;
-        break;
-    }
     case WM_KEYUP:
     {
-        state = LV_INDEV_STATE_REL;
+        std::lock_guard guard(kb_mutex);
+
+        key_queue.push(
+            std::make_pair(
+                wParam,
+                (uMsg == WM_KEYUP) ? LV_INDEV_STATE_REL : LV_INDEV_STATE_PR));
+
+        break;
+    }
+    case WM_CHAR:
+    {
+        std::lock_guard guard(kb_mutex);
+
+        char_queue.push(std::make_pair(wParam, LV_INDEV_STATE_PR));
+
         break;
     }
     case WM_MOUSEWHEEL:
@@ -426,8 +446,8 @@ int WINAPI wWinMain(
         return -1;
     }
 
-    ::lv_demo_widgets();
-    //::lv_demo_keypad_encoder();
+    //::lv_demo_widgets();
+    ::lv_demo_keypad_encoder();
 
     UINT32 PeriodTick = 10;
     UINT64 OldTick = ::LvglGetTickCount();
