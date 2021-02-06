@@ -446,12 +446,12 @@ int WINAPI wWinMain(
         return -1;
     }
 
-    //::lv_demo_widgets();
-    ::lv_demo_keypad_encoder();
+    ::lv_demo_widgets();
+    //::lv_demo_keypad_encoder();
 
     UINT32 PeriodTick = 10;
     UINT64 OldTick = ::LvglGetTickCount();
-    while(!g_WindowQuitSignal)
+    while (!g_WindowQuitSignal)
     {
         ::lv_task_handler();
         UINT64 NewTick = ::LvglGetTickCount();
