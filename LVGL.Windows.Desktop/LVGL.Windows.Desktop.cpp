@@ -338,7 +338,7 @@ static void win_msg_handler(lv_task_t* param)
     param;
 
     MSG Message;
-    BOOL Result = PeekMessageW(&Message, NULL, 0, 0, TRUE);
+    BOOL Result = ::PeekMessageW(&Message, nullptr, 0, 0, TRUE);
     if (Result != 0 && Result != -1)
     {
         ::TranslateMessage(&Message);
