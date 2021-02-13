@@ -38,9 +38,9 @@ static lv_disp_t* lv_windows_disp;
 static bool mouse_pressed;
 static int mouse_x, mouse_y;
 
-static uint32_t volatile last_key = 0;
-static lv_indev_state_t volatile state = LV_INDEV_STATE_REL;
-static int16_t volatile enc_diff = 0;
+
+static bool volatile g_MouseWheelPressed = false;
+static int16_t volatile g_MouseWheelValue = 0;
 
 void win_drv_flush(
     lv_disp_drv_t* disp_drv,
@@ -179,9 +179,9 @@ bool win_mousewheel_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
 {
     (void)indev_drv;      /*Unused*/
 
-    data->state = state;
-    data->enc_diff = enc_diff;
-    enc_diff = 0;
+    data->state = g_MouseWheelPressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+    data->enc_diff = g_MouseWheelValue;
+    g_MouseWheelValue = 0;
 
     return false;       /*No more data to read so return false*/
 }
@@ -197,12 +197,18 @@ LRESULT CALLBACK WndProc(
     case WM_MOUSEMOVE:
     case WM_LBUTTONDOWN:
     case WM_LBUTTONUP:
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
     {
         mouse_x = GET_X_LPARAM(lParam);
         mouse_y = GET_Y_LPARAM(lParam);
         if (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONUP)
         {
             mouse_pressed = (uMsg == WM_LBUTTONDOWN);
+        }
+        else if (uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONUP)
+        {
+            g_MouseWheelPressed = (uMsg == WM_MBUTTONDOWN);
         }
         return 0;
     }
@@ -228,7 +234,7 @@ LRESULT CALLBACK WndProc(
     }
     case WM_MOUSEWHEEL:
     {
-        enc_diff = -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+        g_MouseWheelValue = -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
         break;
     }
     case WM_SIZE:
@@ -422,8 +428,8 @@ int WINAPI wWinMain(
         return -1;
     }
 
-    ::lv_demo_widgets();
-    //::lv_demo_keypad_encoder();
+    //::lv_demo_widgets();
+    ::lv_demo_keypad_encoder();
 
     UINT32 PeriodTick = 10;
     UINT64 OldTick = ::LvglGetTickCount();
