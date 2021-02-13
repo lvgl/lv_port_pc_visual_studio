@@ -47,41 +47,16 @@ void win_drv_flush(
     const lv_area_t* area,
     lv_color_t* color_p)
 {
-    if (g_WindowWidth == 0 || g_WindowHeight == 0)
-    {
-        ::lv_disp_flush_ready(disp_drv);
-        return;
-    }
-
-    lv_coord_t WindowWidth =
-        disp_drv->rotated == 0
-        ? disp_drv->hor_res
-        : disp_drv->ver_res;
-    lv_coord_t WindowHeight =
-        disp_drv->rotated == 0
-        ? disp_drv->ver_res
-        : disp_drv->hor_res;
-
-    for (int y = area->y1; y <= area->y2 && y < WindowHeight; ++y)
-    {
-        for (int x = area->x1; x <= area->x2; ++x)
-        {
-            if (x < WindowWidth)
-            {
-                g_PixelBuffer[y * WindowWidth + x] = ::lv_color_to32(*color_p);
-            }
-
-            ++color_p;
-        }
-    }
-
-    if (::lv_disp_flush_is_last(disp_drv))
-    {
-        ::InvalidateRect(g_WindowHandle, nullptr, FALSE);
-        ::UpdateWindow(g_WindowHandle);
-    }
-
     ::lv_disp_flush_ready(disp_drv);
+}
+
+void win_drv_monitor(
+    lv_disp_drv_t* disp_drv,
+    uint32_t time,
+    uint32_t px)
+{
+    ::InvalidateRect(g_WindowHandle, nullptr, FALSE);
+    ::UpdateWindow(g_WindowHandle);
 }
 
 void lv_create_display_driver(
@@ -91,11 +66,21 @@ void lv_create_display_driver(
 {
     ::lv_disp_drv_init(disp_drv);
 
+    HDC hNewBufferDC = ::LvglCreateFrameBuffer(
+        g_WindowHandle,
+        hor_res,
+        ver_res,
+        &g_PixelBuffer,
+        &g_PixelBufferSize);
+
+    ::DeleteDC(g_BufferDCHandle);
+    g_BufferDCHandle = hNewBufferDC;
+
     lv_disp_buf_t* disp_buf = new lv_disp_buf_t();
     ::lv_disp_buf_init(
         disp_buf,
         new lv_color_t[hor_res * ver_res],
-        nullptr,
+        g_PixelBuffer,
         hor_res * ver_res);
 
     disp_drv->hor_res = hor_res;
@@ -103,6 +88,7 @@ void lv_create_display_driver(
     disp_drv->flush_cb = ::win_drv_flush;
     disp_drv->buffer = disp_buf;
     disp_drv->dpi = g_WindowDPI;
+    disp_drv->monitor_cb = ::win_drv_monitor;
 }
 
 bool win_drv_read(
@@ -264,16 +250,6 @@ LRESULT CALLBACK WndProc(
                 ::lv_disp_drv_update(lv_windows_disp, &disp_drv);
                 delete[] old_disp_buf->buf1;
                 delete old_disp_buf;
-
-                HDC hNewBufferDC = ::LvglCreateFrameBuffer(
-                    g_WindowHandle,
-                    g_WindowWidth,
-                    g_WindowHeight,
-                    &g_PixelBuffer,
-                    &g_PixelBufferSize);
-
-                ::DeleteDC(g_BufferDCHandle);
-                g_BufferDCHandle = hNewBufferDC;
             }
         }
         break;
