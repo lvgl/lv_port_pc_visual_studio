@@ -15,7 +15,7 @@ Here is the features in the new implementation or called it road map.
 - [x] Support Per-monitor DPI Aware in the HAL level.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
 - [x] Provide the easy way to reference lvgl, lv_examples project for Visual Studio.
-- [ ] Provide Windows GDI font engine support.
+- [x] Provide Windows GDI font engine support.
 
 ## Introduction
 
