@@ -256,8 +256,22 @@ void win_drv_monitor(
     uint32_t time,
     uint32_t px)
 {
-    ::InvalidateRect(g_WindowHandle, nullptr, FALSE);
-    ::UpdateWindow(g_WindowHandle);
+    HDC hWindowDC = ::GetDC(g_WindowHandle);
+    if (hWindowDC)
+    {
+        ::BitBlt(
+            hWindowDC,
+            0,
+            0,
+            g_WindowWidth,
+            g_WindowHeight,
+            g_BufferDCHandle,
+            0,
+            0,
+            SRCCOPY);
+
+        ::ReleaseDC(g_WindowHandle, hWindowDC);
+    }
 }
 
 void lv_create_display_driver(
@@ -484,26 +498,6 @@ LRESULT CALLBACK WndProc(
 
         break;
     }
-    case WM_PAINT:
-    {
-        PAINTSTRUCT ps;
-        HDC hDC = ::BeginPaint(hWnd, &ps);
-
-        ::BitBlt(
-            hDC,
-            0,
-            0,
-            g_WindowWidth,
-            g_WindowHeight,
-            g_BufferDCHandle,
-            0,
-            0,
-            SRCCOPY);
-
-        ::EndPaint(hWnd, &ps); 
-
-        break;
-    }
     case WM_DESTROY:
         ::PostQuitMessage(0);
         break;
@@ -607,16 +601,16 @@ bool win_hal_init(
     enc_drv.read_cb = win_mousewheel_read;
     ::lv_indev_drv_register(&enc_drv);
 
-    wchar_t font_name[] = L"MS Shell Dlg";
+    wchar_t font_name[] = L"Segoe UI";
 
     lv_font_t* font_small = lv_win_gdi_create_font(
         g_WindowHandle,
-        18,
+        20,
         font_name);
 
     lv_font_t* font_normal = lv_win_gdi_create_font(
         g_WindowHandle,
-        20,
+        22,
         font_name);
 
     lv_font_t* font_subtitle = lv_win_gdi_create_font(
