@@ -236,9 +236,8 @@ static SIZE_T g_PixelBufferSize = 0;
 
 static lv_disp_t* lv_windows_disp;
 
-static bool mouse_pressed;
-static int mouse_x, mouse_y;
-
+static bool volatile g_MousePressed;
+static LPARAM volatile g_MouseValue = 0;
 
 static bool volatile g_MouseWheelPressed = false;
 static int16_t volatile g_MouseWheelValue = 0;
@@ -310,9 +309,9 @@ bool win_drv_read(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data)
 {
-    data->state = mouse_pressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
-    data->point.x = mouse_x;
-    data->point.y = mouse_y;
+    data->state = g_MousePressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+    data->point.x = GET_X_LPARAM(g_MouseValue);
+    data->point.y = GET_Y_LPARAM(g_MouseValue);
     return false;
 }
 
@@ -415,11 +414,10 @@ LRESULT CALLBACK WndProc(
     case WM_MBUTTONDOWN:
     case WM_MBUTTONUP:
     {
-        mouse_x = GET_X_LPARAM(lParam);
-        mouse_y = GET_Y_LPARAM(lParam);
+        g_MouseValue = lParam;
         if (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONUP)
         {
-            mouse_pressed = (uMsg == WM_LBUTTONDOWN);
+            g_MousePressed = (uMsg == WM_LBUTTONDOWN);
         }
         else if (uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONUP)
         {
