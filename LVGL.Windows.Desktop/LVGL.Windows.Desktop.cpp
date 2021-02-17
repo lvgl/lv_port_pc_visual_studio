@@ -657,20 +657,10 @@ int WINAPI wWinMain(
     ::lv_demo_widgets();
     //::lv_demo_keypad_encoder();
 
-    UINT32 PeriodTick = 10;
-    UINT64 OldTick = ::LvglGetTickCount();
     while (!g_WindowQuitSignal)
     {
         ::lv_task_handler();
-        UINT64 NewTick = ::LvglGetTickCount();
-        UINT32 PastTick = NewTick - OldTick;
-        ::lv_tick_inc(PastTick);
-        int WaitTime = static_cast<int>(PeriodTick - PastTick);
-        if (WaitTime > 0)
-        {
-            ::Sleep(WaitTime);
-        }
-        OldTick = NewTick;
+        ::Sleep(10);
     }
 
     return 0;
