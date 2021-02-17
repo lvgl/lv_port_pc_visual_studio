@@ -247,30 +247,27 @@ void win_drv_flush(
     const lv_area_t* area,
     lv_color_t* color_p)
 {
-    ::lv_disp_flush_ready(disp_drv);
-}
-
-void win_drv_monitor(
-    lv_disp_drv_t* disp_drv,
-    uint32_t time,
-    uint32_t px)
-{
-    HDC hWindowDC = ::GetDC(g_WindowHandle);
-    if (hWindowDC)
+    if (::lv_disp_flush_is_last(disp_drv))
     {
-        ::BitBlt(
-            hWindowDC,
-            0,
-            0,
-            g_WindowWidth,
-            g_WindowHeight,
-            g_BufferDCHandle,
-            0,
-            0,
-            SRCCOPY);
+        HDC hWindowDC = ::GetDC(g_WindowHandle);
+        if (hWindowDC)
+        {
+            ::BitBlt(
+                hWindowDC,
+                0,
+                0,
+                g_WindowWidth,
+                g_WindowHeight,
+                g_BufferDCHandle,
+                0,
+                0,
+                SRCCOPY);
 
-        ::ReleaseDC(g_WindowHandle, hWindowDC);
+            ::ReleaseDC(g_WindowHandle, hWindowDC);
+        }
     }
+
+    ::lv_disp_flush_ready(disp_drv);
 }
 
 void lv_create_display_driver(
@@ -302,7 +299,6 @@ void lv_create_display_driver(
     disp_drv->flush_cb = ::win_drv_flush;
     disp_drv->buffer = disp_buf;
     disp_drv->dpi = g_WindowDPI;
-    disp_drv->monitor_cb = ::win_drv_monitor;
 }
 
 bool win_drv_read(
@@ -652,8 +648,9 @@ int WINAPI wWinMain(
         return -1;
     }
 
-    ::lv_demo_widgets();
+    //::lv_demo_widgets();
     //::lv_demo_keypad_encoder();
+    ::lv_demo_benchmark();
 
     while (!g_WindowQuitSignal)
     {
