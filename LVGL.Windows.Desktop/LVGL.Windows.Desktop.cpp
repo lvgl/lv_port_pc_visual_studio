@@ -247,27 +247,34 @@ void win_drv_flush(
     const lv_area_t* area,
     lv_color_t* color_p)
 {
-    if (::lv_disp_flush_is_last(disp_drv))
+    HDC hWindowDC = ::GetDC(g_WindowHandle);
+    if (hWindowDC)
     {
-        HDC hWindowDC = ::GetDC(g_WindowHandle);
-        if (hWindowDC)
-        {
-            ::BitBlt(
-                hWindowDC,
-                0,
-                0,
-                g_WindowWidth,
-                g_WindowHeight,
-                g_BufferDCHandle,
-                0,
-                0,
-                SRCCOPY);
+        ::BitBlt(
+            hWindowDC,
+            0,
+            0,
+            g_WindowWidth,
+            g_WindowHeight,
+            g_BufferDCHandle,
+            0,
+            0,
+            SRCCOPY);
 
-            ::ReleaseDC(g_WindowHandle, hWindowDC);
-        }
+        ::ReleaseDC(g_WindowHandle, hWindowDC);
     }
 
     ::lv_disp_flush_ready(disp_drv);
+}
+
+void win_drv_rounder_cb(
+    lv_disp_drv_t* disp_drv,
+    lv_area_t* area)
+{
+    area->x1 = 0;
+    area->x2 = disp_drv->hor_res - 1;
+    area->y1 = 0;
+    area->y2 = disp_drv->ver_res - 1;
 }
 
 void lv_create_display_driver(
@@ -290,8 +297,8 @@ void lv_create_display_driver(
     lv_disp_buf_t* disp_buf = new lv_disp_buf_t();
     ::lv_disp_buf_init(
         disp_buf,
-        new lv_color_t[hor_res * ver_res],
         g_PixelBuffer,
+        nullptr,
         hor_res * ver_res);
 
     disp_drv->hor_res = hor_res;
@@ -299,6 +306,7 @@ void lv_create_display_driver(
     disp_drv->flush_cb = ::win_drv_flush;
     disp_drv->buffer = disp_buf;
     disp_drv->dpi = g_WindowDPI;
+    disp_drv->rounder_cb = win_drv_rounder_cb;
 }
 
 bool win_drv_read(
@@ -463,7 +471,6 @@ LRESULT CALLBACK WndProc(
                 lv_disp_drv_t disp_drv;
                 ::lv_create_display_driver(&disp_drv, g_WindowWidth, g_WindowHeight);
                 ::lv_disp_drv_update(lv_windows_disp, &disp_drv);
-                delete[] old_disp_buf->buf1;
                 delete old_disp_buf;
             }
         }
@@ -595,7 +602,7 @@ bool win_hal_init(
     enc_drv.read_cb = win_mousewheel_read;
     ::lv_indev_drv_register(&enc_drv);
 
-    wchar_t font_name[] = L"Segoe UI";
+    /*wchar_t font_name[] = L"Segoe UI";
 
     lv_font_t* font_small = lv_win_gdi_create_font(
         g_WindowHandle,
@@ -624,7 +631,7 @@ bool win_hal_init(
         font_small,
         font_normal,
         font_subtitle,
-        font_title));
+        font_title));*/
 
     ::ShowWindow(g_WindowHandle, nShowCmd);
     ::UpdateWindow(g_WindowHandle);
@@ -648,9 +655,9 @@ int WINAPI wWinMain(
         return -1;
     }
 
-    //::lv_demo_widgets();
+    ::lv_demo_widgets();
     //::lv_demo_keypad_encoder();
-    ::lv_demo_benchmark();
+    //::lv_demo_benchmark();
 
     while (!g_WindowQuitSignal)
     {
