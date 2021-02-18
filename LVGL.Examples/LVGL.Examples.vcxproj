@@ -6,6 +6,7 @@
     <MileProjectType>StaticLibrary</MileProjectType>
   </PropertyGroup>
   <Import Project="..\Mile.Project\Mile.Project.Cpp.props" />
+  <Import Project="..\Mile.Project\Mile.Project.Cpp.VC-LTL.props" />
   <ImportGroup Label="PropertySheets">
     <Import Project="..\LVGL.Core\LVGL.Core.props" />
   </ImportGroup>
@@ -18,11 +19,6 @@
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <PackageReference Include="VC-LTL">
-      <Version>4.1.1-Beta7</Version>
-    </PackageReference>
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lv_examples\lv_examples.h" />
     <ClInclude Include="lv_examples\lv_ex_conf_template.h" />
