@@ -67,8 +67,19 @@ void win_drv_flush(
     const lv_area_t* area,
     lv_color_t* color_p)
 {
+#if LV_COLOR_DEPTH == 32
     area;
-    color_p;
+    memcpy(g_PixelBuffer, color_p, g_PixelBufferSize);
+#else
+    for (int y = area->y1; y <= area->y2; ++y)
+    {
+        for (int x = area->x1; x <= area->x2; ++x)
+        {
+            g_PixelBuffer[y * disp_drv->hor_res + x] = lv_color_to32(*color_p);
+            color_p++;
+        }
+    }
+#endif
 
     HDC hWindowDC = ::GetDC(g_WindowHandle);
     if (hWindowDC)
@@ -362,10 +373,10 @@ bool win_hal_init(
     ::DeleteDC(g_BufferDCHandle);
     g_BufferDCHandle = hNewBufferDC;
 
-    lv_disp_buf_t* disp_buf = new lv_disp_buf_t();
+    static lv_disp_buf_t disp_buf;
     ::lv_disp_buf_init(
-        disp_buf,
-        g_PixelBuffer,
+        &disp_buf,
+        (lv_color_t*)malloc(hor_res * ver_res * sizeof(lv_color_t)),
         nullptr,
         hor_res * ver_res);
 
@@ -374,7 +385,7 @@ bool win_hal_init(
     disp_drv.hor_res = hor_res;
     disp_drv.ver_res = ver_res;
     disp_drv.flush_cb = ::win_drv_flush;
-    disp_drv.buffer = disp_buf;
+    disp_drv.buffer = &disp_buf;
     disp_drv.rounder_cb = win_drv_rounder_cb;
     lv_windows_disp = ::lv_disp_drv_register(&disp_drv);
 
