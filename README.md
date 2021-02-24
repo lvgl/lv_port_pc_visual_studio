@@ -23,7 +23,6 @@ This repo is designed for keeping the simulator behavior. If you wonder to adapt
 - [x] Support Per-monitor DPI Aware in the HAL level.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
 - [x] Provide the easy way to reference lvgl, lv_examples project for Visual Studio.
-- [x] Provide Windows GDI font engine support.
 
 ## How to Clone
 
