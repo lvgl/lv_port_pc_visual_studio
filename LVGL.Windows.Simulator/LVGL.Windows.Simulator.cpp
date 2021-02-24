@@ -691,9 +691,44 @@ int WINAPI wWinMain(
         return -1;
     }
 
-    ::lv_demo_widgets();
-    //::lv_demo_keypad_encoder();
-    //::lv_demo_benchmark();
+    /*
+     * Demos, benchmarks, and tests.
+     *
+     * Uncomment any one (and only one) of the functions below to run that
+     * item.
+     */
+
+    lv_demo_widgets();
+    //lv_demo_benchmark();
+    //lv_demo_keypad_encoder();
+    //lv_demo_printer();
+    //lv_demo_stress();
+    //lv_ex_get_started_1();
+    //lv_ex_get_started_2();
+    //lv_ex_get_started_3();
+
+    //lv_ex_style_1();
+    //lv_ex_style_2();
+    //lv_ex_style_3();
+    //lv_ex_style_4();
+    //lv_ex_style_5();
+    //lv_ex_style_6();
+    //lv_ex_style_7();
+    //lv_ex_style_8();
+    //lv_ex_style_9();
+    //lv_ex_style_10();
+    //lv_ex_style_11();
+
+    /*
+     * There are many examples of individual widgets found under the
+     * lv_examples/src/lv_ex_widgets directory.  Here are a few sample test
+     * functions.  Look in that directory to find all the rest.
+     */
+     //lv_ex_arc_1();
+     //lv_ex_cpicker_1();
+     //lv_ex_gauge_1();
+     //lv_ex_img_1();
+     //lv_ex_tileview_1();
 
     while (!g_WindowQuitSignal)
     {
