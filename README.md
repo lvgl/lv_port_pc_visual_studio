@@ -19,8 +19,7 @@ This repo is designed for keeping the simulator behavior. If you wonder to adapt
 - [x] Only depends on Win32 API, C Runtime and C++ STL.
 - [x] Native support for x86, x64, ARM and ARM64 Windows.
 - [x] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) toolchain to make the binary size as smaller as using MinGW.
-- [x] Support resizing the Window in the HAL level.
-- [x] Support Per-monitor DPI Aware in the HAL level.
+- [x] Support Per-monitor DPI Aware.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
 - [x] Provide the easy way to reference lvgl, lv_examples project for Visual Studio.
 
@@ -30,7 +29,7 @@ This repository contains other, necessary LVGL software repositories as [git sub
 
 ### Everything at Once
 
-This command will clone the lv_sim_visual_studio_sdl repository and all submodules in a single step.
+This command will clone the lv_sim_visual_studio repository and all submodules in a single step.
 
 ```
 git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio.git
@@ -48,7 +47,7 @@ git submodule update --init --recursive
 
 ### Keeping Your Clone Up-To-Date
 
-If you have cloned this repository and would like to pull in the latest changes, you will have to do this in two steps. The first step will pull in updates to the main repo, including updated _references_ to the submodules. The second step will update the code in the submodules to match those references. The two commands needed to accomplish this are shown below, run these commands from inside the main repository's directory (top level lv_sim_visual_studio_sdl directory works fine).
+If you have cloned this repository and would like to pull in the latest changes, you will have to do this in two steps. The first step will pull in updates to the main repo, including updated _references_ to the submodules. The second step will update the code in the submodules to match those references. The two commands needed to accomplish this are shown below, run these commands from inside the main repository's directory (top level lv_sim_visual_studio directory works fine).
 
 ```
 git pull

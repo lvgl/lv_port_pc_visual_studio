@@ -38,17 +38,18 @@
 #pragma warning(pop)
 #endif
 
+const DWORD g_WindowExStyle = WS_EX_CLIENTEDGE;
+const DWORD g_WindowStyle =
+    (WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME));
+
 static HINSTANCE g_InstanceHandle = nullptr;
-static int volatile g_WindowWidth = 0;
-static int volatile g_WindowHeight = 0;
 static HWND g_WindowHandle = nullptr;
-static int volatile g_WindowDPI = USER_DEFAULT_SCREEN_DPI;
 
 static HDC g_BufferDCHandle = nullptr;
 static UINT32* g_PixelBuffer = nullptr;
 static SIZE_T g_PixelBufferSize = 0;
 
-static lv_disp_t* lv_windows_disp;
+static lv_disp_t* lv_windows_disp = nullptr;
 
 static bool volatile g_MousePressed = false;
 static LPARAM volatile g_MouseValue = 0;
@@ -74,8 +75,8 @@ void win_drv_flush(
             hWindowDC,
             0,
             0,
-            g_WindowWidth,
-            g_WindowHeight,
+            disp_drv->hor_res,
+            disp_drv->ver_res,
             g_BufferDCHandle,
             0,
             0,
@@ -95,38 +96,6 @@ void win_drv_rounder_cb(
     area->x2 = disp_drv->hor_res - 1;
     area->y1 = 0;
     area->y2 = disp_drv->ver_res - 1;
-}
-
-void lv_create_display_driver(
-    lv_disp_drv_t* disp_drv,
-    int hor_res,
-    int ver_res)
-{
-    ::lv_disp_drv_init(disp_drv);
-
-    HDC hNewBufferDC = ::LvglCreateFrameBuffer(
-        g_WindowHandle,
-        hor_res,
-        ver_res,
-        &g_PixelBuffer,
-        &g_PixelBufferSize);
-
-    ::DeleteDC(g_BufferDCHandle);
-    g_BufferDCHandle = hNewBufferDC;
-
-    lv_disp_buf_t* disp_buf = new lv_disp_buf_t();
-    ::lv_disp_buf_init(
-        disp_buf,
-        g_PixelBuffer,
-        nullptr,
-        hor_res * ver_res);
-
-    disp_drv->hor_res = static_cast<lv_coord_t>(hor_res);
-    disp_drv->ver_res = static_cast<lv_coord_t>(ver_res);
-    disp_drv->flush_cb = ::win_drv_flush;
-    disp_drv->buffer = disp_buf;
-    disp_drv->dpi = g_WindowDPI;
-    disp_drv->rounder_cb = win_drv_rounder_cb;
 }
 
 bool win_drv_read(
@@ -262,47 +231,32 @@ LRESULT CALLBACK WndProc(
         g_MouseWheelValue = -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
         break;
     }
-    case WM_SIZE:
-    {
-        if (wParam != SIZE_MINIMIZED)
-        {
-            int CurrentWindowWidth = LOWORD(lParam);
-            int CurrentWindowHeight = HIWORD(lParam);
-            if (CurrentWindowWidth != g_WindowWidth ||
-                CurrentWindowHeight != g_WindowHeight)
-            {
-                g_WindowWidth = CurrentWindowWidth;
-                g_WindowHeight = CurrentWindowHeight;
-;
-                lv_disp_buf_t* old_disp_buf = lv_windows_disp->driver.buffer;
-
-                lv_disp_drv_t disp_drv;
-                ::lv_create_display_driver(&disp_drv, g_WindowWidth, g_WindowHeight);
-                ::lv_disp_drv_update(lv_windows_disp, &disp_drv);
-                delete old_disp_buf;
-            }
-        }
-        break;
-    }
-    case WM_ERASEBKGND:
-    {
-        ::lv_refr_now(lv_windows_disp);
-        return TRUE;
-    }
     case WM_DPICHANGED:
     {
-        g_WindowDPI = HIWORD(wParam);
+        LPRECT SuggestedRect = (LPRECT)lParam;
 
-        // Resize the window
-        auto lprcNewScale = reinterpret_cast<RECT*>(lParam);
-
-        ::SetWindowPos(
+        SetWindowPos(
             hWnd,
             nullptr,
-            lprcNewScale->left,
-            lprcNewScale->top,
-            lprcNewScale->right - lprcNewScale->left,
-            lprcNewScale->bottom - lprcNewScale->top,
+            SuggestedRect->left,
+            SuggestedRect->top,
+            SuggestedRect->right,
+            SuggestedRect->bottom,
+            SWP_NOZORDER | SWP_NOACTIVATE);
+
+        RECT ClientRect;
+        GetClientRect(hWnd, &ClientRect);
+
+        int WindowWidth = lv_windows_disp->driver.hor_res;
+        int WindowHeight = lv_windows_disp->driver.ver_res;
+
+        SetWindowPos(
+            hWnd,
+            nullptr,
+            SuggestedRect->left,
+            SuggestedRect->top,
+            SuggestedRect->right + (WindowWidth - 1 - ClientRect.right),
+            SuggestedRect->bottom + (WindowHeight - 1 - ClientRect.bottom),
             SWP_NOZORDER | SWP_NOACTIVATE);
 
         break;
@@ -339,7 +293,9 @@ static void win_msg_handler(lv_task_t* param)
 
 bool win_hal_init(
     _In_ HINSTANCE hInstance,
-    _In_ int nShowCmd)
+    _In_ int nShowCmd,
+    _In_ lv_coord_t hor_res,
+    _In_ lv_coord_t ver_res)
 {
     WNDCLASSEXW WindowClass;
 
@@ -364,15 +320,32 @@ bool win_hal_init(
 
     g_InstanceHandle = hInstance;
 
+    RECT NewWindowSize;
+
+    NewWindowSize.left = 0;
+    NewWindowSize.right = hor_res - 1;
+    NewWindowSize.top = 0;
+    NewWindowSize.bottom = ver_res - 1;
+
+    AdjustWindowRectEx(
+        &NewWindowSize,
+        g_WindowStyle,
+        FALSE,
+        g_WindowExStyle);
+    OffsetRect(
+        &NewWindowSize,
+        -NewWindowSize.left,
+        -NewWindowSize.top);
+
     g_WindowHandle = ::CreateWindowExW(
-        WS_EX_CLIENTEDGE,
+        g_WindowExStyle,
         WindowClass.lpszClassName,
         L"LVGL Simulator for Windows Desktop",
-        WS_OVERLAPPEDWINDOW,
+        g_WindowStyle,
         CW_USEDEFAULT,
         0,
-        CW_USEDEFAULT,
-        0,
+        NewWindowSize.right,
+        NewWindowSize.bottom,
         nullptr,
         nullptr,
         hInstance,
@@ -386,10 +359,31 @@ bool win_hal_init(
     ::lv_task_create(win_msg_handler, 0, LV_TASK_PRIO_HIGHEST, nullptr);
 
     ::LvglEnableChildWindowDpiMessage(g_WindowHandle);
-    g_WindowDPI = ::LvglGetDpiForWindow(g_WindowHandle);
+
+    HDC hNewBufferDC = ::LvglCreateFrameBuffer(
+        g_WindowHandle,
+        hor_res,
+        ver_res,
+        &g_PixelBuffer,
+        &g_PixelBufferSize);
+
+    ::DeleteDC(g_BufferDCHandle);
+    g_BufferDCHandle = hNewBufferDC;
+
+    lv_disp_buf_t* disp_buf = new lv_disp_buf_t();
+    ::lv_disp_buf_init(
+        disp_buf,
+        g_PixelBuffer,
+        nullptr,
+        hor_res * ver_res);
 
     lv_disp_drv_t disp_drv;
-    ::lv_create_display_driver(&disp_drv, g_WindowWidth, g_WindowHeight);
+    ::lv_disp_drv_init(&disp_drv);
+    disp_drv.hor_res = hor_res;
+    disp_drv.ver_res = ver_res;
+    disp_drv.flush_cb = ::win_drv_flush;
+    disp_drv.buffer = disp_buf;
+    disp_drv.rounder_cb = win_drv_rounder_cb;
     lv_windows_disp = ::lv_disp_drv_register(&disp_drv);
 
     lv_indev_drv_t indev_drv;
@@ -427,9 +421,7 @@ int WINAPI wWinMain(
 
     ::lv_init();
 
-    nShowCmd = SW_MAXIMIZE;
-
-    if (!win_hal_init(hInstance, nShowCmd))
+    if (!win_hal_init(hInstance, nShowCmd, LV_HOR_RES_MAX, LV_VER_RES_MAX))
     {
         return -1;
     }
