@@ -14,6 +14,8 @@ Instructions for cloning, building and running the application are found below.
 
 ## Supported Features
 
+This repo is designed for keeping the simulator behavior. If you wonder to adapt your LVGL application to Windows, please visit [lvgl/lv_port_windows](https://github.com/lvgl/lv_port_windows).
+
 - [x] Only depends on Win32 API, C Runtime and C++ STL.
 - [x] Native support for x86, x64, ARM and ARM64 Windows.
 - [x] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) toolchain to make the binary size as smaller as using MinGW.
