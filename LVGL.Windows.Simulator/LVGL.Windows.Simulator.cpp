@@ -50,11 +50,14 @@ static SIZE_T g_PixelBufferSize = 0;
 
 static lv_disp_t* lv_windows_disp;
 
-static bool volatile g_MousePressed;
+static bool volatile g_MousePressed = false;
 static LPARAM volatile g_MouseValue = 0;
 
 static bool volatile g_MouseWheelPressed = false;
 static int16_t volatile g_MouseWheelValue = 0;
+
+static bool volatile g_KeyboardPressed = false;
+static WPARAM volatile g_KeyboardValue = 0;
 
 void win_drv_flush(
     lv_disp_drv_t* disp_drv,
@@ -139,75 +142,72 @@ bool win_drv_read(
     return false;
 }
 
-std::queue<std::pair<std::uint32_t, ::lv_indev_state_t>> key_queue;
-std::queue<std::pair<std::uint32_t, ::lv_indev_state_t>> char_queue;
-std::mutex kb_mutex;
-
 bool win_kb_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
 {
     (void)indev_drv;      /*Unused*/
 
-    std::lock_guard guard(kb_mutex);
+    data->state = static_cast<lv_indev_state_t>(
+        g_KeyboardPressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
 
-    if (!char_queue.empty())
+    WPARAM KeyboardValue = g_KeyboardValue;
+
+    switch (KeyboardValue)
     {
-        auto current = char_queue.front();
-
-        data->key = current.first;
-        data->state = current.second;
-
-        char_queue.pop();
-    }
-    else if (!key_queue.empty())
+    case VK_UP:
+        data->key = LV_KEY_UP;
+        break;
+    case VK_DOWN:
+        data->key = LV_KEY_DOWN;
+        break;
+    case VK_LEFT:
+        data->key = LV_KEY_LEFT;
+        break;
+    case VK_RIGHT:
+        data->key = LV_KEY_RIGHT;
+        break;
+    case VK_ESCAPE:
+        data->key = LV_KEY_ESC;
+        break;
+    case VK_DELETE:
+        data->key = LV_KEY_DEL;
+        break;
+    case VK_BACK:
+        data->key = LV_KEY_BACKSPACE;
+        break;
+    case VK_RETURN:
+        data->key = LV_KEY_ENTER;
+        break;
+    case VK_NEXT:
+        data->key = LV_KEY_NEXT;
+        break;
+    case VK_PRIOR:
+        data->key = LV_KEY_PREV;
+        break;
+    case VK_HOME:
+        data->key = LV_KEY_HOME;
+        break;
+    case VK_END:
+        data->key = LV_KEY_END;
+        break;
+    default:
     {
-        auto current = key_queue.front();
-
-        switch (current.first)
+        int ch = ::MapVirtualKeyW(KeyboardValue, MAPVK_VK_TO_CHAR);
+        if (ch)
         {
-        case VK_UP:
-            data->key = LV_KEY_UP;
-            break;
-        case VK_DOWN:
-            data->key = LV_KEY_DOWN;
-            break;
-        case VK_LEFT:
-            data->key = LV_KEY_LEFT;
-            break;
-        case VK_RIGHT:
-            data->key = LV_KEY_RIGHT;
-            break;
-        case VK_ESCAPE:
-            data->key = LV_KEY_ESC;
-            break;
-        case VK_DELETE:
-            data->key = LV_KEY_DEL;
-            break;
-        case VK_BACK:
-            data->key = LV_KEY_BACKSPACE;
-            break;
-        case VK_RETURN:
-            data->key = LV_KEY_ENTER;
-            break;
-        case VK_NEXT:
-            data->key = LV_KEY_NEXT;
-            break;
-        case VK_PRIOR:
-            data->key = LV_KEY_PREV;
-            break;
-        case VK_HOME:
-            data->key = LV_KEY_HOME;
-            break;
-        case VK_END:
-            data->key = LV_KEY_END;
-            break;
-        default:
-            data->key = 0;
-            break;
+            if ((ch >= 'A' && ch <= 'Z') &&
+                !(
+                    (::GetKeyState(VK_SHIFT) & 0x8000) ^
+                    (::GetKeyState(VK_CAPITAL) & 0x0001)))
+            {
+                data->key = ch + 0x20;
+            }
+            else
+            {
+                data->key = ch;
+            }
         }
-        
-        data->state = current.second;
-
-        key_queue.pop();
+        break;
+    }
     }
 
     return false;
@@ -253,26 +253,8 @@ LRESULT CALLBACK WndProc(
     case WM_KEYDOWN:
     case WM_KEYUP:
     {
-        std::lock_guard guard(kb_mutex);
-
-        key_queue.push(
-            std::make_pair(
-                static_cast<std::uint32_t>(wParam),
-                static_cast<lv_indev_state_t>(
-                    (uMsg == WM_KEYUP)
-                    ? LV_INDEV_STATE_REL
-                    : LV_INDEV_STATE_PR)));
-
-        break;
-    }
-    case WM_CHAR:
-    {
-        std::lock_guard guard(kb_mutex);
-
-        char_queue.push(std::make_pair(
-            static_cast<std::uint32_t>(wParam),
-            static_cast<lv_indev_state_t>(LV_INDEV_STATE_PR)));
-
+        g_KeyboardPressed = (uMsg == WM_KEYDOWN);
+        g_KeyboardValue = wParam;
         break;
     }
     case WM_MOUSEWHEEL:
