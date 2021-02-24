@@ -34,21 +34,6 @@ EXTERN_C HDC WINAPI LvglCreateFrameBuffer(
     _Out_ SIZE_T* PixelBufferSize);
 
 /**
- * @brief Retrieves the number of milliseconds that have elapsed since the
- *        system was started.
- * @return The number of milliseconds.
-*/
-EXTERN_C UINT64 WINAPI LvglGetTickCount();
-
-/**
- * @brief Returns the dots per inch (dpi) value for the associated window.
- * @param WindowHandle The window you want to get information about.
- * @return The DPI for the window.
-*/
-EXTERN_C UINT WINAPI LvglGetDpiForWindow(
-    _In_ HWND WindowHandle);
-
-/**
  * @brief Enables WM_DPICHANGED message for child window for the associated
  *        window.
  * @param WindowHandle The window you want to enable WM_DPICHANGED message for
