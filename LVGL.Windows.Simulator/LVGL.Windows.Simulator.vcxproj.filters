@@ -5,21 +5,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
-    <ClInclude Include="LVGL.Windows.h">
-      <Filter>LVGL.Windows</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Windows.Simulator.cpp" />
-    <ClCompile Include="LVGL.Windows.cpp">
-      <Filter>LVGL.Windows</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="LVGL.Windows">
-      <UniqueIdentifier>{ddee68e6-b582-4a67-a5d2-cd2d172e40a0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LVGL.Windows.Simulator.rc" />

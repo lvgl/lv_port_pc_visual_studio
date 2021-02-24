@@ -8,18 +8,12 @@
  * DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
  */
 
-#include "LVGL.Windows.h"
-
 #include <Windows.h>
 #include <windowsx.h>
 
-#include <cstdint>
-#include <cstring>
-#include <map>
-#include <mutex>
-#include <queue>
-#include <utility>
-#include <vector>
+#include <VersionHelpers.h>
+
+#include <stdint.h>
 
 #include "resource.h"
 
@@ -44,14 +38,14 @@ const DWORD g_WindowExStyle = WS_EX_CLIENTEDGE;
 const DWORD g_WindowStyle =
     (WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME));
 
-static HINSTANCE g_InstanceHandle = nullptr;
-static HWND g_WindowHandle = nullptr;
+static HINSTANCE g_InstanceHandle = NULL;
+static HWND g_WindowHandle = NULL;
 
-static HDC g_BufferDCHandle = nullptr;
-static UINT32* g_PixelBuffer = nullptr;
+static HDC g_BufferDCHandle = NULL;
+static UINT32* g_PixelBuffer = NULL;
 static SIZE_T g_PixelBufferSize = 0;
 
-static lv_disp_t* lv_windows_disp = nullptr;
+static lv_disp_t* lv_windows_disp = NULL;
 
 static bool volatile g_MousePressed = false;
 static LPARAM volatile g_MouseValue = 0;
@@ -61,6 +55,123 @@ static int16_t volatile g_MouseWheelValue = 0;
 
 static bool volatile g_KeyboardPressed = false;
 static WPARAM volatile g_KeyboardValue = 0;
+
+/**
+ * @brief Creates a B8G8R8A8 frame buffer.
+ * @param WindowHandle A handle to the window for the creation of the frame
+ *                     buffer. If this value is NULL, the entire screen will be
+ *                     referenced.
+ * @param Width The width of the frame buffer.
+ * @param Height The height of the frame buffer.
+ * @param PixelBuffer The raw pixel buffer of the frame buffer you created.
+ * @param PixelBufferSize The size of the frame buffer you created.
+ * @return If the function succeeds, the return value is a handle to the device
+ *         context (DC) for the frame buffer. If the function fails, the return
+ *         value is NULL, and PixelBuffer parameter is NULL.
+*/
+HDC WINAPI LvglCreateFrameBuffer(
+    _In_opt_ HWND WindowHandle,
+    _In_ LONG Width,
+    _In_ LONG Height,
+    _Out_ UINT32** PixelBuffer,
+    _Out_ SIZE_T* PixelBufferSize)
+{
+    HDC hFrameBufferDC = NULL;
+
+    if (PixelBuffer && PixelBufferSize)
+    {
+        HDC hWindowDC = GetDC(WindowHandle);
+        if (hWindowDC)
+        {
+            hFrameBufferDC = CreateCompatibleDC(hWindowDC);
+            ReleaseDC(WindowHandle, hWindowDC);
+        }
+
+        if (hFrameBufferDC)
+        {
+            BITMAPINFO BitmapInfo = { 0 };
+            BitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+            BitmapInfo.bmiHeader.biWidth = Width;
+            BitmapInfo.bmiHeader.biHeight = -Height;
+            BitmapInfo.bmiHeader.biPlanes = 1;
+            BitmapInfo.bmiHeader.biBitCount = 32;
+            BitmapInfo.bmiHeader.biCompression = BI_RGB;
+
+            HBITMAP hBitmap = CreateDIBSection(
+                hFrameBufferDC,
+                &BitmapInfo,
+                DIB_RGB_COLORS,
+                reinterpret_cast<void**>(PixelBuffer),
+                NULL,
+                0);
+            if (hBitmap)
+            {
+                *PixelBufferSize = Width * Height * sizeof(UINT32);
+                DeleteObject(SelectObject(hFrameBufferDC, hBitmap));
+                DeleteObject(hBitmap);
+            }
+            else
+            {
+                DeleteDC(hFrameBufferDC);
+                hFrameBufferDC = NULL;
+            }
+        }
+    }
+
+    return hFrameBufferDC;
+}
+
+/**
+ * @brief Enables WM_DPICHANGED message for child window for the associated
+ *        window.
+ * @param WindowHandle The window you want to enable WM_DPICHANGED message for
+ *                     child window.
+ * @return If the function succeeds, the return value is non-zero. If the
+ *         function fails, the return value is zero.
+ * @remarks You need to use this function in Windows 10 Threshold 1 or Windows
+ *          10 Threshold 2.
+*/
+BOOL WINAPI LvglEnableChildWindowDpiMessage(
+    _In_ HWND WindowHandle)
+{
+    // This hack is only for Windows 10 only.
+    if (!IsWindowsVersionOrGreater(10, 0, 0))
+    {
+        return FALSE;
+    }
+
+    // We don't need this hack if the Per Monitor Aware V2 is existed.
+    OSVERSIONINFOEXW OSVersionInfoEx = { 0 };
+    OSVersionInfoEx.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
+    OSVersionInfoEx.dwBuildNumber = 14393;
+    if (VerifyVersionInfoW(
+        &OSVersionInfoEx,
+        VER_BUILDNUMBER,
+        VerSetConditionMask(0, VER_BUILDNUMBER, VER_GREATER_EQUAL)))
+    {
+        return FALSE;
+    }
+
+    HMODULE ModuleHandle = GetModuleHandleW(L"user32.dll");
+    if (!ModuleHandle)
+    {
+        return FALSE;
+    }
+
+    BOOL WINAPI EnableChildWindowDpiMessage(
+        _In_ HWND hWnd,
+        _In_ BOOL bEnable);
+
+    decltype(EnableChildWindowDpiMessage)* pEnableChildWindowDpiMessage =
+        reinterpret_cast<decltype(EnableChildWindowDpiMessage)*>(
+            GetProcAddress(ModuleHandle, "EnableChildWindowDpiMessage"));
+    if (!pEnableChildWindowDpiMessage)
+    {
+        return FALSE;
+    }
+
+    return pEnableChildWindowDpiMessage(WindowHandle, TRUE);
+}
 
 void win_drv_flush(
     lv_disp_drv_t* disp_drv,
@@ -81,10 +192,10 @@ void win_drv_flush(
     }
 #endif
 
-    HDC hWindowDC = ::GetDC(g_WindowHandle);
+    HDC hWindowDC = GetDC(g_WindowHandle);
     if (hWindowDC)
     {
-        ::BitBlt(
+        BitBlt(
             hWindowDC,
             0,
             0,
@@ -95,10 +206,10 @@ void win_drv_flush(
             0,
             SRCCOPY);
 
-        ::ReleaseDC(g_WindowHandle, hWindowDC);
+        ReleaseDC(g_WindowHandle, hWindowDC);
     }
 
-    ::lv_disp_flush_ready(disp_drv);
+    lv_disp_flush_ready(disp_drv);
 }
 
 void win_drv_rounder_cb(
@@ -240,7 +351,7 @@ LRESULT CALLBACK WndProc(
 
         SetWindowPos(
             hWnd,
-            nullptr,
+            NULL,
             SuggestedRect->left,
             SuggestedRect->top,
             SuggestedRect->right,
@@ -255,7 +366,7 @@ LRESULT CALLBACK WndProc(
 
         SetWindowPos(
             hWnd,
-            nullptr,
+            NULL,
             SuggestedRect->left,
             SuggestedRect->top,
             SuggestedRect->right + (WindowWidth - 1 - ClientRect.right),
@@ -265,10 +376,10 @@ LRESULT CALLBACK WndProc(
         break;
     }
     case WM_DESTROY:
-        ::PostQuitMessage(0);
+        PostQuitMessage(0);
         break;
     default:
-        return ::DefWindowProcW(hWnd, uMsg, wParam, lParam);
+        return DefWindowProcW(hWnd, uMsg, wParam, lParam);
     }
 
     return 0;
@@ -281,11 +392,11 @@ static void win_msg_handler(lv_task_t* param)
     param;
 
     MSG Message;
-    BOOL Result = ::PeekMessageW(&Message, nullptr, 0, 0, TRUE);
+    BOOL Result = PeekMessageW(&Message, NULL, 0, 0, TRUE);
     if (Result != 0 && Result != -1)
     {
-        ::TranslateMessage(&Message);
-        ::DispatchMessageW(&Message);
+        TranslateMessage(&Message);
+        DispatchMessageW(&Message);
 
         if (Message.message == WM_QUIT)
         {
@@ -305,18 +416,18 @@ bool win_hal_init(
     WindowClass.cbSize = sizeof(WNDCLASSEX);
 
     WindowClass.style = 0;
-    WindowClass.lpfnWndProc = ::WndProc;
+    WindowClass.lpfnWndProc = WndProc;
     WindowClass.cbClsExtra = 0;
     WindowClass.cbWndExtra = 0;
     WindowClass.hInstance = hInstance;
     WindowClass.hIcon = LoadIconW(hInstance, MAKEINTRESOURCE(IDI_LVGL));
-    WindowClass.hCursor = ::LoadCursorW(nullptr, IDC_ARROW);
+    WindowClass.hCursor = LoadCursorW(NULL, IDC_ARROW);
     WindowClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
-    WindowClass.lpszMenuName = nullptr;
+    WindowClass.lpszMenuName = NULL;
     WindowClass.lpszClassName = L"lv_sim_visual_studio";
     WindowClass.hIconSm = LoadIconW(hInstance, MAKEINTRESOURCE(IDI_LVGL));
 
-    if (!::RegisterClassExW(&WindowClass))
+    if (!RegisterClassExW(&WindowClass))
     {
         return false;
     }
@@ -340,7 +451,7 @@ bool win_hal_init(
         -NewWindowSize.left,
         -NewWindowSize.top);
 
-    g_WindowHandle = ::CreateWindowExW(
+    g_WindowHandle = CreateWindowExW(
         g_WindowExStyle,
         WindowClass.lpszClassName,
         L"LVGL Simulator for Windows Desktop",
@@ -349,66 +460,66 @@ bool win_hal_init(
         0,
         NewWindowSize.right,
         NewWindowSize.bottom,
-        nullptr,
-        nullptr,
+        NULL,
+        NULL,
         hInstance,
-        nullptr);
+        NULL);
 
     if (!g_WindowHandle)
     {
         return false;
     }
 
-    ::lv_task_create(win_msg_handler, 0, LV_TASK_PRIO_HIGHEST, nullptr);
+    lv_task_create(win_msg_handler, 0, LV_TASK_PRIO_HIGHEST, NULL);
 
-    ::LvglEnableChildWindowDpiMessage(g_WindowHandle);
+    LvglEnableChildWindowDpiMessage(g_WindowHandle);
 
-    HDC hNewBufferDC = ::LvglCreateFrameBuffer(
+    HDC hNewBufferDC = LvglCreateFrameBuffer(
         g_WindowHandle,
         hor_res,
         ver_res,
         &g_PixelBuffer,
         &g_PixelBufferSize);
 
-    ::DeleteDC(g_BufferDCHandle);
+    DeleteDC(g_BufferDCHandle);
     g_BufferDCHandle = hNewBufferDC;
 
     static lv_disp_buf_t disp_buf;
-    ::lv_disp_buf_init(
+    lv_disp_buf_init(
         &disp_buf,
         (lv_color_t*)malloc(hor_res * ver_res * sizeof(lv_color_t)),
-        nullptr,
+        NULL,
         hor_res * ver_res);
 
     lv_disp_drv_t disp_drv;
-    ::lv_disp_drv_init(&disp_drv);
+    lv_disp_drv_init(&disp_drv);
     disp_drv.hor_res = hor_res;
     disp_drv.ver_res = ver_res;
-    disp_drv.flush_cb = ::win_drv_flush;
+    disp_drv.flush_cb = win_drv_flush;
     disp_drv.buffer = &disp_buf;
     disp_drv.rounder_cb = win_drv_rounder_cb;
-    lv_windows_disp = ::lv_disp_drv_register(&disp_drv);
+    lv_windows_disp = lv_disp_drv_register(&disp_drv);
 
     lv_indev_drv_t indev_drv;
-    ::lv_indev_drv_init(&indev_drv);
+    lv_indev_drv_init(&indev_drv);
     indev_drv.type = LV_INDEV_TYPE_POINTER;
-    indev_drv.read_cb = ::win_drv_read;
-    ::lv_indev_drv_register(&indev_drv);
+    indev_drv.read_cb = win_drv_read;
+    lv_indev_drv_register(&indev_drv);
 
     lv_indev_drv_t kb_drv;
     lv_indev_drv_init(&kb_drv);
     kb_drv.type = LV_INDEV_TYPE_KEYPAD;
     kb_drv.read_cb = win_kb_read;
-    ::lv_indev_drv_register(&kb_drv);
+    lv_indev_drv_register(&kb_drv);
 
     lv_indev_drv_t enc_drv;
     lv_indev_drv_init(&enc_drv);
     enc_drv.type = LV_INDEV_TYPE_ENCODER;
     enc_drv.read_cb = win_mousewheel_read;
-    ::lv_indev_drv_register(&enc_drv);
+    lv_indev_drv_register(&enc_drv);
 
-    ::ShowWindow(g_WindowHandle, nShowCmd);
-    ::UpdateWindow(g_WindowHandle);
+    ShowWindow(g_WindowHandle, nShowCmd);
+    UpdateWindow(g_WindowHandle);
    
     return true;
 }
@@ -422,7 +533,7 @@ int WINAPI wWinMain(
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    ::lv_init();
+    lv_init();
 
     if (!win_hal_init(hInstance, nShowCmd, LV_HOR_RES_MAX, LV_VER_RES_MAX))
     {
@@ -470,8 +581,8 @@ int WINAPI wWinMain(
 
     while (!g_WindowQuitSignal)
     {
-        ::lv_task_handler();
-        ::Sleep(10);
+        lv_task_handler();
+        Sleep(10);
     }
 
     return 0;
