@@ -162,7 +162,7 @@ bool win_kb_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
         break;
     default:
     {
-        int ch = ::MapVirtualKeyW(KeyboardValue, MAPVK_VK_TO_CHAR);
+        int ch = ::MapVirtualKeyW((UINT)KeyboardValue, MAPVK_VK_TO_CHAR);
         if (ch)
         {
             if ((ch >= 'A' && ch <= 'Z') &&
