@@ -6,9 +6,11 @@
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Windows.Simulator.cpp" />
+    <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LVGL.Windows.Simulator.rc" />
