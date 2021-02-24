@@ -21,6 +21,8 @@
 #include <utility>
 #include <vector>
 
+#include "resource.h"
+
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
 #pragma warning(push)
@@ -306,12 +308,12 @@ bool win_hal_init(
     WindowClass.cbClsExtra = 0;
     WindowClass.cbWndExtra = 0;
     WindowClass.hInstance = hInstance;
-    WindowClass.hIcon = nullptr;
+    WindowClass.hIcon = LoadIconW(hInstance, MAKEINTRESOURCE(IDI_LVGL));
     WindowClass.hCursor = ::LoadCursorW(nullptr, IDC_ARROW);
     WindowClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     WindowClass.lpszMenuName = nullptr;
     WindowClass.lpszClassName = L"lv_sim_visual_studio";
-    WindowClass.hIconSm = nullptr;
+    WindowClass.hIconSm = LoadIconW(hInstance, MAKEINTRESOURCE(IDI_LVGL));
 
     if (!::RegisterClassExW(&WindowClass))
     {
