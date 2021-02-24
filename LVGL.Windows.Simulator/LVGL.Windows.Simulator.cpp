@@ -177,7 +177,7 @@ bool win_kb_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
             KeyboardValue += 0x20;
         }
 
-        data->key = KeyboardValue;
+        data->key = (uint32_t)KeyboardValue;
 
         break;
     }
