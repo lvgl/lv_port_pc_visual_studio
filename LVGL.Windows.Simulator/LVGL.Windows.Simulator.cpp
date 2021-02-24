@@ -161,24 +161,14 @@ bool win_kb_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
         data->key = LV_KEY_END;
         break;
     default:
-    {
-        int ch = ::MapVirtualKeyW((UINT)KeyboardValue, MAPVK_VK_TO_CHAR);
-        if (ch)
+        if (KeyboardValue >= 'A' && KeyboardValue <= 'Z')
         {
-            if ((ch >= 'A' && ch <= 'Z') &&
-                !(
-                    (::GetKeyState(VK_SHIFT) & 0x8000) ^
-                    (::GetKeyState(VK_CAPITAL) & 0x0001)))
-            {
-                data->key = ch + 0x20;
-            }
-            else
-            {
-                data->key = ch;
-            }
+            KeyboardValue += 0x20;
         }
+
+        data->key = KeyboardValue;
+
         break;
-    }
     }
 
     return false;
