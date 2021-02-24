@@ -21,8 +21,22 @@
 #include <utility>
 #include <vector>
 
+#if _MSC_VER >= 1200
+ // Disable compilation warnings.
+#pragma warning(push)
+// nonstandard extension used : bit field types other than int
+#pragma warning(disable:4214)
+// 'conversion' conversion from 'type1' to 'type2', possible loss of data
+#pragma warning(disable:4244)
+#endif
+
 #include "lvgl/lvgl.h"
 #include "lv_examples/lv_examples.h"
+
+#if _MSC_VER >= 1200
+// Restore compilation warnings.
+#pragma warning(pop)
+#endif
 
 typedef struct lv_font_fmt_win_gdi_dsc_struct
 {
@@ -95,6 +109,8 @@ bool win_gdi_get_glyph_dsc(
     uint32_t unicode_letter,
     uint32_t unicode_letter_next)
 {
+    unicode_letter_next;
+
     lv_font_fmt_win_gdi_dsc_t* dsc =
         reinterpret_cast<lv_font_fmt_win_gdi_dsc_t*>(font->dsc);
 
@@ -114,7 +130,8 @@ bool win_gdi_get_glyph_dsc(
 
     GLYPHMETRICS& GlyphMetrics = iterator->second.first;
 
-    std::uint16_t NeededWidth = GlyphMetrics.gmBlackBoxX;
+    std::uint16_t NeededWidth = static_cast<std::uint16_t>(
+        GlyphMetrics.gmBlackBoxX);
     if (NeededWidth & 3)
     {
         NeededWidth = NeededWidth - (NeededWidth & 3) + 4;
@@ -122,10 +139,13 @@ bool win_gdi_get_glyph_dsc(
 
     dsc_out->adv_w = GlyphMetrics.gmCellIncX;
     dsc_out->box_w = NeededWidth;
-    dsc_out->box_h = GlyphMetrics.gmBlackBoxY;
-    dsc_out->ofs_x = GlyphMetrics.gmptGlyphOrigin.x;
-    dsc_out->ofs_y = GlyphMetrics.gmptGlyphOrigin.y
-        - (dsc->TextMetrics.tmDescent + GlyphMetrics.gmBlackBoxY);
+    dsc_out->box_h = static_cast<std::uint16_t>(
+        GlyphMetrics.gmBlackBoxY);
+    dsc_out->ofs_x = static_cast<std::uint16_t>(
+        GlyphMetrics.gmptGlyphOrigin.x);
+    dsc_out->ofs_y = static_cast<std::uint16_t>(
+        GlyphMetrics.gmptGlyphOrigin.y
+        - (dsc->TextMetrics.tmDescent + GlyphMetrics.gmBlackBoxY));
     dsc_out->bpp = 8;
 
     return true;
@@ -213,8 +233,10 @@ lv_font_t* lv_win_gdi_create_font(
     {
         font->get_glyph_dsc = ::win_gdi_get_glyph_dsc;
         font->get_glyph_bitmap = ::win_gdi_get_glyph_bitmap;
-        font->line_height = dsc->TextMetrics.tmHeight;
-        font->base_line = dsc->TextMetrics.tmDescent;
+        font->line_height = static_cast<lv_coord_t>(
+            dsc->TextMetrics.tmHeight);
+        font->base_line = static_cast<lv_coord_t>(
+            dsc->TextMetrics.tmDescent);
         font->subpx = LV_FONT_SUBPX_NONE;
         font->underline_position = 0;
         font->underline_thickness = 0;
@@ -247,6 +269,9 @@ void win_drv_flush(
     const lv_area_t* area,
     lv_color_t* color_p)
 {
+    area;
+    color_p;
+
     HDC hWindowDC = ::GetDC(g_WindowHandle);
     if (hWindowDC)
     {
@@ -301,8 +326,8 @@ void lv_create_display_driver(
         nullptr,
         hor_res * ver_res);
 
-    disp_drv->hor_res = hor_res;
-    disp_drv->ver_res = ver_res;
+    disp_drv->hor_res = static_cast<lv_coord_t>(hor_res);
+    disp_drv->ver_res = static_cast<lv_coord_t>(ver_res);
     disp_drv->flush_cb = ::win_drv_flush;
     disp_drv->buffer = disp_buf;
     disp_drv->dpi = g_WindowDPI;
@@ -313,7 +338,10 @@ bool win_drv_read(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data)
 {
-    data->state = g_MousePressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+    indev_drv;
+
+    data->state = static_cast<lv_indev_state_t>(
+        g_MousePressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
     data->point.x = GET_X_LPARAM(g_MouseValue);
     data->point.y = GET_Y_LPARAM(g_MouseValue);
     return false;
@@ -397,7 +425,8 @@ bool win_mousewheel_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
 {
     (void)indev_drv;      /*Unused*/
 
-    data->state = g_MouseWheelPressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+    data->state = static_cast<lv_indev_state_t>(
+        g_MouseWheelPressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
     data->enc_diff = g_MouseWheelValue;
     g_MouseWheelValue = 0;
 
@@ -436,8 +465,11 @@ LRESULT CALLBACK WndProc(
 
         key_queue.push(
             std::make_pair(
-                wParam,
-                (uMsg == WM_KEYUP) ? LV_INDEV_STATE_REL : LV_INDEV_STATE_PR));
+                static_cast<std::uint32_t>(wParam),
+                static_cast<lv_indev_state_t>(
+                    (uMsg == WM_KEYUP)
+                    ? LV_INDEV_STATE_REL
+                    : LV_INDEV_STATE_PR)));
 
         break;
     }
@@ -445,7 +477,9 @@ LRESULT CALLBACK WndProc(
     {
         std::lock_guard guard(kb_mutex);
 
-        char_queue.push(std::make_pair(wParam, LV_INDEV_STATE_PR));
+        char_queue.push(std::make_pair(
+            static_cast<std::uint32_t>(wParam),
+            static_cast<lv_indev_state_t>(LV_INDEV_STATE_PR)));
 
         break;
     }
@@ -546,7 +580,7 @@ bool win_hal_init(
     WindowClass.hCursor = ::LoadCursorW(nullptr, IDC_ARROW);
     WindowClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     WindowClass.lpszMenuName = nullptr;
-    WindowClass.lpszClassName = L"lv_port_windows";
+    WindowClass.lpszClassName = L"lv_sim_visual_studio";
     WindowClass.hIconSm = nullptr;
 
     if (!::RegisterClassExW(&WindowClass))
@@ -559,7 +593,7 @@ bool win_hal_init(
     g_WindowHandle = ::CreateWindowExW(
         WS_EX_CLIENTEDGE,
         WindowClass.lpszClassName,
-        L"LVGL ported to Windows Desktop",
+        L"LVGL Simulator for Windows Desktop",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         0,
@@ -649,6 +683,8 @@ int WINAPI wWinMain(
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     ::lv_init();
+
+    nShowCmd = SW_MAXIMIZE;
 
     if (!win_hal_init(hInstance, nShowCmd))
     {

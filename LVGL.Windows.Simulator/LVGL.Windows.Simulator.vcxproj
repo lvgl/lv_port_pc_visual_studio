@@ -4,25 +4,22 @@
     <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>WindowsApplication</MileProjectType>
-    <MileProjectManifestFile>LVGL.Windows.Desktop.manifest</MileProjectManifestFile>
+    <MileProjectManifestFile>LVGL.Windows.Simulator.manifest</MileProjectManifestFile>
   </PropertyGroup>
   <Import Project="..\Mile.Project\Mile.Project.Cpp.props" />
   <Import Project="..\Mile.Project\Mile.Project.Cpp.VC-LTL.props" />
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\LVGL.Core\LVGL.Core.props" />
-    <Import Project="..\LVGL.Examples\LVGL.Examples.props" />
+    <Import Project="..\LVGL.Windows\LVGL.Windows.props" />
   </ImportGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Manifest Include="LVGL.Windows.Desktop.manifest" />
+    <Manifest Include="LVGL.Windows.Simulator.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LVGL.Windows.h" />
@@ -30,7 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Windows.cpp" />
-    <ClCompile Include="LVGL.Windows.Desktop.cpp" />
+    <ClCompile Include="LVGL.Windows.Simulator.cpp" />
   </ItemGroup>
   <Import Project="..\Mile.Project\Mile.Project.Cpp.targets" />
 </Project>
