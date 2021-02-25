@@ -31,23 +31,16 @@
 
 #include "win32drv.h"
 
-int WINAPI wWinMain(
-    _In_ HINSTANCE hInstance,
-    _In_opt_ HINSTANCE hPrevInstance,
-    _In_ LPWSTR lpCmdLine,
-    _In_ int nShowCmd)
+int main()
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
-
     lv_init();
 
     if (!lv_win32_init(
-        hInstance,
-        nShowCmd,
+        GetModuleHandleW(NULL),
+        SW_SHOW,
         LV_HOR_RES_MAX,
         LV_VER_RES_MAX,
-        LoadIconW(hInstance, MAKEINTRESOURCE(IDI_LVGL))))
+        LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
     {
         return -1;
     }
