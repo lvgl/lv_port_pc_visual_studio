@@ -8,6 +8,9 @@
   </PropertyGroup>
   <Import Project="Mile.Project\Mile.Project.Cpp.props" />
   <Import Project="Mile.Project\Mile.Project.Cpp.VC-LTL.props" />
+  <PropertyGroup>
+    <IncludePath>$(MSBuildThisFileDirectory);$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -228,6 +231,9 @@
     <ClCompile Include="lvgl\src\lv_widgets\lv_win.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lv_drivers\lv_drv_conf_template.h" />
+    <ClInclude Include="lv_drivers\win32drv\win32drv.h" />
+    <ClInclude Include="lv_drv_conf.h" />
     <ClInclude Include="lv_examples\lv_examples.h" />
     <ClInclude Include="lv_examples\lv_ex_conf_template.h" />
     <ClInclude Include="lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.h" />
@@ -249,6 +255,7 @@
     <ClInclude Include="lv_ex_conf.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="lv_drivers\win32drv\win32drv.c" />
     <ClCompile Include="lv_examples\src\assets\img_cogwheel_alpha16.c" />
     <ClCompile Include="lv_examples\src\assets\img_cogwheel_argb.c" />
     <ClCompile Include="lv_examples\src\assets\img_cogwheel_chroma_keyed.c" />
@@ -387,11 +394,9 @@
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Simulator.cpp" />
-    <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LVGL.Simulator.rc" />

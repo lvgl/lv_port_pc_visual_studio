@@ -287,6 +287,13 @@
       <Filter>lvgl\src</Filter>
     </ClInclude>
     <ClInclude Include="lv_conf.h" />
+    <ClInclude Include="lv_drivers\lv_drv_conf_template.h">
+      <Filter>lv_drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_drivers\win32drv\win32drv.h">
+      <Filter>lv_drivers\win32drv</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_drv_conf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lvgl\src\lv_core\lv_disp.c">
@@ -622,6 +629,9 @@
     <ClCompile Include="lvgl\src\lv_widgets\lv_win.c">
       <Filter>lvgl\src\lv_widgets</Filter>
     </ClCompile>
+    <ClCompile Include="lv_drivers\win32drv\win32drv.c">
+      <Filter>lv_drivers\win32drv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lvgl">
@@ -653,6 +663,12 @@
     </Filter>
     <Filter Include="lvgl\src\lv_widgets">
       <UniqueIdentifier>{867d8097-afa3-440c-821d-98bcfe5fe6f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_drivers">
+      <UniqueIdentifier>{adcd169c-35d3-4c01-afa7-2b8ebe875a80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_drivers\win32drv">
+      <UniqueIdentifier>{a8229c69-a722-4296-9108-b8fdc39241bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1259,11 +1275,9 @@
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Simulator.cpp" />
-    <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LVGL.Simulator.rc" />

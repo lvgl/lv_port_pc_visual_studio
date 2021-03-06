@@ -23,13 +23,12 @@
 
 #include "lvgl/lvgl.h"
 #include "lv_examples/lv_examples.h"
+#include "lv_drivers/win32drv/win32drv.h"
 
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
 #pragma warning(pop)
 #endif
-
-#include "win32drv.h"
 
 int main()
 {
