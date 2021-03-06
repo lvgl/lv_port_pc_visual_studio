@@ -4,7 +4,7 @@
     <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>ConsoleApplication</MileProjectType>
-    <MileProjectManifestFile>LVGL.Windows.Simulator.manifest</MileProjectManifestFile>
+    <MileProjectManifestFile>LVGL.Simulator.manifest</MileProjectManifestFile>
   </PropertyGroup>
   <Import Project="..\Mile.Project\Mile.Project.Cpp.props" />
   <Import Project="..\Mile.Project\Mile.Project.Cpp.VC-LTL.props" />
@@ -19,7 +19,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Manifest Include="LVGL.Windows.Simulator.manifest" />
+    <Manifest Include="LVGL.Simulator.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
@@ -27,11 +27,11 @@
     <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LVGL.Windows.Simulator.cpp" />
+    <ClCompile Include="LVGL.Simulator.cpp" />
     <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LVGL.Windows.Simulator.rc" />
+    <ResourceCompile Include="LVGL.Simulator.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="LVGL.ico" />
