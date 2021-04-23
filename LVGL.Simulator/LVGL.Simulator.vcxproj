@@ -13,10 +13,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
-      <DisableSpecificWarnings>4214;4244;4013;4018;4090;4100;4127;4267;4389;4701;4702;</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -503,6 +504,37 @@
     <None Include="lv_examples\src\lv_demo_music\assets\spectrum.py" />
     <None Include="lv_examples\src\lv_demo_music\README.md" />
     <None Include="lv_examples\src\lv_demo_music\screenshot1.gif" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_1.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_2.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_3.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_4.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_alpha.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_bg.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_copy.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_dark.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_internet.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_light.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_mobile.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_prit.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_scan.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_setup.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\btn_usb.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_brightness.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_cloud.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_echo.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_hue.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_lock.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_no_internet.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_pc.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_phone.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_printer.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_ready.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_tel.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_wave_1.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_wave_2.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_wave_3.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\icn_wifi.png" />
+    <None Include="lv_examples\src\lv_demo_printer\assets\img_parrots.png" />
     <None Include="lv_examples\src\lv_demo_printer\README.md" />
     <None Include="lv_examples\src\lv_demo_printer\screenshot1.gif" />
     <None Include="lv_examples\src\lv_demo_printer\screenshot1.png" />
