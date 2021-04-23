@@ -22,7 +22,7 @@
 #endif
 
 #include "lvgl/lvgl.h"
-#include "lv_examples/lv_examples.h"
+#include "lv_examples/lv_demo.h"
 #include "lv_drivers/win32drv/win32drv.h"
 
 #if _MSC_VER >= 1200
@@ -37,8 +37,8 @@ int main()
     if (!lv_win32_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
-        LV_HOR_RES_MAX,
-        LV_VER_RES_MAX,
+        800,
+        480,
         LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
     {
         return -1;

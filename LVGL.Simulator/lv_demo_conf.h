@@ -1,10 +1,10 @@
 ﻿/**
- * @file lv_ex_conf.h
- * Configuration file for v7.11.0
+ * @file lv_demo_conf.h
+ * Configuration file for v8.0.0
  *
  */
 /*
- * COPY THIS FILE AS lv_ex_conf.h
+ * COPY THIS FILE AS lv_demo_conf.h
  */
 
 #if 1 /*Set it to "1" to enable the content*/
@@ -42,11 +42,7 @@
 /*Stress test for LVGL*/
 #define LV_USE_DEMO_STRESS      1
 
-/*Music player for LVGL*/
-#define LV_USE_DEMO_MUSIC      1
-#if LV_USE_DEMO_MUSIC
-#define LV_DEMO_MUSIC_AUTO_PLAY 0
-#endif
+#define LV_USE_COMPONENT_EXAMPLES   1
 
 #endif /*LV_EX_CONF_H*/
 
