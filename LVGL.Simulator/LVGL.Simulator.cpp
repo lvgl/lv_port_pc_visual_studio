@@ -86,7 +86,7 @@ int main()
     while (!lv_win32_quit_signal)
     {
         lv_task_handler();
-        Sleep(10);
+        Sleep(1);
     }
 
     return 0;
