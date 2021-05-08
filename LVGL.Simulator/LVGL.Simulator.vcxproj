@@ -6,8 +6,8 @@
     <MileProjectType>ConsoleApplication</MileProjectType>
     <MileProjectManifestFile>LVGL.Simulator.manifest</MileProjectManifestFile>
   </PropertyGroup>
-  <Import Project="Mile.Project\Mile.Project.Cpp.props" />
-  <Import Project="Mile.Project\Mile.Project.Cpp.VC-LTL.props" />
+  <Import Project="Mile.Project.VisualStudio\Mile.Project.Cpp.props" />
+  <Import Project="Mile.Project.VisualStudio\Mile.Project.Cpp.VC-LTL.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -834,5 +834,5 @@
   <ItemGroup>
     <Image Include="LVGL.ico" />
   </ItemGroup>
-  <Import Project="Mile.Project\Mile.Project.Cpp.targets" />
+  <Import Project="Mile.Project.VisualStudio\Mile.Project.Cpp.targets" />
 </Project>
