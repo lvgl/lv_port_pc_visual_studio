@@ -28,11 +28,27 @@ adapt your LVGL application to Windows, please visit
 [lvgl/lv_port_windows](https://github.com/lvgl/lv_port_windows).
 
 - [x] Only depends on Win32 API, C Runtime and C++ STL.
-- [x] Native support for x86, x64, ARM and ARM64 Windows.
+- [x] Native support for x86, x64 and ARM64 Windows.
 - [x] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) 
       toolchain to make the binary size as smaller as using MinGW.
 - [x] Support Per-monitor DPI Aware.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
+
+## Drop the ARM32 Windows support
+
+For my deliberate consideration, The lv_port_windows project will drop the ARM32
+support on the Windows platform. Here are the reasons:
+
+- The latest version of ARM32 version for Windows desktop is Redstone 2 Insider
+  Build 15035. I know Windows RT 8.1 and Windows 10 IoT Core aren't in the 
+  stage of end of support, but most of daily users are drop their devices 
+  (Windows RT 8.x tablets) or have a better solution (Windows 10 IoT Core users
+  on Raspberry Pi devices should migrate to Linux or ARM64 version for Windows 
+  10 desktop).
+- Future ARM processors are deprecating ARM32 ISA support, and Apple Silicon M1
+  had dropped the ARM32 support at all. So we can't run ARM32 version of Windows
+  desktop applications on these devices.
+- Reduce the size of release package and make the continuous integration faster.
 
 ## How to Clone
 
