@@ -1,4 +1,4 @@
-﻿# LVGL - PC Simulator using Visual Studio
+﻿# Visual Studio simulator project for LVGL embedded GUI Library
 
 ![Screenshot](Screenshot.png)
 
@@ -20,6 +20,12 @@ Some one will notice that this repository had been renamed from
 **This project is not for Visual Studio Code, it is for Visual Studio 2019.**
 
 Instructions for cloning, building and running the application are found below.
+
+## Known Issues
+
+- The LV_MEM_SIZE macro in lv_conf.h should be 128KiB or larger because you may
+  meet the out of memory issue when you are using the 64-bit simulator.
+  - Note: In this project, the size is set to 1024KiB.
 
 ## Supported Features
 
