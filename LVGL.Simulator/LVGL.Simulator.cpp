@@ -25,6 +25,7 @@
 #include "lvgl/examples/lv_examples.h"
 #include "lv_demos/lv_demo.h"
 #include "lv_drivers/win32drv/win32drv.h"
+#include "lv_lib_freetype/lv_freetype.h"
 
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
@@ -56,7 +57,26 @@ int main()
     // my application
     // ----------------------------------
 
-    // TODO: It's your implementation here.
+    ///*Init freetype library
+    // *Cache max 64 faces and 1 size*/
+    //lv_freetype_init(64, 1, 0);
+
+    ///*Create a font*/
+    //static lv_ft_info_t info;
+    //info.name = "./lv_lib_freetype/arial.ttf";
+    //info.weight = 36;
+    //info.style = FT_FONT_STYLE_NORMAL;
+    //lv_ft_font_init(&info);
+
+    ///*Create style with the new font*/
+    //static lv_style_t style;
+    //lv_style_init(&style);
+    //lv_style_set_text_font(&style, info.font);
+
+    ///*Create a label with the new style*/
+    //lv_obj_t* label = lv_label_create(lv_scr_act());
+    //lv_obj_add_style(label, &style, 0);
+    //lv_label_set_text(label, "FreeType Arial Test");
 
     // ----------------------------------
     // Demos from lv_examples
