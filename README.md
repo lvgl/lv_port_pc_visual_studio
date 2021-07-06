@@ -39,6 +39,7 @@ adapt your LVGL application to Windows, please visit
       toolchain to make the binary size as smaller as using MinGW.
 - [x] Support Per-monitor DPI Aware.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
+- [x] FreeType integration.
 
 ## Drop the ARM32 Windows support
 

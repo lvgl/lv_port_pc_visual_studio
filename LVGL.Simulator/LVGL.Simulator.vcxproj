@@ -8,6 +8,7 @@
   </PropertyGroup>
   <Import Project="Mile.Project.VisualStudio\Mile.Project.Cpp.props" />
   <Import Project="Mile.Project.VisualStudio\Mile.Project.Cpp.VC-LTL.props" />
+  <Import Project="freetype.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -273,6 +274,7 @@
     <ClCompile Include="lvgl\examples\widgets\table\lv_example_table_1.c" />
     <ClCompile Include="lvgl\examples\widgets\table\lv_example_table_2.c" />
     <ClCompile Include="lvgl\examples\widgets\tabview\lv_example_tabview_1.c" />
+    <ClCompile Include="lvgl\examples\widgets\tabview\lv_example_tabview_2.c" />
     <ClCompile Include="lvgl\examples\widgets\textarea\lv_example_textarea_1.c" />
     <ClCompile Include="lvgl\examples\widgets\textarea\lv_example_textarea_2.c" />
     <ClCompile Include="lvgl\examples\widgets\textarea\lv_example_textarea_3.c" />
@@ -441,6 +443,7 @@
     <None Include="lvgl\docs\misc\align.png" />
     <None Include="lvgl\docs\misc\bidi.png" />
     <None Include="lvgl\docs\misc\boxmodel.png" />
+    <None Include="lvgl\docs\misc\btn_example.png" />
     <None Include="lvgl\docs\misc\button_style_example.gif" />
     <None Include="lvgl\docs\misc\button_style_example.png" />
     <None Include="lvgl\docs\misc\codeblocks.jpg" />
@@ -457,6 +460,7 @@
     <None Include="lvgl\docs\misc\sys.png" />
     <None Include="lvgl\docs\misc\visualstudio.jpg" />
     <None Include="lvgl\docs\overview\animation.md" />
+    <None Include="lvgl\docs\overview\color.md" />
     <None Include="lvgl\docs\overview\coords.md" />
     <None Include="lvgl\docs\overview\display.md" />
     <None Include="lvgl\docs\overview\drawing.md" />
@@ -534,6 +538,7 @@
     <None Include="lvgl\docs\CODING_STYLE.md" />
     <None Include="lvgl\docs\conf.py" />
     <None Include="lvgl\docs\CONTRIBUTING.md" />
+    <None Include="lvgl\docs\example_list.py" />
     <None Include="lvgl\docs\favicon.png" />
     <None Include="lvgl\docs\header.rst" />
     <None Include="lvgl\docs\index.md" />
@@ -541,6 +546,8 @@
     <None Include="lvgl\docs\requirements.txt" />
     <None Include="lvgl\docs\ROADMAP.md" />
     <None Include="lvgl\examples\anim\index.rst" />
+    <None Include="lvgl\examples\anim\lv_example_anim_1.py" />
+    <None Include="lvgl\examples\anim\lv_example_anim_2.py" />
     <None Include="lvgl\examples\arduino\LVGL_Arduino\LVGL_Arduino.ino" />
     <None Include="lvgl\examples\assets\animimg001.png" />
     <None Include="lvgl\examples\assets\animimg002.png" />
@@ -554,60 +561,133 @@
     <None Include="lvgl\examples\assets\img_cogwheel_indexed16.png" />
     <None Include="lvgl\examples\assets\img_cogwheel_rgb.png" />
     <None Include="lvgl\examples\assets\img_hand_min.png" />
+    <None Include="lvgl\examples\assets\img_star.png" />
+    <None Include="lvgl\examples\assets\img_strip.png" />
     <None Include="lvgl\examples\assets\skew_strip.png" />
     <None Include="lvgl\examples\assets\star.png" />
     <None Include="lvgl\examples\event\index.rst" />
+    <None Include="lvgl\examples\event\lv_example_event_1.py" />
+    <None Include="lvgl\examples\event\lv_example_event_2.py" />
+    <None Include="lvgl\examples\event\lv_example_event_3.py" />
     <None Include="lvgl\examples\get_started\index.rst" />
+    <None Include="lvgl\examples\get_started\lv_example_get_started_1.py" />
+    <None Include="lvgl\examples\get_started\lv_example_get_started_2.py" />
+    <None Include="lvgl\examples\get_started\lv_example_get_started_3.py" />
     <None Include="lvgl\examples\layouts\flex\index.rst" />
+    <None Include="lvgl\examples\layouts\flex\lv_example_flex_1.py" />
+    <None Include="lvgl\examples\layouts\flex\lv_example_flex_2.py" />
+    <None Include="lvgl\examples\layouts\flex\lv_example_flex_3.py" />
+    <None Include="lvgl\examples\layouts\flex\lv_example_flex_4.py" />
+    <None Include="lvgl\examples\layouts\flex\lv_example_flex_5.py" />
+    <None Include="lvgl\examples\layouts\flex\lv_example_flex_6.py" />
     <None Include="lvgl\examples\layouts\grid\index.rst" />
+    <None Include="lvgl\examples\layouts\grid\lv_example_grid_1.py" />
+    <None Include="lvgl\examples\layouts\grid\lv_example_grid_2.py" />
+    <None Include="lvgl\examples\layouts\grid\lv_example_grid_3.py" />
+    <None Include="lvgl\examples\layouts\grid\lv_example_grid_4.py" />
+    <None Include="lvgl\examples\layouts\grid\lv_example_grid_5.py" />
+    <None Include="lvgl\examples\layouts\grid\lv_example_grid_6.py" />
     <None Include="lvgl\examples\scroll\index.rst" />
+    <None Include="lvgl\examples\scroll\lv_example_scroll_1.py" />
+    <None Include="lvgl\examples\scroll\lv_example_scroll_2.py" />
+    <None Include="lvgl\examples\scroll\lv_example_scroll_3.py" />
+    <None Include="lvgl\examples\scroll\lv_example_scroll_4.py" />
+    <None Include="lvgl\examples\scroll\lv_example_scroll_5.py" />
+    <None Include="lvgl\examples\scroll\lv_example_scroll_6.py" />
     <None Include="lvgl\examples\styles\index.rst" />
+    <None Include="lvgl\examples\styles\lv_example_style_1.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_10.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_11.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_12.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_13.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_14.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_2.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_3.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_4.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_5.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_6.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_7.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_8.py" />
+    <None Include="lvgl\examples\styles\lv_example_style_9.py" />
+    <None Include="lvgl\examples\widgets\animimg\lv_example_animimg_1.py" />
     <None Include="lvgl\examples\widgets\arc\index.rst" />
     <None Include="lvgl\examples\widgets\arc\lv_example_arc_1.py" />
     <None Include="lvgl\examples\widgets\arc\lv_example_arc_2.py" />
     <None Include="lvgl\examples\widgets\bar\index.rst" />
     <None Include="lvgl\examples\widgets\bar\lv_example_bar_1.py" />
+    <None Include="lvgl\examples\widgets\bar\lv_example_bar_2.py" />
+    <None Include="lvgl\examples\widgets\bar\lv_example_bar_3.py" />
+    <None Include="lvgl\examples\widgets\bar\lv_example_bar_4.py" />
+    <None Include="lvgl\examples\widgets\bar\lv_example_bar_5.py" />
+    <None Include="lvgl\examples\widgets\bar\lv_example_bar_6.py" />
+    <None Include="lvgl\examples\widgets\bar\test.py" />
     <None Include="lvgl\examples\widgets\btn\index.rst" />
     <None Include="lvgl\examples\widgets\btn\lv_example_btn_1.py" />
+    <None Include="lvgl\examples\widgets\btn\lv_example_btn_2.py" />
+    <None Include="lvgl\examples\widgets\btn\lv_example_btn_3.py" />
     <None Include="lvgl\examples\widgets\btnmatrix\index.rst" />
     <None Include="lvgl\examples\widgets\btnmatrix\lv_example_btnmatrix_1.py" />
+    <None Include="lvgl\examples\widgets\btnmatrix\lv_example_btnmatrix_2.py" />
+    <None Include="lvgl\examples\widgets\btnmatrix\lv_example_btnmatrix_3.py" />
     <None Include="lvgl\examples\widgets\calendar\index.rst" />
+    <None Include="lvgl\examples\widgets\calendar\lv_example_calendar_1.py" />
     <None Include="lvgl\examples\widgets\canvas\index.rst" />
     <None Include="lvgl\examples\widgets\canvas\lv_example_canvas_1.py" />
     <None Include="lvgl\examples\widgets\canvas\lv_example_canvas_2.py" />
     <None Include="lvgl\examples\widgets\chart\index.rst" />
     <None Include="lvgl\examples\widgets\chart\lv_example_chart_1.py" />
+    <None Include="lvgl\examples\widgets\chart\lv_example_chart_2.py" />
+    <None Include="lvgl\examples\widgets\chart\lv_example_chart_3.py" />
+    <None Include="lvgl\examples\widgets\chart\lv_example_chart_4.py" />
+    <None Include="lvgl\examples\widgets\chart\lv_example_chart_5.py" />
+    <None Include="lvgl\examples\widgets\chart\lv_example_chart_6.py" />
+    <None Include="lvgl\examples\widgets\chart\lv_example_chart_7.py" />
     <None Include="lvgl\examples\widgets\checkbox\index.rst" />
     <None Include="lvgl\examples\widgets\checkbox\lv_example_checkbox_1.py" />
     <None Include="lvgl\examples\widgets\colorwheel\index.rst" />
+    <None Include="lvgl\examples\widgets\colorwheel\lv_example_colorwheel_1.py" />
     <None Include="lvgl\examples\widgets\dropdown\index.rst" />
     <None Include="lvgl\examples\widgets\dropdown\lv_example_dropdown_1.py" />
     <None Include="lvgl\examples\widgets\dropdown\lv_example_dropdown_2.py" />
+    <None Include="lvgl\examples\widgets\dropdown\lv_example_dropdown_3.py" />
     <None Include="lvgl\examples\widgets\img\index.rst" />
     <None Include="lvgl\examples\widgets\img\lv_example_img_1.py" />
+    <None Include="lvgl\examples\widgets\img\lv_example_img_2.py" />
+    <None Include="lvgl\examples\widgets\img\lv_example_img_3.py" />
+    <None Include="lvgl\examples\widgets\img\lv_example_img_4.py" />
     <None Include="lvgl\examples\widgets\imgbtn\index.rst" />
+    <None Include="lvgl\examples\widgets\imgbtn\lv_example_imgbtn_1.py" />
     <None Include="lvgl\examples\widgets\keyboard\index.rst" />
     <None Include="lvgl\examples\widgets\keyboard\lv_example_keyboard_1.py" />
     <None Include="lvgl\examples\widgets\label\index.rst" />
     <None Include="lvgl\examples\widgets\label\lv_example_label_1.py" />
     <None Include="lvgl\examples\widgets\label\lv_example_label_2.py" />
+    <None Include="lvgl\examples\widgets\label\lv_example_label_3.py" />
     <None Include="lvgl\examples\widgets\led\index.rst" />
     <None Include="lvgl\examples\widgets\led\lv_example_led_1.py" />
     <None Include="lvgl\examples\widgets\line\index.rst" />
     <None Include="lvgl\examples\widgets\line\lv_example_line_1.py" />
     <None Include="lvgl\examples\widgets\list\index.rst" />
     <None Include="lvgl\examples\widgets\list\lv_example_list_1.py" />
+    <None Include="lvgl\examples\widgets\list\test.py" />
     <None Include="lvgl\examples\widgets\meter\index.rst" />
+    <None Include="lvgl\examples\widgets\meter\lv_example_meter_1.py" />
+    <None Include="lvgl\examples\widgets\meter\lv_example_meter_2.py" />
+    <None Include="lvgl\examples\widgets\meter\lv_example_meter_3.py" />
+    <None Include="lvgl\examples\widgets\meter\lv_example_meter_4.py" />
     <None Include="lvgl\examples\widgets\msgbox\index.rst" />
     <None Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_1.py" />
-    <None Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_2.py" />
     <None Include="lvgl\examples\widgets\obj\index.rst" />
     <None Include="lvgl\examples\widgets\obj\lv_example_obj_1.py" />
+    <None Include="lvgl\examples\widgets\obj\lv_example_obj_2.py" />
     <None Include="lvgl\examples\widgets\roller\index.rst" />
     <None Include="lvgl\examples\widgets\roller\lv_example_roller_1.py" />
+    <None Include="lvgl\examples\widgets\roller\lv_example_roller_2.py" />
+    <None Include="lvgl\examples\widgets\roller\lv_example_roller_3.py" />
     <None Include="lvgl\examples\widgets\slider\index.rst" />
     <None Include="lvgl\examples\widgets\slider\lv_example_slider_1.py" />
     <None Include="lvgl\examples\widgets\slider\lv_example_slider_2.py" />
+    <None Include="lvgl\examples\widgets\slider\lv_example_slider_3.py" />
     <None Include="lvgl\examples\widgets\span\index.rst" />
     <None Include="lvgl\examples\widgets\span\lv_example_span_1.py" />
     <None Include="lvgl\examples\widgets\spinbox\index.rst" />
@@ -618,15 +698,20 @@
     <None Include="lvgl\examples\widgets\switch\lv_example_switch_1.py" />
     <None Include="lvgl\examples\widgets\table\index.rst" />
     <None Include="lvgl\examples\widgets\table\lv_example_table_1.py" />
+    <None Include="lvgl\examples\widgets\table\lv_example_table_2.py" />
     <None Include="lvgl\examples\widgets\tabview\index.rst" />
     <None Include="lvgl\examples\widgets\tabview\lv_example_tabview_1.py" />
     <None Include="lvgl\examples\widgets\textarea\index.rst" />
     <None Include="lvgl\examples\widgets\textarea\lv_example_textarea_1.py" />
     <None Include="lvgl\examples\widgets\textarea\lv_example_textarea_2.py" />
+    <None Include="lvgl\examples\widgets\textarea\lv_example_textarea_3.py" />
     <None Include="lvgl\examples\widgets\tileview\index.rst" />
     <None Include="lvgl\examples\widgets\tileview\lv_example_tileview_1.py" />
     <None Include="lvgl\examples\widgets\win\index.rst" />
+    <None Include="lvgl\examples\widgets\win\lv_example_win_1.py" />
     <None Include="lvgl\examples\examples.mk" />
+    <None Include="lvgl\examples\header.py" />
+    <None Include="lvgl\examples\test_ex.sh" />
     <None Include="lvgl\scripts\built_in_font\built_in_font_gen.py" />
     <None Include="lvgl\scripts\built_in_font\DejaVuSans.ttf" />
     <None Include="lvgl\scripts\built_in_font\FontAwesome5-Solid+Brands+Regular.woff" />
@@ -649,6 +734,7 @@
     <None Include="lvgl\src\core\lv_core.mk" />
     <None Include="lvgl\src\draw\lv_draw.mk" />
     <None Include="lvgl\src\extra\extra.mk" />
+    <None Include="lvgl\src\extra\README.md" />
     <None Include="lvgl\src\font\korean.ttf" />
     <None Include="lvgl\src\font\lv_font.mk" />
     <None Include="lvgl\src\gpu\lv_gpu.mk" />
@@ -851,6 +937,19 @@
     <None Include="lv_drivers\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lv_lib_freetype\lv_freetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lv_lib_freetype\lv_freetype.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lv_lib_freetype\.github\auto-comment.yml" />
+    <None Include="lv_lib_freetype\.git" />
+    <None Include="lv_lib_freetype\arial.ttf" />
+    <None Include="lv_lib_freetype\LICENSE" />
+    <None Include="lv_lib_freetype\README.md" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="lv_conf.h" />
   </ItemGroup>
   <ItemGroup>
@@ -872,6 +971,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="LVGL.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="freetype.props" />
   </ItemGroup>
   <Import Project="Mile.Project.VisualStudio\Mile.Project.Cpp.targets" />
 </Project>
