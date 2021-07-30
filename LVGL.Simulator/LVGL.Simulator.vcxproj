@@ -28,6 +28,8 @@
     <ClInclude Include="lvgl\examples\layouts\flex\lv_example_flex.h" />
     <ClInclude Include="lvgl\examples\layouts\grid\lv_example_grid.h" />
     <ClInclude Include="lvgl\examples\layouts\lv_example_layout.h" />
+    <ClInclude Include="lvgl\examples\others\snapshot\lv_example_snapshot.h" />
+    <ClInclude Include="lvgl\examples\others\lv_example_others.h" />
     <ClInclude Include="lvgl\examples\porting\lv_port_disp_template.h" />
     <ClInclude Include="lvgl\examples\porting\lv_port_fs_template.h" />
     <ClInclude Include="lvgl\examples\porting\lv_port_indev_template.h" />
@@ -65,6 +67,8 @@
     <ClInclude Include="lvgl\src\extra\layouts\flex\lv_flex.h" />
     <ClInclude Include="lvgl\src\extra\layouts\grid\lv_grid.h" />
     <ClInclude Include="lvgl\src\extra\layouts\lv_layouts.h" />
+    <ClInclude Include="lvgl\src\extra\others\snapshot\lv_snapshot.h" />
+    <ClInclude Include="lvgl\src\extra\others\lv_others.h" />
     <ClInclude Include="lvgl\src\extra\themes\basic\lv_theme_basic.h" />
     <ClInclude Include="lvgl\src\extra\themes\default\lv_theme_default.h" />
     <ClInclude Include="lvgl\src\extra\themes\mono\lv_theme_mono.h" />
@@ -102,6 +106,7 @@
     <ClInclude Include="lvgl\src\hal\lv_hal_indev.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal_tick.h" />
     <ClInclude Include="lvgl\src\misc\lv_anim.h" />
+    <ClInclude Include="lvgl\src\misc\lv_anim_timeline.h" />
     <ClInclude Include="lvgl\src\misc\lv_area.h" />
     <ClInclude Include="lvgl\src\misc\lv_assert.h" />
     <ClInclude Include="lvgl\src\misc\lv_async.h" />
@@ -143,19 +148,20 @@
     <ClInclude Include="lvgl\src\lv_api_map.h" />
     <ClInclude Include="lvgl\src\lv_conf_internal.h" />
     <ClInclude Include="lvgl\src\lv_conf_kconfig.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_core.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_font_loader.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_obj.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_style.h" />
-    <ClInclude Include="lvgl\tests\lv_test_widgets\lv_test_label.h" />
-    <ClInclude Include="lvgl\tests\lv_test_assert.h" />
-    <ClInclude Include="lvgl\tests\lv_test_conf.h" />
+    <ClInclude Include="lvgl\tests\src\lv_test_conf.h" />
+    <ClInclude Include="lvgl\tests\src\lv_test_indev.h" />
+    <ClInclude Include="lvgl\tests\src\lv_test_init.h" />
+    <ClInclude Include="lvgl\tests\unity\unity.h" />
+    <ClInclude Include="lvgl\tests\unity\unity_internals.h" />
+    <ClInclude Include="lvgl\tests\unity\unity_support.h" />
     <ClInclude Include="lvgl\lvgl.h" />
     <ClInclude Include="lvgl\lv_conf_template.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_1.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_2.c" />
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_3.c" />
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_timeline_1.c" />
     <ClCompile Include="lvgl\examples\assets\animimg001.c" />
     <ClCompile Include="lvgl\examples\assets\animimg002.c" />
     <ClCompile Include="lvgl\examples\assets\animimg003.c" />
@@ -189,6 +195,7 @@
     <ClCompile Include="lvgl\examples\layouts\grid\lv_example_grid_4.c" />
     <ClCompile Include="lvgl\examples\layouts\grid\lv_example_grid_5.c" />
     <ClCompile Include="lvgl\examples\layouts\grid\lv_example_grid_6.c" />
+    <ClCompile Include="lvgl\examples\others\snapshot\lv_example_snapshot_1.c" />
     <ClCompile Include="lvgl\examples\porting\lv_port_disp_template.c" />
     <ClCompile Include="lvgl\examples\porting\lv_port_fs_template.c" />
     <ClCompile Include="lvgl\examples\porting\lv_port_indev_template.c" />
@@ -308,6 +315,7 @@
     <ClCompile Include="lvgl\src\draw\lv_img_decoder.c" />
     <ClCompile Include="lvgl\src\extra\layouts\flex\lv_flex.c" />
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
+    <ClCompile Include="lvgl\src\extra\others\snapshot\lv_snapshot.c" />
     <ClCompile Include="lvgl\src\extra\themes\basic\lv_theme_basic.c" />
     <ClCompile Include="lvgl\src\extra\themes\default\lv_theme_default.c" />
     <ClCompile Include="lvgl\src\extra\themes\mono\lv_theme_mono.c" />
@@ -368,6 +376,7 @@
     <ClCompile Include="lvgl\src\hal\lv_hal_indev.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_tick.c" />
     <ClCompile Include="lvgl\src\misc\lv_anim.c" />
+    <ClCompile Include="lvgl\src\misc\lv_anim_timeline.c" />
     <ClCompile Include="lvgl\src\misc\lv_area.c" />
     <ClCompile Include="lvgl\src\misc\lv_async.c" />
     <ClCompile Include="lvgl\src\misc\lv_bidi.c" />
@@ -403,16 +412,20 @@
     <ClCompile Include="lvgl\src\widgets\lv_switch.c" />
     <ClCompile Include="lvgl\src\widgets\lv_table.c" />
     <ClCompile Include="lvgl\src\widgets\lv_textarea.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_core.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_font_loader.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_obj.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_style.c" />
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_1.c" />
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_2.c" />
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_3.c" />
-    <ClCompile Include="lvgl\tests\lv_test_widgets\lv_test_label.c" />
-    <ClCompile Include="lvgl\tests\lv_test_assert.c" />
-    <ClCompile Include="lvgl\tests\lv_test_main.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_config.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_dropdown.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_font_loader.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_obj_tree.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_style.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\_test_template.c" />
+    <ClCompile Include="lvgl\tests\src\test_fonts\font_1.c" />
+    <ClCompile Include="lvgl\tests\src\test_fonts\font_2.c" />
+    <ClCompile Include="lvgl\tests\src\test_fonts\font_3.c" />
+    <ClCompile Include="lvgl\tests\src\lv_test_indev.c" />
+    <ClCompile Include="lvgl\tests\src\lv_test_init.c" />
+    <ClCompile Include="lvgl\tests\src\lv_test_main.c" />
+    <ClCompile Include="lvgl\tests\unity\unity.c" />
+    <ClCompile Include="lvgl\tests\unity\unity_support.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md" />
@@ -441,6 +454,7 @@
     <None Include="lvgl\docs\layouts\grid.md" />
     <None Include="lvgl\docs\layouts\index.md" />
     <None Include="lvgl\docs\misc\align.png" />
+    <None Include="lvgl\docs\misc\anim-timeline.png" />
     <None Include="lvgl\docs\misc\bidi.png" />
     <None Include="lvgl\docs\misc\boxmodel.png" />
     <None Include="lvgl\docs\misc\btn_example.png" />
@@ -459,6 +473,8 @@
     <None Include="lvgl\docs\misc\symbols.png" />
     <None Include="lvgl\docs\misc\sys.png" />
     <None Include="lvgl\docs\misc\visualstudio.jpg" />
+    <None Include="lvgl\docs\others\index.md" />
+    <None Include="lvgl\docs\others\snapshot.md" />
     <None Include="lvgl\docs\overview\animation.md" />
     <None Include="lvgl\docs\overview\color.md" />
     <None Include="lvgl\docs\overview\coords.md" />
@@ -548,7 +564,12 @@
     <None Include="lvgl\examples\anim\index.rst" />
     <None Include="lvgl\examples\anim\lv_example_anim_1.py" />
     <None Include="lvgl\examples\anim\lv_example_anim_2.py" />
+    <None Include="lvgl\examples\anim\lv_example_anim_3.py" />
+    <None Include="lvgl\examples\anim\lv_example_anim_timeline_1.py" />
     <None Include="lvgl\examples\arduino\LVGL_Arduino\LVGL_Arduino.ino" />
+    <None Include="lvgl\examples\assets\font\lv_font_simsun_16_cjk.fnt" />
+    <None Include="lvgl\examples\assets\font\montserrat-16.fnt" />
+    <None Include="lvgl\examples\assets\font\montserrat-22.fnt" />
     <None Include="lvgl\examples\assets\animimg001.png" />
     <None Include="lvgl\examples\assets\animimg002.png" />
     <None Include="lvgl\examples\assets\animimg003.png" />
@@ -556,11 +577,15 @@
     <None Include="lvgl\examples\assets\imgbtn_left.png" />
     <None Include="lvgl\examples\assets\imgbtn_mid.png" />
     <None Include="lvgl\examples\assets\imgbtn_right.png" />
+    <None Include="lvgl\examples\assets\img_caret_down.png" />
     <None Include="lvgl\examples\assets\img_cogwheel_argb.png" />
     <None Include="lvgl\examples\assets\img_cogwheel_chroma_keyed.png" />
     <None Include="lvgl\examples\assets\img_cogwheel_indexed16.png" />
     <None Include="lvgl\examples\assets\img_cogwheel_rgb.png" />
+    <None Include="lvgl\examples\assets\img_hand_hour.png" />
     <None Include="lvgl\examples\assets\img_hand_min.png" />
+    <None Include="lvgl\examples\assets\img_skew_strip.png" />
+    <None Include="lvgl\examples\assets\img_skew_strip_80x20_argb8888.fnt" />
     <None Include="lvgl\examples\assets\img_star.png" />
     <None Include="lvgl\examples\assets\img_strip.png" />
     <None Include="lvgl\examples\assets\skew_strip.png" />
@@ -587,6 +612,8 @@
     <None Include="lvgl\examples\layouts\grid\lv_example_grid_4.py" />
     <None Include="lvgl\examples\layouts\grid\lv_example_grid_5.py" />
     <None Include="lvgl\examples\layouts\grid\lv_example_grid_6.py" />
+    <None Include="lvgl\examples\others\snapshot\index.rst" />
+    <None Include="lvgl\examples\others\snapshot\lv_example_snapshot_1.py" />
     <None Include="lvgl\examples\scroll\index.rst" />
     <None Include="lvgl\examples\scroll\lv_example_scroll_1.py" />
     <None Include="lvgl\examples\scroll\lv_example_scroll_2.py" />
@@ -701,6 +728,7 @@
     <None Include="lvgl\examples\widgets\table\lv_example_table_2.py" />
     <None Include="lvgl\examples\widgets\tabview\index.rst" />
     <None Include="lvgl\examples\widgets\tabview\lv_example_tabview_1.py" />
+    <None Include="lvgl\examples\widgets\tabview\lv_example_tabview_2.py" />
     <None Include="lvgl\examples\widgets\textarea\index.rst" />
     <None Include="lvgl\examples\widgets\textarea\lv_example_textarea_1.py" />
     <None Include="lvgl\examples\widgets\textarea\lv_example_textarea_2.py" />
@@ -719,6 +747,8 @@
     <None Include="lvgl\scripts\built_in_font\Montserrat-Medium.ttf" />
     <None Include="lvgl\scripts\built_in_font\SimSun.woff" />
     <None Include="lvgl\scripts\built_in_font\unscii-8.ttf" />
+    <None Include="lvgl\scripts\release\com.py" />
+    <None Include="lvgl\scripts\release\commits.txt" />
     <None Include="lvgl\scripts\release\patch.py" />
     <None Include="lvgl\scripts\release\release.py" />
     <None Include="lvgl\scripts\build_html_examples.sh" />
@@ -741,15 +771,25 @@
     <None Include="lvgl\src\hal\lv_hal.mk" />
     <None Include="lvgl\src\misc\lv_misc.mk" />
     <None Include="lvgl\src\widgets\lv_widgets.mk" />
-    <None Include="lvgl\tests\lv_test_ref_imgs\lv_test_img32_label_1.png" />
+    <None Include="lvgl\tests\ref_imgs\dropdown_1.png" />
+    <None Include="lvgl\tests\ref_imgs\dropdown_2.png" />
+    <None Include="lvgl\tests\ref_imgs\scr1.png" />
+    <None Include="lvgl\tests\src\test_fonts\font_1.fnt" />
+    <None Include="lvgl\tests\src\test_fonts\font_2.fnt" />
+    <None Include="lvgl\tests\src\test_fonts\font_3.fnt" />
+    <None Include="lvgl\tests\unity\generate_test_runner.rb" />
+    <None Include="lvgl\tests\unity\run_test.erb" />
+    <None Include="lvgl\tests\unity\type_sanitizer.rb" />
+    <None Include="lvgl\tests\.gitignore" />
     <None Include="lvgl\tests\build.py" />
-    <None Include="lvgl\tests\font_1.fnt" />
-    <None Include="lvgl\tests\font_2.fnt" />
-    <None Include="lvgl\tests\font_3.fnt" />
-    <None Include="lvgl\tests\icon.png" />
-    <None Include="lvgl\tests\icon2.png" />
+    <None Include="lvgl\tests\config.yml" />
+    <None Include="lvgl\tests\defines.py" />
+    <None Include="lvgl\tests\main.py" />
     <None Include="lvgl\tests\Makefile" />
+    <None Include="lvgl\tests\README.md" />
+    <None Include="lvgl\tests\test.py" />
     <None Include="lvgl\zephyr\module.yml" />
+    <None Include="lvgl\.codecov.yml" />
     <None Include="lvgl\.editorconfig" />
     <None Include="lvgl\.git" />
     <None Include="lvgl\.gitignore" />
@@ -779,6 +819,14 @@
     <ClInclude Include="lv_demos\lv_demo_conf_template.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\img_benchmark_cogwheel_alpha16.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\img_benchmark_cogwheel_argb.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\img_benchmark_cogwheel_chroma_keyed.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\img_benchmark_cogwheel_indexed16.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\img_benchmark_cogwheel_rgb.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\lv_font_montserrat_12_compr_az.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\lv_font_montserrat_16_compr_az.c" />
+    <ClCompile Include="lv_demos\src\lv_demo_benchmark\assets\lv_font_montserrat_28_compr_az.c" />
     <ClCompile Include="lv_demos\src\lv_demo_benchmark\lv_demo_benchmark.c" />
     <ClCompile Include="lv_demos\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.c" />
     <ClCompile Include="lv_demos\src\lv_demo_music\assets\img_lv_demo_music_btn_corner_large.c" />
@@ -844,6 +892,10 @@
     <None Include="lv_demos\scripts\build_all_examples.sh" />
     <None Include="lv_demos\scripts\examples.txt" />
     <None Include="lv_demos\scripts\genexamplestxt.sh" />
+    <None Include="lv_demos\src\lv_demo_benchmark\assets\img_cogwheel_argb.png" />
+    <None Include="lv_demos\src\lv_demo_benchmark\assets\img_cogwheel_chroma_keyed.png" />
+    <None Include="lv_demos\src\lv_demo_benchmark\assets\img_cogwheel_indexed16.png" />
+    <None Include="lv_demos\src\lv_demo_benchmark\assets\img_cogwheel_rgb.png" />
     <None Include="lv_demos\src\lv_demo_benchmark\README.md" />
     <None Include="lv_demos\src\lv_demo_benchmark\screenshot1.png" />
     <None Include="lv_demos\src\lv_demo_benchmark\screenshot2.png" />
