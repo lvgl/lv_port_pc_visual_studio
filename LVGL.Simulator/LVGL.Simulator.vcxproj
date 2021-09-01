@@ -261,6 +261,7 @@
     <ClCompile Include="lvgl\examples\widgets\led\lv_example_led_1.c" />
     <ClCompile Include="lvgl\examples\widgets\line\lv_example_line_1.c" />
     <ClCompile Include="lvgl\examples\widgets\list\lv_example_list_1.c" />
+    <ClCompile Include="lvgl\examples\widgets\list\lv_example_list_2.c" />
     <ClCompile Include="lvgl\examples\widgets\meter\lv_example_meter_1.c" />
     <ClCompile Include="lvgl\examples\widgets\meter\lv_example_meter_2.c" />
     <ClCompile Include="lvgl\examples\widgets\meter\lv_example_meter_3.c" />
@@ -423,7 +424,6 @@
     <ClCompile Include="lvgl\tests\src\test_fonts\font_3.c" />
     <ClCompile Include="lvgl\tests\src\lv_test_indev.c" />
     <ClCompile Include="lvgl\tests\src\lv_test_init.c" />
-    <ClCompile Include="lvgl\tests\src\lv_test_main.c" />
     <ClCompile Include="lvgl\tests\unity\unity.c" />
     <ClCompile Include="lvgl\tests\unity\unity_support.c" />
   </ItemGroup>
@@ -759,6 +759,7 @@
     <None Include="lvgl\scripts\find_version.sh" />
     <None Include="lvgl\scripts\genexamplelist.sh" />
     <None Include="lvgl\scripts\infer_run.sh" />
+    <None Include="lvgl\scripts\install-prerequisites.sh" />
     <None Include="lvgl\scripts\lv_conf_internal_gen.py" />
     <None Include="lvgl\scripts\style_api_gen.py" />
     <None Include="lvgl\src\core\lv_core.mk" />
@@ -781,13 +782,10 @@
     <None Include="lvgl\tests\unity\run_test.erb" />
     <None Include="lvgl\tests\unity\type_sanitizer.rb" />
     <None Include="lvgl\tests\.gitignore" />
-    <None Include="lvgl\tests\build.py" />
+    <None Include="lvgl\tests\CMakeLists.txt" />
     <None Include="lvgl\tests\config.yml" />
-    <None Include="lvgl\tests\defines.py" />
     <None Include="lvgl\tests\main.py" />
-    <None Include="lvgl\tests\Makefile" />
     <None Include="lvgl\tests\README.md" />
-    <None Include="lvgl\tests\test.py" />
     <None Include="lvgl\zephyr\module.yml" />
     <None Include="lvgl\.codecov.yml" />
     <None Include="lvgl\.editorconfig" />
