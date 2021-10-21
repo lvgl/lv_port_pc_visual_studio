@@ -23,6 +23,7 @@
     <ClInclude Include="lvgl\examples\styles\lv_example_style.h" />
     <ClInclude Include="lvgl\examples\widgets\lv_example_widgets.h" />
     <ClInclude Include="lvgl\examples\lv_examples.h" />
+    <ClInclude Include="lvgl\rt-thread\lv_rt_thread_conf.h" />
     <ClInclude Include="lvgl\src\core\lv_disp.h" />
     <ClInclude Include="lvgl\src\core\lv_event.h" />
     <ClInclude Include="lvgl\src\core\lv_group.h" />
@@ -55,7 +56,7 @@
     <ClInclude Include="lvgl\src\extra\layouts\lv_layouts.h" />
     <ClInclude Include="lvgl\src\extra\libs\bmp\lv_bmp.h" />
     <ClInclude Include="lvgl\src\extra\libs\freetype\lv_freetype.h" />
-    <ClInclude Include="lvgl\src\extra\libs\fs\lv_fs_libs.h" />
+    <ClInclude Include="lvgl\src\extra\libs\fsdrv\lv_fsdrv.h" />
     <ClInclude Include="lvgl\src\extra\libs\gif\gifdec.h" />
     <ClInclude Include="lvgl\src\extra\libs\gif\lv_gif.h" />
     <ClInclude Include="lvgl\src\extra\libs\png\lodepng.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="lvgl\examples\widgets\textarea\lv_example_textarea_3.c" />
     <ClCompile Include="lvgl\examples\widgets\tileview\lv_example_tileview_1.c" />
     <ClCompile Include="lvgl\examples\widgets\win\lv_example_win_1.c" />
+    <ClCompile Include="lvgl\rt-thread\lv_rt_thread_port.c" />
     <ClCompile Include="lvgl\src\core\lv_disp.c" />
     <ClCompile Include="lvgl\src\core\lv_event.c" />
     <ClCompile Include="lvgl\src\core\lv_group.c" />
@@ -334,9 +336,10 @@
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
     <ClCompile Include="lvgl\src\extra\libs\bmp\lv_bmp.c" />
     <ClCompile Include="lvgl\src\extra\libs\freetype\lv_freetype.c" />
-    <ClCompile Include="lvgl\src\extra\libs\fs\lv_fs_fatfs.c" />
-    <ClCompile Include="lvgl\src\extra\libs\fs\lv_fs_posix.c" />
-    <ClCompile Include="lvgl\src\extra\libs\fs\lv_fs_stdio.c" />
+    <ClCompile Include="lvgl\src\extra\libs\fsdrv\lv_fs_fatfs.c" />
+    <ClCompile Include="lvgl\src\extra\libs\fsdrv\lv_fs_posix.c" />
+    <ClCompile Include="lvgl\src\extra\libs\fsdrv\lv_fs_stdio.c" />
+    <ClCompile Include="lvgl\src\extra\libs\fsdrv\lv_fs_win32.c" />
     <ClCompile Include="lvgl\src\extra\libs\gif\gifdec.c" />
     <ClCompile Include="lvgl\src\extra\libs\gif\lv_gif.c" />
     <ClCompile Include="lvgl\src\extra\libs\png\lodepng.c" />
@@ -461,6 +464,7 @@
     <ClCompile Include="lvgl\tests\src\test_cases\test_font_loader.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_obj_tree.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_style.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_txt.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\_test_template.c" />
     <ClCompile Include="lvgl\tests\src\test_fonts\font_1.c" />
     <ClCompile Include="lvgl\tests\src\test_fonts\font_2.c" />
@@ -476,6 +480,7 @@
     <None Include="lvgl\.github\ISSUE_TEMPLATE\dev-discussion.md" />
     <None Include="lvgl\.github\workflows\build_micropython.yml" />
     <None Include="lvgl\.github\workflows\ccpp.yml" />
+    <None Include="lvgl\.github\workflows\check_conf.yml" />
     <None Include="lvgl\.github\workflows\close_old_issues.yml" />
     <None Include="lvgl\.github\workflows\compile_docs.yml" />
     <None Include="lvgl\.github\workflows\esp_upload_component.yml" />
@@ -499,7 +504,7 @@
     <None Include="lvgl\docs\layouts\index.md" />
     <None Include="lvgl\docs\libs\bmp.md" />
     <None Include="lvgl\docs\libs\freetype.md" />
-    <None Include="lvgl\docs\libs\fs.md" />
+    <None Include="lvgl\docs\libs\fsdrv.md" />
     <None Include="lvgl\docs\libs\gif.md" />
     <None Include="lvgl\docs\libs\index.md" />
     <None Include="lvgl\docs\libs\png.md" />
@@ -1064,18 +1069,5 @@
     <None Include="lv_drivers\LICENSE" />
     <None Include="lv_drivers\lv_drivers.mk" />
     <None Include="lv_drivers\README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="lv_lib_freetype\lv_freetype.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="lv_lib_freetype\lv_freetype.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lv_lib_freetype\.github\auto-comment.yml" />
-    <None Include="lv_lib_freetype\.git" />
-    <None Include="lv_lib_freetype\arial.ttf" />
-    <None Include="lv_lib_freetype\LICENSE" />
-    <None Include="lv_lib_freetype\README.md" />
   </ItemGroup>
 </Project>
