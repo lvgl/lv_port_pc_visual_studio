@@ -21,7 +21,9 @@
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
     </ClCompile>
   </ItemDefinitionGroup>
-  <Import Project="LVGL.Portable.vcxitems" />
+  <Import Project="LVGL.Core.vcxitems" />
+  <Import Project="LVGL.Demonstrations.vcxitems" />
+  <Import Project="LVGL.Drivers.vcxitems" />
   <ItemGroup>
     <ClInclude Include="lv_conf.h" />
   </ItemGroup>
@@ -47,8 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="freetype.props" />
-    <None Include="LVGL.Portable.vcxitems" />
-    <None Include="LVGL.Portable.vcxitems.filters" />
   </ItemGroup>
   <Import Project="Mile.Project\Mile.Project.targets" />
 </Project>
