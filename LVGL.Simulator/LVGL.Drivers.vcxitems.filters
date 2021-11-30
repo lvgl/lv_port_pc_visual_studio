@@ -2,31 +2,31 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="lv_drivers">
-      <UniqueIdentifier>{e47613a2-0002-478b-995f-75d0fd25c469}</UniqueIdentifier>
+      <UniqueIdentifier>{10a5c4f0-8965-4603-bad1-c9fd00c303f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\.github">
-      <UniqueIdentifier>{1cb74ed6-1f4f-4f79-943e-fa985f8cbaf7}</UniqueIdentifier>
+      <UniqueIdentifier>{5e4d494e-6840-4466-9e08-9b21458b8408}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\display">
-      <UniqueIdentifier>{7173de5c-516c-4cce-8a3a-59953fff8507}</UniqueIdentifier>
+      <UniqueIdentifier>{0341e805-0d4d-4fe3-a8c4-eab3b015df79}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\docs">
-      <UniqueIdentifier>{b8da0881-3566-448d-8d66-ed1304d5dc35}</UniqueIdentifier>
+      <UniqueIdentifier>{602eb9b2-e500-4348-a241-863f469f6f32}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\gtkdrv">
-      <UniqueIdentifier>{49c6b006-8444-4396-8f01-9b1b2eac0bb4}</UniqueIdentifier>
+      <UniqueIdentifier>{ddd8702d-1718-4019-b50e-dd0548202810}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\indev">
-      <UniqueIdentifier>{428aedd9-54c3-4c0a-9563-952242395293}</UniqueIdentifier>
+      <UniqueIdentifier>{653f90c8-7d2a-47a9-aa4d-486b2461325c}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\sdl">
-      <UniqueIdentifier>{82d86525-d37e-4cb2-b9ac-6b8b00d40963}</UniqueIdentifier>
+      <UniqueIdentifier>{188c7b4c-05a8-4aae-b7d2-a0606ce9f204}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\wayland">
-      <UniqueIdentifier>{d4de357c-e6bd-48a4-a25b-26eb0f20b8a0}</UniqueIdentifier>
+      <UniqueIdentifier>{bd0aa873-99c8-4aff-8f3a-22fafb3beb2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\win32drv">
-      <UniqueIdentifier>{98cc91d3-7819-4a97-8692-6faa955cb8f1}</UniqueIdentifier>
+      <UniqueIdentifier>{de62191d-1058-475d-adfc-ec09b79669b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +192,12 @@
     </None>
     <None Include="lv_drivers\gtkdrv\README.md">
       <Filter>lv_drivers\gtkdrv</Filter>
+    </None>
+    <None Include="lv_drivers\wayland\.gitignore">
+      <Filter>lv_drivers\wayland</Filter>
+    </None>
+    <None Include="lv_drivers\wayland\CMakeLists.txt">
+      <Filter>lv_drivers\wayland</Filter>
     </None>
     <None Include="lv_drivers\wayland\README.md">
       <Filter>lv_drivers\wayland</Filter>
