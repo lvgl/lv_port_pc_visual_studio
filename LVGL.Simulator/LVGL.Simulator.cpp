@@ -35,108 +35,117 @@
 
 // ************************************************************************
 
-void lv_draw_win32gdi_arc(
-    lv_coord_t center_x,
-    lv_coord_t center_y,
-    uint16_t radius,
-    uint16_t start_angle,
-    uint16_t end_angle,
-    const lv_area_t* clip_area,
-    const lv_draw_arc_dsc_t* dsc)
-{
-   
-}
-
-void lv_draw_win32gdi_rect(
-    const lv_area_t* coords,
-    const lv_area_t* clip,
-    const lv_draw_rect_dsc_t* dsc)
-{
-    
-}
-
-void lv_draw_win32gdi_letter(
-    const lv_point_t* pos_p,
-    const lv_area_t* clip_area,
-    const lv_font_t* font_p,
-    uint32_t letter,
-    lv_color_t color,
-    lv_opa_t opa,
-    lv_blend_mode_t blend_mode)
-{
-
-}
-
-void lv_draw_win32gdi_img(
-    const lv_area_t* map_area,
-    const lv_area_t* clip_area,
-    const uint8_t* map_p,
-    const lv_draw_img_dsc_t* draw_dsc,
-    bool chroma_key,
-    bool alpha_byte)
-{
-
-}
-
-void lv_draw_win32gdi_line(
-    const lv_point_t* point1,
-    const lv_point_t* point2,
-    const lv_area_t* clip,
-    const lv_draw_line_dsc_t* dsc)
-{
-
-}
-
-void lv_draw_win32gdi_polygon(
-    const lv_point_t points[],
-    uint16_t point_cnt,
-    const lv_area_t* clip_area,
-    const lv_draw_rect_dsc_t* draw_dsc)
-{
-
-}
-
-void lv_draw_win32gdi_fill(
-    lv_color_t* dest_buf,
-    lv_coord_t dest_stride,
-    const lv_area_t* fill_area,
-    lv_color_t color,
-    lv_opa_t* mask,
-    lv_opa_t opa,
-    lv_blend_mode_t blend_mode)
-{
-
-}
-
-void lv_draw_win32gdi_map(
-    lv_color_t* dest_buf,
-    lv_coord_t dest_stride,
-    const lv_area_t* clip_area,
-    const lv_color_t* src_buf,
-    const lv_area_t* src_area,
-    lv_opa_t* mask,
-    lv_opa_t opa,
-    lv_blend_mode_t blend_mode)
-{
-
-}
-
-void lv_draw_win32gdi_init()
-{
-    static lv_draw_backend_t backend;
-    lv_draw_backend_init(&backend);
-
-    backend.draw_arc = lv_draw_win32gdi_arc;
-    backend.draw_rect = lv_draw_win32gdi_rect;
-    backend.draw_letter = lv_draw_win32gdi_letter;
-    backend.draw_img = lv_draw_win32gdi_img;
-    backend.draw_line = lv_draw_win32gdi_line;
-    backend.draw_polygon = lv_draw_win32gdi_polygon;
-    backend.blend_fill = lv_draw_win32gdi_fill;
-    backend.blend_map = lv_draw_win32gdi_map;
-
-    lv_draw_backend_add(&backend);
-}
+//extern "C" HDC g_buffer_dc_handle;
+//
+//void lv_draw_win32gdi_arc(
+//    lv_coord_t center_x,
+//    lv_coord_t center_y,
+//    uint16_t radius,
+//    uint16_t start_angle,
+//    uint16_t end_angle,
+//    const lv_area_t* clip_area,
+//    const lv_draw_arc_dsc_t* dsc)
+//{
+//   
+//}
+//
+//void lv_draw_win32gdi_rect(
+//    const lv_area_t* coords,
+//    const lv_area_t* clip,
+//    const lv_draw_rect_dsc_t* dsc)
+//{
+//
+//
+//
+//    //GdiGradientFill()
+//    SetDCPenColor(g_buffer_dc_handle, RGB(255, 255, 0));
+//    SetDCBrushColor(g_buffer_dc_handle, lv_color_to32(dsc->bg_color));
+//    Rectangle(g_buffer_dc_handle, coords->x1, coords->y1, coords->x2, coords->y2);
+//}
+//
+//void lv_draw_win32gdi_letter(
+//    const lv_point_t* pos_p,
+//    const lv_area_t* clip_area,
+//    const lv_font_t* font_p,
+//    uint32_t letter,
+//    lv_color_t color,
+//    lv_opa_t opa,
+//    lv_blend_mode_t blend_mode)
+//{
+//
+//}
+//
+//void lv_draw_win32gdi_img(
+//    const lv_area_t* map_area,
+//    const lv_area_t* clip_area,
+//    const uint8_t* map_p,
+//    const lv_draw_img_dsc_t* draw_dsc,
+//    bool chroma_key,
+//    bool alpha_byte)
+//{
+//
+//}
+//
+//void lv_draw_win32gdi_line(
+//    const lv_point_t* point1,
+//    const lv_point_t* point2,
+//    const lv_area_t* clip,
+//    const lv_draw_line_dsc_t* dsc)
+//{
+//    
+//}
+//
+//void lv_draw_win32gdi_polygon(
+//    const lv_point_t points[],
+//    uint16_t point_cnt,
+//    const lv_area_t* clip_area,
+//    const lv_draw_rect_dsc_t* draw_dsc)
+//{
+//
+//}
+//
+//void lv_draw_win32gdi_fill(
+//    lv_color_t* dest_buf,
+//    lv_coord_t dest_stride,
+//    const lv_area_t* fill_area,
+//    lv_color_t color,
+//    lv_opa_t* mask,
+//    lv_opa_t opa,
+//    lv_blend_mode_t blend_mode)
+//{
+//
+//}
+//
+//void lv_draw_win32gdi_map(
+//    lv_color_t* dest_buf,
+//    lv_coord_t dest_stride,
+//    const lv_area_t* clip_area,
+//    const lv_color_t* src_buf,
+//    const lv_area_t* src_area,
+//    lv_opa_t* mask,
+//    lv_opa_t opa,
+//    lv_blend_mode_t blend_mode)
+//{
+//
+//}
+//
+//void lv_draw_win32gdi_init()
+//{
+//    static lv_draw_backend_t backend;
+//    lv_draw_backend_init(&backend);
+//
+//    backend.draw_arc = lv_draw_win32gdi_arc;
+//    backend.draw_rect = lv_draw_win32gdi_rect;
+//    backend.draw_letter = lv_draw_win32gdi_letter;
+//    backend.draw_img = lv_draw_win32gdi_img;
+//    backend.draw_line = lv_draw_win32gdi_line;
+//    backend.draw_polygon = lv_draw_win32gdi_polygon;
+//    backend.blend_fill = lv_draw_win32gdi_fill;
+//    backend.blend_map = lv_draw_win32gdi_map;
+//
+//    lv_draw_backend_add(&backend);
+//
+//}
 
 // ************************************************************************
 
@@ -211,7 +220,7 @@ int main()
     // my Windows GDI backend application
     // ----------------------------------
 
-    lv_draw_win32gdi_init();
+    //lv_draw_win32gdi_init();
 
     // ----------------------------------
     // Demos from lv_examples
