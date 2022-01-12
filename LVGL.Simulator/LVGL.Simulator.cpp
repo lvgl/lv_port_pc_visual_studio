@@ -23,7 +23,7 @@
 
 #include "lvgl/lvgl.h"
 #include "lv_examples/lv_examples.h"
-#include "lv_drivers/win32drv/win32drv.h"
+#include "win32drv_v7.h"
 
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
