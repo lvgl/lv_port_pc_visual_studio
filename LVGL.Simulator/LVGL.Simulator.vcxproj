@@ -9,6 +9,9 @@
     <MileProjectType>ConsoleApplication</MileProjectType>
     <MileProjectManifestFile>LVGL.Simulator.manifest</MileProjectManifestFile>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
+    <SupportLTL>false</SupportLTL>
+  </PropertyGroup>
   <Import Project="Mile.Project\Mile.Project.props" />
   <Import Project="Mile.Project\Mile.Project.Runtime.VC-LTL.props" />
   <Import Project="freetype.props" />
