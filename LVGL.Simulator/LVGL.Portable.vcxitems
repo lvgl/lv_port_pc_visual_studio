@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClInclude Include="lvgl\cmsis-pack\lv_conf_cmsis.h" />
     <ClInclude Include="lvgl\demos\benchmark\lv_demo_benchmark.h" />
     <ClInclude Include="lvgl\demos\keypad_encoder\lv_demo_keypad_encoder.h" />
     <ClInclude Include="lvgl\demos\music\assets\spectrum_1.h" />
@@ -53,15 +54,23 @@
     <ClInclude Include="lvgl\src\core\lv_obj_tree.h" />
     <ClInclude Include="lvgl\src\core\lv_refr.h" />
     <ClInclude Include="lvgl\src\core\lv_theme.h" />
-    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_lru.h" />
+    <ClInclude Include="lvgl\src\draw\nxp_pxp\lv_gpu_nxp_pxp.h" />
+    <ClInclude Include="lvgl\src\draw\nxp_pxp\lv_gpu_nxp_pxp_osa.h" />
+    <ClInclude Include="lvgl\src\draw\nxp_vglite\lv_gpu_nxp_vglite.h" />
+    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl.h" />
+    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_composite.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_mask.h" />
+    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_priv.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_stack_blur.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_texture_cache.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_utils.h" />
+    <ClInclude Include="lvgl\src\draw\stm32_dma2d\lv_gpu_stm32_dma2d.h" />
     <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw.h" />
+    <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw_blend.h" />
+    <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw_dither.h" />
+    <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw_gradient.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_arc.h" />
-    <ClInclude Include="lvgl\src\draw\lv_draw_blend.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_img.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_label.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_line.h" />
@@ -121,11 +130,6 @@
     <ClInclude Include="lvgl\src\font\lv_font_fmt_txt.h" />
     <ClInclude Include="lvgl\src\font\lv_font_loader.h" />
     <ClInclude Include="lvgl\src\font\lv_symbol_def.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_pxp.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_pxp_osa.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_vglite.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_sdl.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_stm32_dma2d.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal_disp.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal_indev.h" />
@@ -141,6 +145,7 @@
     <ClInclude Include="lvgl\src\misc\lv_gc.h" />
     <ClInclude Include="lvgl\src\misc\lv_ll.h" />
     <ClInclude Include="lvgl\src\misc\lv_log.h" />
+    <ClInclude Include="lvgl\src\misc\lv_lru.h" />
     <ClInclude Include="lvgl\src\misc\lv_math.h" />
     <ClInclude Include="lvgl\src\misc\lv_mem.h" />
     <ClInclude Include="lvgl\src\misc\lv_printf.h" />
@@ -270,6 +275,7 @@
     <ClCompile Include="lvgl\examples\event\lv_example_event_1.c" />
     <ClCompile Include="lvgl\examples\event\lv_example_event_2.c" />
     <ClCompile Include="lvgl\examples\event\lv_example_event_3.c" />
+    <ClCompile Include="lvgl\examples\event\lv_example_event_4.c" />
     <ClCompile Include="lvgl\examples\get_started\lv_example_get_started_1.c" />
     <ClCompile Include="lvgl\examples\get_started\lv_example_get_started_2.c" />
     <ClCompile Include="lvgl\examples\get_started\lv_example_get_started_3.c" />
@@ -291,7 +297,7 @@
     <ClCompile Include="lvgl\examples\libs\freetype\lv_example_freetype_1.c" />
     <ClCompile Include="lvgl\examples\libs\gif\img_bulb_gif.c" />
     <ClCompile Include="lvgl\examples\libs\gif\lv_example_gif_1.c" />
-    <ClCompile Include="lvgl\examples\libs\png\img_wing_png.c" />
+    <ClCompile Include="lvgl\examples\libs\png\img_wink_png.c" />
     <ClCompile Include="lvgl\examples\libs\png\lv_example_png_1.c" />
     <ClCompile Include="lvgl\examples\libs\qrcode\lv_example_qrcode_1.c" />
     <ClCompile Include="lvgl\examples\libs\rlottie\lv_example_rlottie_1.c" />
@@ -419,30 +425,39 @@
     <ClCompile Include="lvgl\src\core\lv_obj_tree.c" />
     <ClCompile Include="lvgl\src\core\lv_refr.c" />
     <ClCompile Include="lvgl\src\core\lv_theme.c" />
-    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_blend.c" />
+    <ClCompile Include="lvgl\src\draw\nxp_pxp\lv_gpu_nxp_pxp.c" />
+    <ClCompile Include="lvgl\src\draw\nxp_pxp\lv_gpu_nxp_pxp_osa.c" />
+    <ClCompile Include="lvgl\src\draw\nxp_vglite\lv_gpu_nxp_vglite.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_arc.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_bg.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_composite.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_img.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_label.c" />
-    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_lru.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_line.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_mask.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_polygon.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_rect.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_stack_blur.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_texture_cache.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_utils.c" />
+    <ClCompile Include="lvgl\src\draw\stm32_dma2d\lv_gpu_stm32_dma2d.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_arc.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_blend.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_dither.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_gradient.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_img.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_letter.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c" />
-    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_mask.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_arc.c" />
-    <ClCompile Include="lvgl\src\draw\lv_draw_blend.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_img.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_label.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c" />
+    <ClCompile Include="lvgl\src\draw\lv_draw_mask.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_triangle.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_buf.c" />
@@ -521,11 +536,6 @@
     <ClCompile Include="lvgl\src\font\lv_font_simsun_16_cjk.c" />
     <ClCompile Include="lvgl\src\font\lv_font_unscii_16.c" />
     <ClCompile Include="lvgl\src\font\lv_font_unscii_8.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_pxp.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_pxp_osa.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_vglite.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_sdl.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_stm32_dma2d.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_disp.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_indev.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_tick.c" />
@@ -539,6 +549,7 @@
     <ClCompile Include="lvgl\src\misc\lv_gc.c" />
     <ClCompile Include="lvgl\src\misc\lv_ll.c" />
     <ClCompile Include="lvgl\src\misc\lv_log.c" />
+    <ClCompile Include="lvgl\src\misc\lv_lru.c" />
     <ClCompile Include="lvgl\src\misc\lv_math.c" />
     <ClCompile Include="lvgl\src\misc\lv_mem.c" />
     <ClCompile Include="lvgl\src\misc\lv_printf.c" />
@@ -572,6 +583,7 @@
     <ClCompile Include="lvgl\tests\src\test_cases\test_dropdown.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_font_loader.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_obj_tree.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_snapshot.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_style.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_switch.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_txt.c" />
@@ -604,6 +616,10 @@
     <None Include="lvgl\cmake\esp.cmake" />
     <None Include="lvgl\cmake\micropython.cmake" />
     <None Include="lvgl\cmake\zephyr.cmake" />
+    <None Include="lvgl\cmsis-pack\gen_pack.sh" />
+    <None Include="lvgl\cmsis-pack\LVGL.lvgl.0.8.2.pack" />
+    <None Include="lvgl\cmsis-pack\LVGL.lvgl.pdsc" />
+    <None Include="lvgl\cmsis-pack\lv_cmsis_pack.txt" />
     <None Include="lvgl\demos\benchmark\assets\img_cogwheel_argb.png" />
     <None Include="lvgl\demos\benchmark\assets\img_cogwheel_chroma_keyed.png" />
     <None Include="lvgl\demos\benchmark\assets\img_cogwheel_indexed16.png" />
@@ -637,6 +653,7 @@
     <None Include="lvgl\docs\get-started\nxp.md" />
     <None Include="lvgl\docs\get-started\pc-simulator.md" />
     <None Include="lvgl\docs\get-started\quick-overview.md" />
+    <None Include="lvgl\docs\get-started\rt-thread.md" />
     <None Include="lvgl\docs\get-started\stm32.md" />
     <None Include="lvgl\docs\get-started\tasmota-berry.md" />
     <None Include="lvgl\docs\intro\index.md" />
@@ -695,6 +712,7 @@
     <None Include="lvgl\docs\overview\style.md" />
     <None Include="lvgl\docs\overview\timer.md" />
     <None Include="lvgl\docs\porting\display.md" />
+    <None Include="lvgl\docs\porting\gpu.md" />
     <None Include="lvgl\docs\porting\indev.md" />
     <None Include="lvgl\docs\porting\index.md" />
     <None Include="lvgl\docs\porting\log.md" />
@@ -791,8 +809,6 @@
     <None Include="lvgl\examples\assets\img_skew_strip_80x20_argb8888.fnt" />
     <None Include="lvgl\examples\assets\img_star.png" />
     <None Include="lvgl\examples\assets\img_strip.png" />
-    <None Include="lvgl\examples\assets\skew_strip.png" />
-    <None Include="lvgl\examples\assets\star.png" />
     <None Include="lvgl\examples\event\index.rst" />
     <None Include="lvgl\examples\event\lv_example_event_1.py" />
     <None Include="lvgl\examples\event\lv_example_event_2.py" />
@@ -1052,6 +1068,7 @@
     <None Include="lvgl\LICENCE.txt" />
     <None Include="lvgl\lvgl.mk" />
     <None Include="lvgl\README.md" />
+    <None Include="lvgl\README_zh.md" />
     <None Include="lvgl\SConscript" />
   </ItemGroup>
 </Project>
