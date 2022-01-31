@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="lvgl\cmsis-pack\lv_conf_cmsis.h" />
     <ClInclude Include="lvgl\demos\benchmark\lv_demo_benchmark.h" />
     <ClInclude Include="lvgl\demos\keypad_encoder\lv_demo_keypad_encoder.h" />
     <ClInclude Include="lvgl\demos\music\assets\spectrum_1.h" />
@@ -13,6 +12,8 @@
     <ClInclude Include="lvgl\demos\stress\lv_demo_stress.h" />
     <ClInclude Include="lvgl\demos\widgets\lv_demo_widgets.h" />
     <ClInclude Include="lvgl\demos\lv_demos.h" />
+    <ClInclude Include="lvgl\env_support\cmsis-pack\lv_conf_cmsis.h" />
+    <ClInclude Include="lvgl\env_support\rt-thread\lv_rt_thread_conf.h" />
     <ClInclude Include="lvgl\examples\anim\lv_example_anim.h" />
     <ClInclude Include="lvgl\examples\event\lv_example_event.h" />
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="lvgl\examples\libs\rlottie\lv_example_rlottie.h" />
     <ClInclude Include="lvgl\examples\libs\sjpg\lv_example_sjpg.h" />
     <ClInclude Include="lvgl\examples\libs\lv_example_libs.h" />
+    <ClInclude Include="lvgl\examples\others\gridnav\lv_example_gridnav.h" />
     <ClInclude Include="lvgl\examples\others\monkey\lv_example_monkey.h" />
     <ClInclude Include="lvgl\examples\others\snapshot\lv_example_snapshot.h" />
     <ClInclude Include="lvgl\examples\others\lv_example_others.h" />
@@ -38,7 +40,6 @@
     <ClInclude Include="lvgl\examples\styles\lv_example_style.h" />
     <ClInclude Include="lvgl\examples\widgets\lv_example_widgets.h" />
     <ClInclude Include="lvgl\examples\lv_examples.h" />
-    <ClInclude Include="lvgl\rt-thread\lv_rt_thread_conf.h" />
     <ClInclude Include="lvgl\src\core\lv_disp.h" />
     <ClInclude Include="lvgl\src\core\lv_event.h" />
     <ClInclude Include="lvgl\src\core\lv_group.h" />
@@ -59,8 +60,10 @@
     <ClInclude Include="lvgl\src\draw\nxp_vglite\lv_gpu_nxp_vglite.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_composite.h" />
+    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_img.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_mask.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_priv.h" />
+    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_rect.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_stack_blur.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_texture_cache.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_utils.h" />
@@ -98,6 +101,7 @@
     <ClInclude Include="lvgl\src\extra\libs\sjpg\tjpgd.h" />
     <ClInclude Include="lvgl\src\extra\libs\sjpg\tjpgdcnf.h" />
     <ClInclude Include="lvgl\src\extra\libs\lv_libs.h" />
+    <ClInclude Include="lvgl\src\extra\others\gridnav\lv_gridnav.h" />
     <ClInclude Include="lvgl\src\extra\others\monkey\lv_monkey.h" />
     <ClInclude Include="lvgl\src\extra\others\snapshot\lv_snapshot.h" />
     <ClInclude Include="lvgl\src\extra\others\lv_others.h" />
@@ -179,6 +183,7 @@
     <ClInclude Include="lvgl\src\lv_conf_internal.h" />
     <ClInclude Include="lvgl\src\lv_conf_kconfig.h" />
     <ClInclude Include="lvgl\tests\src\lv_test_conf.h" />
+    <ClInclude Include="lvgl\tests\src\lv_test_helpers.h" />
     <ClInclude Include="lvgl\tests\src\lv_test_indev.h" />
     <ClInclude Include="lvgl\tests\src\lv_test_init.h" />
     <ClInclude Include="lvgl\tests\unity\unity.h" />
@@ -253,6 +258,7 @@
     <ClCompile Include="lvgl\demos\widgets\assets\img_demo_widgets_avatar.c" />
     <ClCompile Include="lvgl\demos\widgets\assets\img_lvgl_logo.c" />
     <ClCompile Include="lvgl\demos\widgets\lv_demo_widgets.c" />
+    <ClCompile Include="lvgl\env_support\rt-thread\lv_rt_thread_port.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_1.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_2.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_3.c" />
@@ -304,6 +310,10 @@
     <ClCompile Include="lvgl\examples\libs\rlottie\lv_example_rlottie_2.c" />
     <ClCompile Include="lvgl\examples\libs\rlottie\lv_example_rlottie_approve.c" />
     <ClCompile Include="lvgl\examples\libs\sjpg\lv_example_sjpg_1.c" />
+    <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_1.c" />
+    <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_2.c" />
+    <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_3.c" />
+    <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_4.c" />
     <ClCompile Include="lvgl\examples\others\monkey\lv_example_monkey_1.c" />
     <ClCompile Include="lvgl\examples\others\monkey\lv_example_monkey_2.c" />
     <ClCompile Include="lvgl\examples\others\monkey\lv_example_monkey_3.c" />
@@ -409,7 +419,6 @@
     <ClCompile Include="lvgl\examples\widgets\textarea\lv_example_textarea_3.c" />
     <ClCompile Include="lvgl\examples\widgets\tileview\lv_example_tileview_1.c" />
     <ClCompile Include="lvgl\examples\widgets\win\lv_example_win_1.c" />
-    <ClCompile Include="lvgl\rt-thread\lv_rt_thread_port.c" />
     <ClCompile Include="lvgl\src\core\lv_disp.c" />
     <ClCompile Include="lvgl\src\core\lv_event.c" />
     <ClCompile Include="lvgl\src\core\lv_group.c" />
@@ -481,6 +490,7 @@
     <ClCompile Include="lvgl\src\extra\libs\rlottie\lv_rlottie.c" />
     <ClCompile Include="lvgl\src\extra\libs\sjpg\lv_sjpg.c" />
     <ClCompile Include="lvgl\src\extra\libs\sjpg\tjpgd.c" />
+    <ClCompile Include="lvgl\src\extra\others\gridnav\lv_gridnav.c" />
     <ClCompile Include="lvgl\src\extra\others\monkey\lv_monkey.c" />
     <ClCompile Include="lvgl\src\extra\others\snapshot\lv_snapshot.c" />
     <ClCompile Include="lvgl\src\extra\themes\basic\lv_theme_basic.c" />
@@ -578,9 +588,13 @@
     <ClCompile Include="lvgl\src\widgets\lv_table.c" />
     <ClCompile Include="lvgl\src\widgets\lv_textarea.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_arc.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_bar.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_checkbox.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_config.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_demo_stress.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_demo_widgets.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_dropdown.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_event.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_font_loader.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_obj_tree.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_snapshot.c" />
@@ -600,6 +614,7 @@
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\config.yml" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\dev-discussion.md" />
+    <None Include="lvgl\.github\workflows\arduino.yml" />
     <None Include="lvgl\.github\workflows\build_micropython.yml" />
     <None Include="lvgl\.github\workflows\ccpp.yml" />
     <None Include="lvgl\.github\workflows\check_conf.yml" />
@@ -612,14 +627,6 @@
     <None Include="lvgl\.github\auto-comment.yml" />
     <None Include="lvgl\.github\FUNDING.yml" />
     <None Include="lvgl\.github\pull_request_template.md" />
-    <None Include="lvgl\cmake\custom.cmake" />
-    <None Include="lvgl\cmake\esp.cmake" />
-    <None Include="lvgl\cmake\micropython.cmake" />
-    <None Include="lvgl\cmake\zephyr.cmake" />
-    <None Include="lvgl\cmsis-pack\gen_pack.sh" />
-    <None Include="lvgl\cmsis-pack\LVGL.lvgl.0.8.2.pack" />
-    <None Include="lvgl\cmsis-pack\LVGL.lvgl.pdsc" />
-    <None Include="lvgl\cmsis-pack\lv_cmsis_pack.txt" />
     <None Include="lvgl\demos\benchmark\assets\img_cogwheel_argb.png" />
     <None Include="lvgl\demos\benchmark\assets\img_cogwheel_chroma_keyed.png" />
     <None Include="lvgl\demos\benchmark\assets\img_cogwheel_indexed16.png" />
@@ -690,6 +697,7 @@
     <None Include="lvgl\docs\misc\symbols.png" />
     <None Include="lvgl\docs\misc\sys.png" />
     <None Include="lvgl\docs\misc\visualstudio.jpg" />
+    <None Include="lvgl\docs\others\gridnav.md" />
     <None Include="lvgl\docs\others\index.md" />
     <None Include="lvgl\docs\others\monkey.md" />
     <None Include="lvgl\docs\others\snapshot.md" />
@@ -782,6 +790,17 @@
     <None Include="lvgl\docs\logo_lvgl.png" />
     <None Include="lvgl\docs\requirements.txt" />
     <None Include="lvgl\docs\ROADMAP.md" />
+    <None Include="lvgl\env_support\cmake\custom.cmake" />
+    <None Include="lvgl\env_support\cmake\esp.cmake" />
+    <None Include="lvgl\env_support\cmake\micropython.cmake" />
+    <None Include="lvgl\env_support\cmake\zephyr.cmake" />
+    <None Include="lvgl\env_support\cmsis-pack\gen_pack.sh" />
+    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.0.pack" />
+    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.pdsc" />
+    <None Include="lvgl\env_support\cmsis-pack\lv_cmsis_pack.txt" />
+    <None Include="lvgl\env_support\cmsis-pack\README.md" />
+    <None Include="lvgl\env_support\rt-thread\SConscript" />
+    <None Include="lvgl\env_support\zephyr\module.yml" />
     <None Include="lvgl\examples\anim\index.rst" />
     <None Include="lvgl\examples\anim\lv_example_anim_1.py" />
     <None Include="lvgl\examples\anim\lv_example_anim_2.py" />
@@ -860,6 +879,7 @@
     <None Include="lvgl\examples\libs\sjpg\index.rst" />
     <None Include="lvgl\examples\libs\sjpg\lv_example_sjpg_1.py" />
     <None Include="lvgl\examples\libs\sjpg\small_image.sjpg" />
+    <None Include="lvgl\examples\others\gridnav\index.rst" />
     <None Include="lvgl\examples\others\monkey\index.rst" />
     <None Include="lvgl\examples\others\snapshot\index.rst" />
     <None Include="lvgl\examples\others\snapshot\lv_example_snapshot_1.py" />
@@ -998,7 +1018,6 @@
     <None Include="lvgl\examples\examples.mk" />
     <None Include="lvgl\examples\header.py" />
     <None Include="lvgl\examples\test_ex.sh" />
-    <None Include="lvgl\rt-thread\SConscript" />
     <None Include="lvgl\scripts\built_in_font\built_in_font_gen.py" />
     <None Include="lvgl\scripts\built_in_font\DejaVuSans.ttf" />
     <None Include="lvgl\scripts\built_in_font\FontAwesome5-Solid+Brands+Regular.woff" />
@@ -1054,7 +1073,6 @@
     <None Include="lvgl\tests\config.yml" />
     <None Include="lvgl\tests\main.py" />
     <None Include="lvgl\tests\README.md" />
-    <None Include="lvgl\zephyr\module.yml" />
     <None Include="lvgl\.codecov.yml" />
     <None Include="lvgl\.editorconfig" />
     <None Include="lvgl\.git" />
