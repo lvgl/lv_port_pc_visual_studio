@@ -22,6 +22,7 @@
     <ClInclude Include="lv_drivers\indev\xkb.h" />
     <ClInclude Include="lv_drivers\indev\XPT2046.h" />
     <ClInclude Include="lv_drivers\sdl\sdl.h" />
+    <ClInclude Include="lv_drivers\sdl\sdl_common.h" />
     <ClInclude Include="lv_drivers\sdl\sdl_gpu.h" />
     <ClInclude Include="lv_drivers\wayland\wayland.h" />
     <ClInclude Include="lv_drivers\win32drv\win32drv.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="lv_drivers\indev\xkb.c" />
     <ClCompile Include="lv_drivers\indev\XPT2046.c" />
     <ClCompile Include="lv_drivers\sdl\sdl.c" />
+    <ClCompile Include="lv_drivers\sdl\sdl_common.c" />
     <ClCompile Include="lv_drivers\sdl\sdl_gpu.c" />
     <ClCompile Include="lv_drivers\wayland\wayland.c" />
     <ClCompile Include="lv_drivers\win32drv\win32drv.c" />

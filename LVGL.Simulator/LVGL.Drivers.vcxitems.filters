@@ -2,31 +2,31 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="lv_drivers">
-      <UniqueIdentifier>{10a5c4f0-8965-4603-bad1-c9fd00c303f7}</UniqueIdentifier>
+      <UniqueIdentifier>{220d71a2-1f71-4976-b6bb-2f9c7f429b7e}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\.github">
-      <UniqueIdentifier>{5e4d494e-6840-4466-9e08-9b21458b8408}</UniqueIdentifier>
+      <UniqueIdentifier>{f2b736cd-c818-4138-9a4b-a684d129471f}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\display">
-      <UniqueIdentifier>{0341e805-0d4d-4fe3-a8c4-eab3b015df79}</UniqueIdentifier>
+      <UniqueIdentifier>{19ba8719-c125-418d-99ed-8509f72f298a}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\docs">
-      <UniqueIdentifier>{602eb9b2-e500-4348-a241-863f469f6f32}</UniqueIdentifier>
+      <UniqueIdentifier>{1d03be13-026c-4fc9-a31a-d5dc20bc5766}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\gtkdrv">
-      <UniqueIdentifier>{ddd8702d-1718-4019-b50e-dd0548202810}</UniqueIdentifier>
+      <UniqueIdentifier>{eb8dc1fd-774a-4eee-ade7-da8de2c874ae}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\indev">
-      <UniqueIdentifier>{653f90c8-7d2a-47a9-aa4d-486b2461325c}</UniqueIdentifier>
+      <UniqueIdentifier>{2bc5841f-2bb7-419a-9c59-b38fdd58f114}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\sdl">
-      <UniqueIdentifier>{188c7b4c-05a8-4aae-b7d2-a0606ce9f204}</UniqueIdentifier>
+      <UniqueIdentifier>{dc621d19-da3c-4035-958c-da4511ab09db}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\wayland">
-      <UniqueIdentifier>{bd0aa873-99c8-4aff-8f3a-22fafb3beb2e}</UniqueIdentifier>
+      <UniqueIdentifier>{b1a9cb95-b02e-4879-90a0-641ef686122c}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\win32drv">
-      <UniqueIdentifier>{de62191d-1058-475d-adfc-ec09b79669b6}</UniqueIdentifier>
+      <UniqueIdentifier>{7ac75e15-a83c-4c6c-a117-eee2200dc14f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +91,9 @@
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers\sdl\sdl.h">
+      <Filter>lv_drivers\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_drivers\sdl\sdl_common.h">
       <Filter>lv_drivers\sdl</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers\sdl\sdl_gpu.h">
@@ -159,6 +162,9 @@
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
     <ClCompile Include="lv_drivers\sdl\sdl.c">
+      <Filter>lv_drivers\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_drivers\sdl\sdl_common.c">
       <Filter>lv_drivers\sdl</Filter>
     </ClCompile>
     <ClCompile Include="lv_drivers\sdl\sdl_gpu.c">

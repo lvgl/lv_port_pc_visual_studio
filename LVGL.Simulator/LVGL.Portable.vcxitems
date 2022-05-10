@@ -76,6 +76,7 @@
     <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw_blend.h" />
     <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw_dither.h" />
     <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw_gradient.h" />
+    <ClInclude Include="lvgl\src\draw\swm341_dma2d\lv_gpu_swm341_dma2d.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_arc.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_img.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="lvgl\src\draw\lv_draw_line.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_mask.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_rect.h" />
+    <ClInclude Include="lvgl\src\draw\lv_draw_transform.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_triangle.h" />
     <ClInclude Include="lvgl\src\draw\lv_img_buf.h" />
     <ClInclude Include="lvgl\src\draw\lv_img_cache.h" />
@@ -344,6 +346,7 @@
     <ClCompile Include="lvgl\examples\styles\lv_example_style_12.c" />
     <ClCompile Include="lvgl\examples\styles\lv_example_style_13.c" />
     <ClCompile Include="lvgl\examples\styles\lv_example_style_14.c" />
+    <ClCompile Include="lvgl\examples\styles\lv_example_style_15.c" />
     <ClCompile Include="lvgl\examples\styles\lv_example_style_2.c" />
     <ClCompile Include="lvgl\examples\styles\lv_example_style_3.c" />
     <ClCompile Include="lvgl\examples\styles\lv_example_style_4.c" />
@@ -474,6 +477,8 @@
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_transform.c" />
+    <ClCompile Include="lvgl\src\draw\swm341_dma2d\lv_gpu_swm341_dma2d.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_arc.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_img.c" />
@@ -481,6 +486,7 @@
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_mask.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c" />
+    <ClCompile Include="lvgl\src\draw\lv_draw_transform.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_triangle.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_buf.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_cache.c" />
@@ -613,6 +619,7 @@
     <ClCompile Include="lvgl\tests\src\test_cases\test_dropdown.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_event.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_font_loader.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_fs.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_line.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_obj_tree.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_slider.c" />
@@ -644,6 +651,7 @@
     <None Include="lvgl\.github\workflows\compile_docs.yml" />
     <None Include="lvgl\.github\workflows\esp_upload_component.yml" />
     <None Include="lvgl\.github\workflows\main.yml" />
+    <None Include="lvgl\.github\workflows\makefile.yml" />
     <None Include="lvgl\.github\workflows\release.yml" />
     <None Include="lvgl\.github\auto-comment.yml" />
     <None Include="lvgl\.github\FUNDING.yml" />
@@ -811,6 +819,7 @@
     <None Include="lvgl\docs\_static\img\home_5.png" />
     <None Include="lvgl\docs\_static\img\home_6.png" />
     <None Include="lvgl\docs\_static\img\home_banner.jpg" />
+    <None Include="lvgl\docs\_static\js\custom.js" />
     <None Include="lvgl\docs\_templates\layout.html" />
     <None Include="lvgl\docs\_templates\page.html" />
     <None Include="lvgl\docs\build.py" />
@@ -821,7 +830,6 @@
     <None Include="lvgl\docs\CONTRIBUTING.md" />
     <None Include="lvgl\docs\example_list.py" />
     <None Include="lvgl\docs\favicon.png" />
-    <None Include="lvgl\docs\header.rst" />
     <None Include="lvgl\docs\index.md" />
     <None Include="lvgl\docs\logo_lvgl.png" />
     <None Include="lvgl\docs\requirements.txt" />
@@ -831,7 +839,7 @@
     <None Include="lvgl\env_support\cmake\micropython.cmake" />
     <None Include="lvgl\env_support\cmake\zephyr.cmake" />
     <None Include="lvgl\env_support\cmsis-pack\gen_pack.sh" />
-    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.3-alpha.pack" />
+    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.3.pack" />
     <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.pdsc" />
     <None Include="lvgl\env_support\cmsis-pack\LVGL.pidx" />
     <None Include="lvgl\env_support\cmsis-pack\lv_cmsis_pack.txt" />
@@ -1095,6 +1103,7 @@
     <None Include="lvgl\src\draw\sdl\README.md" />
     <None Include="lvgl\src\draw\stm32_dma2d\lv_draw_stm32_dma2d.mk" />
     <None Include="lvgl\src\draw\sw\lv_draw_sw.mk" />
+    <None Include="lvgl\src\draw\swm341_dma2d\lv_draw_swm341_dma2d.mk" />
     <None Include="lvgl\src\draw\lv_draw.mk" />
     <None Include="lvgl\src\extra\libs\freetype\arial.ttf" />
     <None Include="lvgl\src\extra\others\fragment\README.md" />
@@ -1109,6 +1118,7 @@
     <None Include="lvgl\tests\ref_imgs\dropdown_2.png" />
     <None Include="lvgl\tests\ref_imgs\scr1.png" />
     <None Include="lvgl\tests\ref_imgs\table_1.png" />
+    <None Include="lvgl\tests\src\test_files\readtest.txt" />
     <None Include="lvgl\tests\src\test_fonts\font_1.fnt" />
     <None Include="lvgl\tests\src\test_fonts\font_2.fnt" />
     <None Include="lvgl\tests\src\test_fonts\font_3.fnt" />
