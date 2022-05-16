@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="Mile.Project\Mile.Project.Platform.Win32.props" />
-  <Import Project="Mile.Project\Mile.Project.Platform.x64.props" />
-  <Import Project="Mile.Project\Mile.Project.Platform.ARM64.props" />
+  <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Platform.Win32.props" />
+  <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Platform.x64.props" />
+  <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Platform.ARM64.props" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>ConsoleApplication</MileProjectType>
     <MileProjectManifestFile>LVGL.Simulator.manifest</MileProjectManifestFile>
+    <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
     <SupportLTL>false</SupportLTL>
   </PropertyGroup>
-  <Import Project="Mile.Project\Mile.Project.props" />
-  <Import Project="Mile.Project\Mile.Project.Runtime.VC-LTL.props" />
+  <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
   <Import Project="freetype.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(IncludePath)</IncludePath>
@@ -54,5 +54,5 @@
   <ItemGroup>
     <None Include="freetype.props" />
   </ItemGroup>
-  <Import Project="Mile.Project\Mile.Project.targets" />
+  <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Cpp.targets" />
 </Project>
