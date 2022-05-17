@@ -621,6 +621,7 @@
     <ClCompile Include="lvgl\tests\src\test_cases\test_font_loader.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_fs.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_line.c" />
+    <ClCompile Include="lvgl\tests\src\test_cases\test_mem.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_obj_tree.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_slider.c" />
     <ClCompile Include="lvgl\tests\src\test_cases\test_snapshot.c" />
@@ -839,7 +840,7 @@
     <None Include="lvgl\env_support\cmake\micropython.cmake" />
     <None Include="lvgl\env_support\cmake\zephyr.cmake" />
     <None Include="lvgl\env_support\cmsis-pack\gen_pack.sh" />
-    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.3.pack" />
+    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.4-alpha5.pack" />
     <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.pdsc" />
     <None Include="lvgl\env_support\cmsis-pack\LVGL.pidx" />
     <None Include="lvgl\env_support\cmsis-pack\lv_cmsis_pack.txt" />
@@ -1114,6 +1115,7 @@
     <None Include="lvgl\src\hal\lv_hal.mk" />
     <None Include="lvgl\src\misc\lv_misc.mk" />
     <None Include="lvgl\src\widgets\lv_widgets.mk" />
+    <None Include="lvgl\tests\makefile\Makefile" />
     <None Include="lvgl\tests\ref_imgs\dropdown_1.png" />
     <None Include="lvgl\tests\ref_imgs\dropdown_2.png" />
     <None Include="lvgl\tests\ref_imgs\scr1.png" />
@@ -1144,6 +1146,7 @@
     <None Include="lvgl\LICENCE.txt" />
     <None Include="lvgl\lvgl.mk" />
     <None Include="lvgl\README.md" />
+    <None Include="lvgl\README_pt_BR.md" />
     <None Include="lvgl\README_zh.md" />
     <None Include="lvgl\SConscript" />
   </ItemGroup>
