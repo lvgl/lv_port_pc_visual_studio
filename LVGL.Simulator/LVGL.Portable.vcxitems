@@ -31,6 +31,7 @@
     <ClInclude Include="lvgl\examples\libs\lv_example_libs.h" />
     <ClInclude Include="lvgl\examples\others\fragment\lv_example_fragment.h" />
     <ClInclude Include="lvgl\examples\others\gridnav\lv_example_gridnav.h" />
+    <ClInclude Include="lvgl\examples\others\ime\lv_example_ime_pinyin.h" />
     <ClInclude Include="lvgl\examples\others\imgfont\lv_example_imgfont.h" />
     <ClInclude Include="lvgl\examples\others\monkey\lv_example_monkey.h" />
     <ClInclude Include="lvgl\examples\others\msg\lv_example_msg.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_composite.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_img.h" />
+    <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_layer.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_mask.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_priv.h" />
     <ClInclude Include="lvgl\src\draw\sdl\lv_draw_sdl_rect.h" />
@@ -86,6 +88,7 @@
     <ClInclude Include="lvgl\src\draw\lv_draw_arc.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_img.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_label.h" />
+    <ClInclude Include="lvgl\src\draw\lv_draw_layer.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_line.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_mask.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_rect.h" />
@@ -114,6 +117,7 @@
     <ClInclude Include="lvgl\src\extra\libs\lv_libs.h" />
     <ClInclude Include="lvgl\src\extra\others\fragment\lv_fragment.h" />
     <ClInclude Include="lvgl\src\extra\others\gridnav\lv_gridnav.h" />
+    <ClInclude Include="lvgl\src\extra\others\ime\lv_ime_pinyin.h" />
     <ClInclude Include="lvgl\src\extra\others\imgfont\lv_imgfont.h" />
     <ClInclude Include="lvgl\src\extra\others\monkey\lv_monkey.h" />
     <ClInclude Include="lvgl\src\extra\others\msg\lv_msg.h" />
@@ -212,6 +216,7 @@
     <ClCompile Include="lvgl\demos\benchmark\assets\img_benchmark_cogwheel_chroma_keyed.c" />
     <ClCompile Include="lvgl\demos\benchmark\assets\img_benchmark_cogwheel_indexed16.c" />
     <ClCompile Include="lvgl\demos\benchmark\assets\img_benchmark_cogwheel_rgb.c" />
+    <ClCompile Include="lvgl\demos\benchmark\assets\img_benchmark_cogwheel_rgb565a8.c" />
     <ClCompile Include="lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_12_compr_az.c.c" />
     <ClCompile Include="lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_16_compr_az.c.c" />
     <ClCompile Include="lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_28_compr_az.c.c" />
@@ -328,6 +333,8 @@
     <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_2.c" />
     <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_3.c" />
     <ClCompile Include="lvgl\examples\others\gridnav\lv_example_gridnav_4.c" />
+    <ClCompile Include="lvgl\examples\others\ime\lv_example_ime_pinyin_1.c" />
+    <ClCompile Include="lvgl\examples\others\ime\lv_example_ime_pinyin_2.c" />
     <ClCompile Include="lvgl\examples\others\imgfont\lv_example_imgfont_1.c" />
     <ClCompile Include="lvgl\examples\others\monkey\lv_example_monkey_1.c" />
     <ClCompile Include="lvgl\examples\others\monkey\lv_example_monkey_2.c" />
@@ -469,6 +476,7 @@
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_composite.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_img.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_label.c" />
+    <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_layer.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_line.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_mask.c" />
     <ClCompile Include="lvgl\src\draw\sdl\lv_draw_sdl_polygon.c" />
@@ -483,6 +491,7 @@
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_dither.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_gradient.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_img.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_layer.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_letter.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c" />
@@ -493,6 +502,7 @@
     <ClCompile Include="lvgl\src\draw\lv_draw_arc.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_img.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_label.c" />
+    <ClCompile Include="lvgl\src\draw\lv_draw_layer.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_mask.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c" />
@@ -522,6 +532,7 @@
     <ClCompile Include="lvgl\src\extra\others\fragment\lv_fragment.c" />
     <ClCompile Include="lvgl\src\extra\others\fragment\lv_fragment_manager.c" />
     <ClCompile Include="lvgl\src\extra\others\gridnav\lv_gridnav.c" />
+    <ClCompile Include="lvgl\src\extra\others\ime\lv_ime_pinyin.c" />
     <ClCompile Include="lvgl\src\extra\others\imgfont\lv_imgfont.c" />
     <ClCompile Include="lvgl\src\extra\others\monkey\lv_monkey.c" />
     <ClCompile Include="lvgl\src\extra\others\msg\lv_msg.c" />
@@ -745,6 +756,7 @@
     <None Include="lvgl\docs\misc\visualstudio.jpg" />
     <None Include="lvgl\docs\others\fragment.md" />
     <None Include="lvgl\docs\others\gridnav.md" />
+    <None Include="lvgl\docs\others\ime_pinyin.md" />
     <None Include="lvgl\docs\others\imgfont.md" />
     <None Include="lvgl\docs\others\index.md" />
     <None Include="lvgl\docs\others\monkey.md" />
@@ -850,7 +862,7 @@
     <None Include="lvgl\env_support\cmake\micropython.cmake" />
     <None Include="lvgl\env_support\cmake\zephyr.cmake" />
     <None Include="lvgl\env_support\cmsis-pack\gen_pack.sh" />
-    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.4-alpha5.pack" />
+    <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.1.0.6.pack" />
     <None Include="lvgl\env_support\cmsis-pack\LVGL.lvgl.pdsc" />
     <None Include="lvgl\env_support\cmsis-pack\LVGL.pidx" />
     <None Include="lvgl\env_support\cmsis-pack\lv_cmsis_pack.txt" />
@@ -938,6 +950,7 @@
     <None Include="lvgl\examples\libs\sjpg\small_image.sjpg" />
     <None Include="lvgl\examples\others\fragment\index.rst" />
     <None Include="lvgl\examples\others\gridnav\index.rst" />
+    <None Include="lvgl\examples\others\ime\index.rst" />
     <None Include="lvgl\examples\others\imgfont\index.rst" />
     <None Include="lvgl\examples\others\monkey\index.rst" />
     <None Include="lvgl\examples\others\msg\index.rst" />
