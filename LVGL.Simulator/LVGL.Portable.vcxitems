@@ -274,6 +274,7 @@
     <ClCompile Include="lvgl\demos\widgets\assets\img_demo_widgets_avatar.c" />
     <ClCompile Include="lvgl\demos\widgets\assets\img_lvgl_logo.c" />
     <ClCompile Include="lvgl\demos\widgets\lv_demo_widgets.c" />
+    <ClCompile Include="lvgl\env_support\rt-thread\squareline\ui\lv_ui_entry.c" />
     <ClCompile Include="lvgl\env_support\rt-thread\lv_rt_thread_port.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_1.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_2.c" />
@@ -867,6 +868,8 @@
     <None Include="lvgl\env_support\cmsis-pack\LVGL.pidx" />
     <None Include="lvgl\env_support\cmsis-pack\lv_cmsis_pack.txt" />
     <None Include="lvgl\env_support\cmsis-pack\README.md" />
+    <None Include="lvgl\env_support\rt-thread\squareline\README.md" />
+    <None Include="lvgl\env_support\rt-thread\squareline\SConscript" />
     <None Include="lvgl\env_support\rt-thread\SConscript" />
     <None Include="lvgl\env_support\zephyr\module.yml" />
     <None Include="lvgl\examples\anim\index.rst" />
@@ -927,8 +930,8 @@
     <None Include="lvgl\examples\libs\ffmpeg\birds.mp4" />
     <None Include="lvgl\examples\libs\ffmpeg\ffmpeg.png" />
     <None Include="lvgl\examples\libs\ffmpeg\index.rst" />
-    <None Include="lvgl\examples\libs\freetype\arial.ttf" />
     <None Include="lvgl\examples\libs\freetype\index.rst" />
+    <None Include="lvgl\examples\libs\freetype\Lato-Regular.ttf" />
     <None Include="lvgl\examples\libs\freetype\lv_example_freetype_1.py" />
     <None Include="lvgl\examples\libs\gif\bulb.gif" />
     <None Include="lvgl\examples\libs\gif\img_bulb_gif.py" />
