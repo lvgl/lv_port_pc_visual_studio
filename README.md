@@ -83,7 +83,7 @@ with a second command. Both commands are shown below.
 
 ```
 git clone https://github.com/lvgl/lv_sim_visual_studio.git
-cd lv_sim_visual_studio
+cd lv_port_win_visual_studio
 git submodule update --init --recursive
 ```
 
