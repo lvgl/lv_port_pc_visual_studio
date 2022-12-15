@@ -13,6 +13,7 @@
     <ClInclude Include="lvgl\demos\widgets\lv_demo_widgets.h" />
     <ClInclude Include="lvgl\demos\lv_demos.h" />
     <ClInclude Include="lvgl\env_support\cmsis-pack\lv_conf_cmsis.h" />
+    <ClInclude Include="lvgl\env_support\rt-thread\squareline\ui\lvgl\lvgl.h" />
     <ClInclude Include="lvgl\env_support\rt-thread\lv_rt_thread_conf.h" />
     <ClInclude Include="lvgl\examples\anim\lv_example_anim.h" />
     <ClInclude Include="lvgl\examples\event\lv_example_event.h" />
@@ -274,7 +275,7 @@
     <ClCompile Include="lvgl\demos\widgets\assets\img_demo_widgets_avatar.c" />
     <ClCompile Include="lvgl\demos\widgets\assets\img_lvgl_logo.c" />
     <ClCompile Include="lvgl\demos\widgets\lv_demo_widgets.c" />
-    <ClCompile Include="lvgl\env_support\rt-thread\squareline\ui\lv_ui_entry.c" />
+    <ClCompile Include="lvgl\env_support\rt-thread\squareline\lv_ui_entry.c" />
     <ClCompile Include="lvgl\env_support\rt-thread\lv_rt_thread_port.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_1.c" />
     <ClCompile Include="lvgl\examples\anim\lv_example_anim_2.c" />
