@@ -33,10 +33,8 @@
 
 #include <stdio.h>
 
-int main()
+bool single_display_mode_initialization()
 {
-    lv_init();
-
     if (!lv_win32_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
@@ -44,10 +42,226 @@ int main()
         480,
         LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
     {
-        return -1;
+        return false;
     }
 
     lv_win32_add_all_input_devices_to_group(NULL);
+
+    return true;
+}
+
+#include <process.h>
+
+HANDLE g_window_mutex = NULL;
+bool g_initialization_status = false;
+
+#define LVGL_SIMULATOR_MAXIMUM_DISPLAYS 16
+HWND g_display_window_handles[LVGL_SIMULATOR_MAXIMUM_DISPLAYS];
+
+void fuck()
+{
+
+}
+
+unsigned int __stdcall lv_win32_window_thread_entrypoint(
+    void* raw_parameter)
+{
+    size_t display_id = *(size_t*)(raw_parameter);
+
+    HINSTANCE instance_handle = GetModuleHandleW(NULL);
+    int show_window_mode = SW_SHOW;
+    HICON icon_handle = LoadIconW(instance_handle, MAKEINTRESOURCE(IDI_LVGL));
+    lv_coord_t hor_res = 800;
+    lv_coord_t ver_res = 450;
+
+    wchar_t window_title[256];
+    memset(window_title, 0, sizeof(window_title));
+    _snwprintf(
+        window_title,
+        256,
+        L"LVGL Simulator for Windows Desktop (Display %d)",
+        display_id);
+
+    g_display_window_handles[display_id] = lv_win32_create_display_window(
+        window_title,
+        hor_res,
+        ver_res,
+        instance_handle,
+        icon_handle,
+        show_window_mode);
+    if (!g_display_window_handles[display_id])
+    {
+        return 0;
+    }
+
+    g_initialization_status = true;
+
+    SetEvent(g_window_mutex);
+
+    MSG message;
+    while (GetMessageW(&message, NULL, 0, 0))
+    {
+        TranslateMessage(&message);
+        DispatchMessageW(&message);
+    }
+
+    lv_win32_quit_signal = true;
+
+    return 0;
+}
+
+bool multiple_display_mode_initialization()
+{
+    if (!lv_win32_init_window_class())
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < LVGL_SIMULATOR_MAXIMUM_DISPLAYS; ++i)
+    {
+        g_initialization_status = false;
+
+        g_window_mutex = CreateEventExW(NULL, NULL, 0, EVENT_ALL_ACCESS);
+
+        _beginthreadex(
+            NULL,
+            0,
+            lv_win32_window_thread_entrypoint,
+            &i,
+            0,
+            NULL);
+
+        WaitForSingleObjectEx(g_window_mutex, INFINITE, FALSE);
+
+        CloseHandle(g_window_mutex);
+
+        if (!g_initialization_status)
+        {
+            return false;
+        }
+    }
+
+    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+        lv_win32_get_window_context(g_display_window_handles[0]));
+    if (context)
+    {
+        lv_win32_pointer_device_object = context->mouse_device_object;
+        lv_win32_keypad_device_object = context->keyboard_device_object;
+        lv_win32_encoder_device_object = context->mousewheel_device_object;
+    }
+
+    lv_win32_add_all_input_devices_to_group(NULL);
+
+    return true;
+}
+
+//static lv_obj_t* label;
+//
+//static void slider_event_cb(lv_event_t* e)
+//{
+//    lv_obj_t* slider = lv_event_get_target(e);
+//
+//    /*Refresh the text*/
+//    lv_label_set_text_fmt(label, "%d", lv_slider_get_value(slider));
+//    lv_obj_align_to(label, slider, LV_ALIGN_OUT_TOP_MID, 0, -15);    /*Align top of the slider*/
+//}
+
+int main()
+{
+    lv_init();
+
+    if (!single_display_mode_initialization())
+    {
+        return -1;
+    }
+
+    /*if (!multiple_display_mode_initialization())
+    {
+        return -1;
+    }
+    else
+    {
+        for (size_t i = 0; i < LVGL_SIMULATOR_MAXIMUM_DISPLAYS; ++i)
+        {
+            lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+                lv_win32_get_window_context(g_display_window_handles[i]));
+            if (context)
+            {
+                lv_disp_set_default(context->display_device_object);
+                switch (i)
+                {
+                case 0:
+                    lv_demo_widgets();
+                    break;
+                case 1:
+                    lv_demo_benchmark();
+                    break;
+                case 2:
+                    lv_example_style_1();
+                    break;
+                case 3:
+                    lv_example_get_started_1();
+                    break;
+                case 4:
+                    lv_example_anim_1();
+                    break;
+                case 5:
+                    lv_example_style_2();
+                    break;
+                case 6:
+                    lv_example_get_started_2();
+                    break;
+                case 7:
+                    lv_example_anim_2();
+                    break;
+                case 8:
+                    lv_example_style_3();
+                    break;
+                case 9:
+                    lv_example_get_started_3();
+                    break;
+                case 10:
+                    lv_example_anim_3();
+                    break;
+                case 11:
+                    lv_example_style_4();
+                    break;
+                case 12:
+                    lv_example_style_5();
+                    break;
+                case 13:
+                    lv_example_style_6();
+                    break;
+                case 14:
+                    lv_example_imgfont_1();
+                    break;
+                case 15:
+                    lv_example_style_7();
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }*/
+
+    //lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+    //    lv_win32_get_window_context(g_display_window_handles[1]));
+    //if (context)
+    //{
+    //    lv_obj_t* scr = lv_disp_get_scr_act(context->display_device_object);
+
+    //    /*Create a slider in the center of the display*/
+    //    lv_obj_t* slider = lv_slider_create(scr);
+    //    lv_obj_set_width(slider, 200);                          /*Set the width*/
+    //    lv_obj_center(slider);                                  /*Align to the center of the parent (screen)*/
+    //    lv_obj_add_event_cb(slider, slider_event_cb, LV_EVENT_VALUE_CHANGED, NULL);     /*Assign an event function*/
+
+    //    /*Create a label above the slider*/
+    //    label = lv_label_create(scr);
+    //    lv_label_set_text(label, "0");
+    //    lv_obj_align_to(label, slider, LV_ALIGN_OUT_TOP_MID, 0, -15);    /*Align top of the slider*/
+    //}
 
     /*
      * Demos, benchmarks, and tests.
@@ -105,7 +319,7 @@ int main()
     // ----------------------------------
 
     lv_demo_widgets();           // ok
-    // lv_demo_benchmark();
+    //lv_demo_benchmark();
     // lv_demo_keypad_encoder();    // ok
     // lv_demo_music();             // removed from repository
     // lv_demo_printer();           // removed from repository
