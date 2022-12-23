@@ -58,11 +58,6 @@ bool g_initialization_status = false;
 #define LVGL_SIMULATOR_MAXIMUM_DISPLAYS 16
 HWND g_display_window_handles[LVGL_SIMULATOR_MAXIMUM_DISPLAYS];
 
-void fuck()
-{
-
-}
-
 unsigned int __stdcall lv_win32_window_thread_entrypoint(
     void* raw_parameter)
 {
