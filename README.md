@@ -2,6 +2,12 @@
 
 ![Screenshot](Screenshot.png)
 
+In order to better maintain LVGL for Windows Visual Studio port, I have planned
+to do a big refactoring for this repository. I think it may be the biggest
+refactoring since I become the maintainer of this repository. For more 
+information, please read
+https://github.com/lvgl/lv_port_win_visual_studio/issues/53.
+
 ## Introduction
 
 This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The
