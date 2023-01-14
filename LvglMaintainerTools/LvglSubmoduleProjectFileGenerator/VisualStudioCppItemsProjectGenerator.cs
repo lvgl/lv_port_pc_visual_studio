@@ -11,23 +11,19 @@ namespace LvglSubmoduleProjectFileGenerator
         internal XmlDocument projectDocument = null;
         internal XmlDocument filtersDocument = null;
 
-        internal XmlElement projectClCompile = null;
         internal XmlElement projectNone = null;
 
-        internal XmlElement filtersClCompile = null;
         internal XmlElement filtersNone = null;
 
         List<string> FilterNames = new List<string>();
         List<(string, string)> HeaderNames = new List<(string, string)>();
+        List<(string, string)> SourceNames = new List<(string, string)>();
 
         internal VisualStudioCppItemsProjectGenerator()
         {
             projectDocument = new XmlDocument();
             if (projectDocument != null)
             {
-                projectClCompile = projectDocument.CreateElement(
-                    "ItemGroup",
-                    defaultNamespace);
                 projectNone = projectDocument.CreateElement(
                     "ItemGroup",
                     defaultNamespace);
@@ -36,9 +32,6 @@ namespace LvglSubmoduleProjectFileGenerator
             filtersDocument = new XmlDocument();
             if (filtersDocument != null)
             {
-                filtersClCompile = filtersDocument.CreateElement(
-                    "ItemGroup",
-                    defaultNamespace);
                 filtersNone = filtersDocument.CreateElement(
                     "ItemGroup",
                     defaultNamespace);
@@ -65,41 +58,7 @@ namespace LvglSubmoduleProjectFileGenerator
                         }
                 else if (item.Extension == ".c" || item.Extension == ".cpp")
                 {
-                    if (projectDocument != null)
-                    {
-                        XmlElement clCompile = projectDocument.CreateElement(
-                            "ClCompile",
-                            defaultNamespace);
-                        if (clCompile != null)
-                        {
-                            clCompile.SetAttribute(
-                                "Include",
-                                item.FullName);
-                            projectClCompile.AppendChild(clCompile);
-                        }
-                    }
-
-                    if (filtersDocument != null)
-                    {
-                        XmlElement clCompile = filtersDocument.CreateElement(
-                            "ClCompile",
-                            defaultNamespace);
-                        if (clCompile != null)
-                        {
-                            clCompile.SetAttribute(
-                                "Include",
-                                item.FullName);
-                            XmlElement filter = filtersDocument.CreateElement(
-                                "Filter",
-                                defaultNamespace);
-                            if (filter != null)
-                            {
-                                filter.InnerText = item.Directory.FullName;
-                                clCompile.AppendChild(filter);
-                            }
-                            filtersClCompile.AppendChild(clCompile);
-                        }
-                    }
+                    SourceNames.Add((item.FullName, item.Directory.FullName));
                 }
                 else
                 {
@@ -220,6 +179,52 @@ namespace LvglSubmoduleProjectFileGenerator
             return (ProjectItems, FiltersItems);
         }
 
+        internal (XmlElement, XmlElement) BuildSourceItemsFromSourceNames(
+            List<(string, string)> SourceNames)
+        {
+            XmlElement ProjectItems = projectDocument.CreateElement(
+                "ItemGroup",
+                defaultNamespace);
+            XmlElement FiltersItems = filtersDocument.CreateElement(
+                "ItemGroup",
+                defaultNamespace);
+
+            foreach (var SourceName in SourceNames)
+            {
+                XmlElement ProjectItem = projectDocument.CreateElement(
+                    "ClCompile",
+                    defaultNamespace);
+                if (ProjectItem != null)
+                {
+                    ProjectItem.SetAttribute(
+                        "Include",
+                        SourceName.Item1);
+                    ProjectItems.AppendChild(ProjectItem);
+                }
+
+                XmlElement FiltersItem = filtersDocument.CreateElement(
+                    "ClCompile",
+                    defaultNamespace);
+                if (FiltersItem != null)
+                {
+                    FiltersItem.SetAttribute(
+                        "Include",
+                        SourceName.Item1);
+                    XmlElement Filter = filtersDocument.CreateElement(
+                        "Filter",
+                        defaultNamespace);
+                    if (Filter != null)
+                    {
+                        Filter.InnerText = SourceName.Item2;
+                        FiltersItem.AppendChild(Filter);
+                    }
+                    FiltersItems.AppendChild(FiltersItem);
+                }
+            }
+
+            return (ProjectItems, FiltersItems);
+        }
+
         internal void CreateFiles(
             string rootPath,
             string filePath,
@@ -227,6 +232,8 @@ namespace LvglSubmoduleProjectFileGenerator
         {
             (XmlElement ProjectItems, XmlElement FiltersItems) HeaderItems =
                 BuildHeaderItemsFromHeaderNames(HeaderNames);
+            (XmlElement ProjectItems, XmlElement FiltersItems) SourceItems =
+                BuildSourceItemsFromSourceNames(SourceNames);
 
             if (projectDocument != null)
             {
@@ -242,7 +249,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     "4.0");
 
                 xmlElement.AppendChild(HeaderItems.ProjectItems);
-                xmlElement.AppendChild(projectClCompile);
+                xmlElement.AppendChild(SourceItems.ProjectItems);
                 xmlElement.AppendChild(projectNone);
 
                 projectDocument.AppendChild(xmlElement);
@@ -291,7 +298,7 @@ namespace LvglSubmoduleProjectFileGenerator
                 xmlElement.AppendChild(
                     BuildFilterItemsFromFilterNames(FilterNames));
                 xmlElement.AppendChild(HeaderItems.FiltersItems);
-                xmlElement.AppendChild(filtersClCompile);
+                xmlElement.AppendChild(SourceItems.FiltersItems);
                 xmlElement.AppendChild(filtersNone);
 
                 filtersDocument.AppendChild(xmlElement);
