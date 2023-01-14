@@ -40,6 +40,20 @@ namespace LvglSubmoduleProjectFileGenerator
 
             Console.WriteLine(Root);
 
+            string rootPath = Path.GetFullPath(Root + @"\LVGL.Simulator");
+
+            VisualStudioCppItemsProjectGenerator.Generate(
+                rootPath + @"\lvgl",
+                rootPath + @"\",
+                rootPath,
+                @"LVGL.Portable");
+
+            VisualStudioCppItemsProjectGenerator.Generate(
+                rootPath + @"\lv_drivers",
+                rootPath + @"\",
+                rootPath,
+                @"LVGL.Drivers");
+
             Console.WriteLine("Hello, World!");
 
             Console.ReadKey();
