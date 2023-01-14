@@ -15,10 +15,11 @@ namespace LvglSubmoduleProjectFileGenerator
         internal XmlElement projectClCompile = null;
         internal XmlElement projectNone = null;
 
-        internal XmlElement filtersFilter = null;
         internal XmlElement filtersClInclude = null;
         internal XmlElement filtersClCompile = null;
         internal XmlElement filtersNone = null;
+
+        List<string> FilterNames = new List<string>();
 
         internal VisualStudioCppItemsProjectGenerator()
         {
@@ -39,9 +40,6 @@ namespace LvglSubmoduleProjectFileGenerator
             filtersDocument = new XmlDocument();
             if (filtersDocument != null)
             {
-                filtersFilter = filtersDocument.CreateElement(
-                    "ItemGroup",
-                    defaultNamespace);
                 filtersClInclude = filtersDocument.CreateElement(
                     "ItemGroup",
                     defaultNamespace);
@@ -59,28 +57,7 @@ namespace LvglSubmoduleProjectFileGenerator
         {
             DirectoryInfo folder = new DirectoryInfo(path);
 
-            if (filtersFilter != null)
-            {
-                XmlElement filter = filtersDocument.CreateElement(
-                    "Filter",
-                    defaultNamespace);
-                if (filter != null)
-                {
-                    filter.SetAttribute(
-                        "Include",
-                        folder.FullName);
-                    XmlElement uniqueIdentifier = filtersDocument.CreateElement(
-                        "UniqueIdentifier",
-                        defaultNamespace);
-                    if (uniqueIdentifier != null)
-                    {
-                        uniqueIdentifier.InnerText =
-                            "{" + Guid.NewGuid().ToString() + "}";
-                        filter.AppendChild(uniqueIdentifier);
-                    }
-                    filtersFilter.AppendChild(filter);
-                }
-            }
+            FilterNames.Add(folder.FullName);
 
             foreach (var item in folder.GetDirectories())
             {
@@ -206,6 +183,38 @@ namespace LvglSubmoduleProjectFileGenerator
             }
         }
 
+        internal XmlElement BuildFilterItemsFromFilterNames(
+            List<string> FilterNames)
+        {
+            XmlElement FilterItems = filtersDocument.CreateElement(
+                "ItemGroup",
+                defaultNamespace);
+            foreach (var FilterName in FilterNames)
+            {
+                XmlElement FilterItem = filtersDocument.CreateElement(
+                    "Filter",
+                    defaultNamespace);
+                if (FilterItem != null)
+                {
+                    FilterItem.SetAttribute(
+                        "Include",
+                        FilterName);
+                    XmlElement UniqueIdentifier = filtersDocument.CreateElement(
+                        "UniqueIdentifier",
+                        defaultNamespace);
+                    if (UniqueIdentifier != null)
+                    {
+                        UniqueIdentifier.InnerText =
+                            string.Format("{{{0}}}", Guid.NewGuid());
+                        FilterItem.AppendChild(UniqueIdentifier);
+                    }
+                    FilterItems.AppendChild(FilterItem);
+                }
+            }
+
+            return FilterItems;
+        }
+
         internal void CreateFiles(
             string rootPath,
             string filePath,
@@ -271,7 +280,8 @@ namespace LvglSubmoduleProjectFileGenerator
                     "ToolsVersion",
                     "4.0");
 
-                xmlElement.AppendChild(filtersFilter);
+                xmlElement.AppendChild(
+                    BuildFilterItemsFromFilterNames(FilterNames));
                 xmlElement.AppendChild(filtersClInclude);
                 xmlElement.AppendChild(filtersClCompile);
                 xmlElement.AppendChild(filtersNone);
