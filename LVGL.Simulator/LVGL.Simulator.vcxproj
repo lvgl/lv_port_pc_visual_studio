@@ -16,14 +16,14 @@
   <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
   <Import Project="freetype.props" />
   <PropertyGroup>
-    <IncludePath>$(MSBuildThisFileDirectory);$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildThisFileDirectory);$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\;$(MSBuildThisFileDirectory)..\LvglPlatform\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>LV_CONF_INCLUDE_SIMPLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LV_CONF_INCLUDE_SIMPLE;LV_LVGL_H_INCLUDE_SIMPLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
     </ClCompile>
   </ItemDefinitionGroup>
