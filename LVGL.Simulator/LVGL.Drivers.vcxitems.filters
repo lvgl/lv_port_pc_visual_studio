@@ -30,206 +30,206 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lv_drivers\display\drm.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\drm.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\fbdev.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\fbdev.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\GC9A01.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\GC9A01.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\ILI9341.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\ILI9341.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\monitor.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\monitor.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\R61581.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\R61581.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\SHARP_MIP.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\SHARP_MIP.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\SSD1963.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\SSD1963.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\ST7565.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\ST7565.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\display\UC1610.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\UC1610.h">
       <Filter>lv_drivers\display</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\gtkdrv\gtkdrv.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\gtkdrv\gtkdrv.h">
       <Filter>lv_drivers\gtkdrv</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\AD_touch.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\AD_touch.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\evdev.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\evdev.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\FT5406EE8.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\FT5406EE8.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\keyboard.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\keyboard.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\libinput_drv.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\libinput_drv.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\mouse.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\mouse.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\mousewheel.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\mousewheel.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\xkb.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\xkb.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\indev\XPT2046.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\XPT2046.h">
       <Filter>lv_drivers\indev</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\sdl\sdl.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl.h">
       <Filter>lv_drivers\sdl</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\sdl\sdl_common.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl_common.h">
       <Filter>lv_drivers\sdl</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\sdl\sdl_common_internal.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl_common_internal.h">
       <Filter>lv_drivers\sdl</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\sdl\sdl_gpu.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl_gpu.h">
       <Filter>lv_drivers\sdl</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\wayland\wayland.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\wayland\wayland.h">
       <Filter>lv_drivers\wayland</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\win32drv\win32drv.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\win32drv\win32drv.h">
       <Filter>lv_drivers\win32drv</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\lv_drv_conf_template.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\lv_drv_conf_template.h">
       <Filter>lv_drivers</Filter>
     </ClInclude>
-    <ClInclude Include="lv_drivers\win_drv.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\win_drv.h">
       <Filter>lv_drivers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lv_drivers\display\drm.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\drm.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\fbdev.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\fbdev.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\GC9A01.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\GC9A01.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\ILI9341.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\ILI9341.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\R61581.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\R61581.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\SHARP_MIP.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\SHARP_MIP.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\SSD1963.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\SSD1963.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\ST7565.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\ST7565.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\UC1610.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\display\UC1610.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\gtkdrv\gtkdrv.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\gtkdrv\gtkdrv.c">
       <Filter>lv_drivers\gtkdrv</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\AD_touch.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\AD_touch.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\evdev.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\evdev.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\FT5406EE8.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\FT5406EE8.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\libinput.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\libinput.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\xkb.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\xkb.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\XPT2046.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\indev\XPT2046.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\sdl\sdl.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl.c">
       <Filter>lv_drivers\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\sdl\sdl_common.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl_common.c">
       <Filter>lv_drivers\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\sdl\sdl_gpu.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\sdl\sdl_gpu.c">
       <Filter>lv_drivers\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\wayland\wayland.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\wayland\wayland.c">
       <Filter>lv_drivers\wayland</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\win32drv\win32drv.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\win32drv\win32drv.c">
       <Filter>lv_drivers\win32drv</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\win_drv.c">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\win_drv.c">
       <Filter>lv_drivers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lv_drivers\.github\auto-comment.yml">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\.github\auto-comment.yml">
       <Filter>lv_drivers\.github</Filter>
     </None>
-    <None Include="lv_drivers\.github\stale.yml">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\.github\stale.yml">
       <Filter>lv_drivers\.github</Filter>
     </None>
-    <None Include="lv_drivers\docs\astyle_c">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\docs\astyle_c">
       <Filter>lv_drivers\docs</Filter>
     </None>
-    <None Include="lv_drivers\docs\astyle_h">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\docs\astyle_h">
       <Filter>lv_drivers\docs</Filter>
     </None>
-    <None Include="lv_drivers\gtkdrv\broadway.png">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\gtkdrv\broadway.png">
       <Filter>lv_drivers\gtkdrv</Filter>
     </None>
-    <None Include="lv_drivers\gtkdrv\README.md">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\gtkdrv\README.md">
       <Filter>lv_drivers\gtkdrv</Filter>
     </None>
-    <None Include="lv_drivers\wayland\.gitignore">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\wayland\.gitignore">
       <Filter>lv_drivers\wayland</Filter>
     </None>
-    <None Include="lv_drivers\wayland\CMakeLists.txt">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\wayland\CMakeLists.txt">
       <Filter>lv_drivers\wayland</Filter>
     </None>
-    <None Include="lv_drivers\wayland\README.md">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\wayland\README.md">
       <Filter>lv_drivers\wayland</Filter>
     </None>
-    <None Include="lv_drivers\.git">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\.git">
       <Filter>lv_drivers</Filter>
     </None>
-    <None Include="lv_drivers\.gitignore">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\.gitignore">
       <Filter>lv_drivers</Filter>
     </None>
-    <None Include="lv_drivers\CMakeLists.txt">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\CMakeLists.txt">
       <Filter>lv_drivers</Filter>
     </None>
-    <None Include="lv_drivers\library.json">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\library.json">
       <Filter>lv_drivers</Filter>
     </None>
-    <None Include="lv_drivers\LICENSE">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\LICENSE">
       <Filter>lv_drivers</Filter>
     </None>
-    <None Include="lv_drivers\lv_drivers.mk">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\lv_drivers.mk">
       <Filter>lv_drivers</Filter>
     </None>
-    <None Include="lv_drivers\README.md">
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lv_drivers\README.md">
       <Filter>lv_drivers</Filter>
     </None>
   </ItemGroup>
