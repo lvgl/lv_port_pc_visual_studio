@@ -91,7 +91,7 @@ namespace LvglSubmoduleProjectFileGenerator
 
             {
                 XmlDocument Document =
-                    VisualStudioCppSharedProjectCreator.CreateProjectDocument(
+                    VisualStudioProjectUtilities.CreateCppSharedProject(
                         Guid.NewGuid(),
                         NewHeaderNames,
                         NewSourceNames,
@@ -112,7 +112,7 @@ namespace LvglSubmoduleProjectFileGenerator
 
             {
                 XmlDocument Document =
-                    VisualStudioCppSharedProjectCreator.CreateFiltersDocument(
+                    VisualStudioProjectUtilities.CreateCppSharedFilters(
                         FilterNames,
                         NewHeaderNames,
                         NewSourceNames,

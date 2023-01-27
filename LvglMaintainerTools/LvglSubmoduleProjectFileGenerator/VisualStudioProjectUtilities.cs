@@ -2,7 +2,7 @@
 
 namespace LvglSubmoduleProjectFileGenerator
 {
-    public class VisualStudioCppSharedProjectCreator
+    public class VisualStudioProjectUtilities
     {
         private static string DefaultNamespaceString =
             @"http://schemas.microsoft.com/developer/msbuild/2003";
@@ -32,7 +32,7 @@ namespace LvglSubmoduleProjectFileGenerator
             return Element;
         }
 
-        public static XmlDocument CreateProjectDocument(
+        public static XmlDocument CreateCppSharedProject(
             Guid ProjectGuid,
             List<(string Target, string Filter)> HeaderNames,
             List<(string Target, string Filter)> SourceNames,
@@ -109,7 +109,7 @@ namespace LvglSubmoduleProjectFileGenerator
             return Document;
         }
 
-        public static XmlDocument CreateFiltersDocument(
+        public static XmlDocument CreateCppSharedFilters(
             List<string> FilterNames,
             List<(string Target, string Filter)> HeaderNames,
             List<(string Target, string Filter)> SourceNames,
