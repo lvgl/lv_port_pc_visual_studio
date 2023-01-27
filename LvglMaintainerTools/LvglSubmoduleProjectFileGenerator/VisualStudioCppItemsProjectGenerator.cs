@@ -156,6 +156,26 @@ namespace LvglSubmoduleProjectFileGenerator
                     "ToolsVersion",
                     "4.0");
 
+                {
+                    XmlElement GlobalPropertyGroup = projectDocument.CreateElement(
+                        "PropertyGroup",
+                        defaultNamespace);
+                    if (GlobalPropertyGroup != null)
+                    {
+                        GlobalPropertyGroup.SetAttribute("Label", "Globals");
+                        XmlElement ItemsProjectGuid = projectDocument.CreateElement(
+                            "ItemsProjectGuid",
+                            defaultNamespace);
+                        if (ItemsProjectGuid != null)
+                        {
+                            ItemsProjectGuid.InnerText =
+                                string.Format("{{{0}}}", Guid.NewGuid());
+                            GlobalPropertyGroup.AppendChild(ItemsProjectGuid);
+                            xmlElement.AppendChild(GlobalPropertyGroup);
+                        }
+                    }
+                }
+
                 xmlElement.AppendChild(HeaderItems.ProjectItems);
                 xmlElement.AppendChild(SourceItems.ProjectItems);
                 xmlElement.AppendChild(OtherItems.ProjectItems);
