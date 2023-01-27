@@ -40,7 +40,7 @@ namespace LvglSubmoduleProjectFileGenerator
 
             Console.WriteLine(Root);
 
-            string rootPath = Path.GetFullPath(Root + @"\LVGL.Simulator");
+            string rootPath = Path.GetFullPath(Root + @"\LvglPlatform");
 
             VisualStudioCppItemsProjectGenerator.Generate(
                 rootPath + @"\lvgl",

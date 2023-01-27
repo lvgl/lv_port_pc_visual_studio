@@ -1,17 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace LvglSubmoduleProjectFileGenerator
 {
     public class VisualStudioCppItemsProjectGenerator
     {
-        internal string defaultNamespace =
-            @"http://schemas.microsoft.com/developer/msbuild/2003";
-
-        internal XmlDocument projectDocument = null;
-        internal XmlDocument filtersDocument = null;
-
         List<string> FilterNames = new List<string>();
         List<(string, string)> HeaderNames = new List<(string, string)>();
         List<(string, string)> SourceNames = new List<(string, string)>();
@@ -19,8 +14,6 @@ namespace LvglSubmoduleProjectFileGenerator
 
         internal VisualStudioCppItemsProjectGenerator()
         {
-            projectDocument = new XmlDocument();
-            filtersDocument = new XmlDocument();
         }
 
         internal void EnumerateFolder(
@@ -52,210 +45,90 @@ namespace LvglSubmoduleProjectFileGenerator
             }
         }
 
-        internal XmlElement BuildFilterItemsFromFilterNames(
-            List<string> FilterNames)
-        {
-            XmlElement FilterItems = filtersDocument.CreateElement(
-                "ItemGroup",
-                defaultNamespace);
-            foreach (var FilterName in FilterNames)
-            {
-                XmlElement FilterItem = filtersDocument.CreateElement(
-                    "Filter",
-                    defaultNamespace);
-                if (FilterItem != null)
-                {
-                    FilterItem.SetAttribute(
-                        "Include",
-                        FilterName);
-                    XmlElement UniqueIdentifier = filtersDocument.CreateElement(
-                        "UniqueIdentifier",
-                        defaultNamespace);
-                    if (UniqueIdentifier != null)
-                    {
-                        UniqueIdentifier.InnerText =
-                            string.Format("{{{0}}}", Guid.NewGuid());
-                        FilterItem.AppendChild(UniqueIdentifier);
-                    }
-                    FilterItems.AppendChild(FilterItem);
-                }
-            }
-
-            return FilterItems;
-        }
-
-        internal (XmlElement, XmlElement) BuildItemsFromNames(
-            string TypeName,
-            List<(string, string)> Names)
-        {
-            XmlElement ProjectItems = projectDocument.CreateElement(
-                "ItemGroup",
-                defaultNamespace);
-            XmlElement FiltersItems = filtersDocument.CreateElement(
-                "ItemGroup",
-                defaultNamespace);
-
-            foreach (var Name in Names)
-            {
-                XmlElement ProjectItem = projectDocument.CreateElement(
-                    TypeName,
-                    defaultNamespace);
-                if (ProjectItem != null)
-                {
-                    ProjectItem.SetAttribute(
-                        "Include",
-                        Name.Item1);
-                    ProjectItems.AppendChild(ProjectItem);
-                }
-
-                XmlElement FiltersItem = filtersDocument.CreateElement(
-                    TypeName,
-                    defaultNamespace);
-                if (FiltersItem != null)
-                {
-                    FiltersItem.SetAttribute(
-                        "Include",
-                        Name.Item1);
-                    XmlElement Filter = filtersDocument.CreateElement(
-                        "Filter",
-                        defaultNamespace);
-                    if (Filter != null)
-                    {
-                        Filter.InnerText = Name.Item2;
-                        FiltersItem.AppendChild(Filter);
-                    }
-                    FiltersItems.AppendChild(FiltersItem);
-                }
-            }
-
-            return (ProjectItems, FiltersItems);
-        }
-
         internal void CreateFiles(
             string rootPath,
             string filePath,
             string fileName)
         {
-            (XmlElement ProjectItems, XmlElement FiltersItems) HeaderItems =
-                BuildItemsFromNames("ClInclude", HeaderNames);
-            (XmlElement ProjectItems, XmlElement FiltersItems) SourceItems =
-                BuildItemsFromNames("ClCompile", SourceNames);
-            (XmlElement ProjectItems, XmlElement FiltersItems) OtherItems =
-                BuildItemsFromNames("None", OtherNames);
+            List<(string, string)> NewHeaderNames = new List<(string, string)>();
+            List<(string, string)> NewSourceNames = new List<(string, string)>();
+            List<(string, string)> NewOtherNames = new List<(string, string)>();
 
-            if (projectDocument != null)
+            foreach (var HeaderName in HeaderNames)
             {
-                projectDocument.InsertBefore(
-                    projectDocument.CreateXmlDeclaration("1.0", "utf-8", null),
-                    projectDocument.DocumentElement);
-
-                XmlElement xmlElement = projectDocument.CreateElement(
-                    "Project",
-                    defaultNamespace);
-                xmlElement.SetAttribute(
-                    "ToolsVersion",
-                    "4.0");
-
-                {
-                    XmlElement GlobalPropertyGroup = projectDocument.CreateElement(
-                        "PropertyGroup",
-                        defaultNamespace);
-                    if (GlobalPropertyGroup != null)
-                    {
-                        GlobalPropertyGroup.SetAttribute("Label", "Globals");
-                        XmlElement ItemsProjectGuid = projectDocument.CreateElement(
-                            "ItemsProjectGuid",
-                            defaultNamespace);
-                        if (ItemsProjectGuid != null)
-                        {
-                            ItemsProjectGuid.InnerText =
-                                string.Format("{{{0}}}", Guid.NewGuid());
-                            GlobalPropertyGroup.AppendChild(ItemsProjectGuid);
-                            xmlElement.AppendChild(GlobalPropertyGroup);
-                        }
-                    }
-                }
-
-                xmlElement.AppendChild(HeaderItems.ProjectItems);
-                xmlElement.AppendChild(SourceItems.ProjectItems);
-                xmlElement.AppendChild(OtherItems.ProjectItems);
-
-                projectDocument.AppendChild(xmlElement);
-
-                projectDocument.InnerXml = projectDocument.InnerXml.Replace(
-                    rootPath,
-                    "");
-
-                XmlWriterSettings writerSettings = new XmlWriterSettings();
-                writerSettings.Indent = true;
-                writerSettings.IndentChars = "  ";
-                writerSettings.NewLineChars = "\r\n";
-                writerSettings.NewLineHandling = NewLineHandling.Replace;
-                writerSettings.Encoding = new UTF8Encoding(true);
-                if (writerSettings != null)
-                {
-                    XmlWriter writer = XmlWriter.Create(
-                       string.Format(
-                           @"{0}\{1}.vcxitems",
-                           filePath,
-                           fileName),
-                       writerSettings);
-                    if (writer != null)
-                    {
-                        projectDocument.Save(writer);
-                        writer.Flush();
-                        writer.Dispose();
-                    }
-
-                }
+                NewHeaderNames.Add((
+                    HeaderName.Item1.Replace(
+                        rootPath,
+                        "$(MSBuildThisFileDirectory)"),
+                    HeaderName.Item2));
             }
 
-            if (filtersDocument != null)
+            foreach (var SourceName in SourceNames)
             {
-                filtersDocument.InsertBefore(
-                    filtersDocument.CreateXmlDeclaration("1.0", "utf-8", null),
-                    filtersDocument.DocumentElement);
+                NewSourceNames.Add((
+                    SourceName.Item1.Replace(
+                        rootPath,
+                        "$(MSBuildThisFileDirectory)"),
+                    SourceName.Item2));
+            }
 
-                XmlElement xmlElement = filtersDocument.CreateElement(
-                    "Project",
-                    defaultNamespace);
-                xmlElement.SetAttribute(
-                    "ToolsVersion",
-                    "4.0");
+            foreach (var OtherName in OtherNames)
+            {
+                NewOtherNames.Add((
+                    OtherName.Item1.Replace(
+                        rootPath,
+                        "$(MSBuildThisFileDirectory)"),
+                    OtherName.Item2));
+            }
 
-                xmlElement.AppendChild(
-                    BuildFilterItemsFromFilterNames(FilterNames));
-                xmlElement.AppendChild(HeaderItems.FiltersItems);
-                xmlElement.AppendChild(SourceItems.FiltersItems);
-                xmlElement.AppendChild(OtherItems.FiltersItems);
 
-                filtersDocument.AppendChild(xmlElement);
+            XmlWriterSettings WriterSettings = new XmlWriterSettings();
+            WriterSettings.Indent = true;
+            WriterSettings.IndentChars = "  ";
+            WriterSettings.NewLineChars = "\r\n";
+            WriterSettings.NewLineHandling = NewLineHandling.Replace;
+            WriterSettings.Encoding = new UTF8Encoding(true);
 
-                filtersDocument.InnerXml = filtersDocument.InnerXml.Replace(
+            {
+                XmlDocument Document =
+                    VisualStudioCppSharedProjectCreator.CreateProjectDocument(
+                        Guid.NewGuid(),
+                        NewHeaderNames,
+                        NewSourceNames,
+                        NewOtherNames);
+                Document.InnerXml = Document.InnerXml.Replace(
                     rootPath,
                     "");
+                XmlWriter Writer = XmlWriter.Create(
+                    string.Format(
+                        @"{0}\{1}.vcxitems",
+                        filePath,
+                        fileName),
+                    WriterSettings);
+                Document.Save(Writer);
+                Writer.Flush();
+                Writer.Dispose();
+            }
 
-                XmlWriterSettings writerSettings = new XmlWriterSettings();
-                writerSettings.Indent = true;
-                writerSettings.IndentChars = "  ";
-                writerSettings.NewLineChars = "\r\n";
-                writerSettings.NewLineHandling = NewLineHandling.Replace;
-                writerSettings.Encoding = new UTF8Encoding(true);
-                if (writerSettings != null)
-                {
-                    XmlWriter writer = XmlWriter.Create(
-                       string.Format(
-                           @"{0}\{1}.vcxitems.filters",
-                           filePath,
-                           fileName),
-                       writerSettings);
-                    if (writer != null)
-                    {
-                        filtersDocument.Save(writer);
-                        writer.Flush();
-                        writer.Dispose();
-                    }
-                }
+            {
+                XmlDocument Document =
+                    VisualStudioCppSharedProjectCreator.CreateFiltersDocument(
+                        FilterNames,
+                        NewHeaderNames,
+                        NewSourceNames,
+                        NewOtherNames);
+                Document.InnerXml = Document.InnerXml.Replace(
+                    rootPath,
+                    "");
+                XmlWriter Writer = XmlWriter.Create(
+                    string.Format(
+                        @"{0}\{1}.vcxitems.filters",
+                        filePath,
+                        fileName),
+                    WriterSettings);
+                Document.Save(Writer);
+                Writer.Flush();
+                Writer.Dispose();
             }
         }
 
