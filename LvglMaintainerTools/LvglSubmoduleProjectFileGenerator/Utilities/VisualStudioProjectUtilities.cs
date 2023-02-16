@@ -7,7 +7,7 @@ namespace LvglSubmoduleProjectFileGenerator
 {
     public class VisualStudioProjectUtilities
     {
-        private static string DefaultNamespaceString =
+        private static readonly string DefaultNamespaceString =
             @"http://schemas.microsoft.com/developer/msbuild/2003";
 
         private static XmlElement AppendEmptyItemGroupToProject(
