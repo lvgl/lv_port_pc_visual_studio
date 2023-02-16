@@ -10,15 +10,18 @@ namespace LvglSubmoduleProjectFileGenerator
         private static string DefaultNamespaceString =
             @"http://schemas.microsoft.com/developer/msbuild/2003";
 
-        private static void AppendFilterElementToItems(
-            XmlElement Item,
+        private static void AppendFilterElementToItem(
+            XmlElement Element,
             string Name)
         {
-            XmlElement Element = Item.OwnerDocument.CreateElement(
-                "Filter",
-                DefaultNamespaceString);
-            Element.InnerText = Name;
-            Item.AppendChild(Element);
+            if (Name != string.Empty)
+            {
+                XmlElement Filter = Element.OwnerDocument.CreateElement(
+                    "Filter",
+                    DefaultNamespaceString);
+                Filter.InnerText = Name;
+                Element.AppendChild(Filter);
+            }
         }
 
         private static XmlElement CreateItemElement(
@@ -125,7 +128,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     Project.OwnerDocument,
                     "ClInclude",
                     Name.Target);
-                AppendFilterElementToItems(Item, Name.Filter);
+                AppendFilterElementToItem(Item, Name.Filter);
                 HeaderItems.AppendChild(Item);
             }
             Project.AppendChild(HeaderItems);
@@ -139,7 +142,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     Project.OwnerDocument,
                     "ClCompile",
                     Name.Target);
-                AppendFilterElementToItems(Item, Name.Filter);
+                AppendFilterElementToItem(Item, Name.Filter);
                 SourceItems.AppendChild(Item);
             }
             Project.AppendChild(SourceItems);
@@ -153,7 +156,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     Project.OwnerDocument,
                     "None",
                     Name.Target);
-                AppendFilterElementToItems(Item, Name.Filter);
+                AppendFilterElementToItem(Item, Name.Filter);
                 OtherItems.AppendChild(Item);
             }
             Project.AppendChild(OtherItems);
