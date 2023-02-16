@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata;
+﻿using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Xml;
 
 namespace LvglSubmoduleProjectFileGenerator
@@ -79,6 +80,90 @@ namespace LvglSubmoduleProjectFileGenerator
             Project.AppendChild(OtherItems);
         }
 
+        public static void AppendItemsToCppFilters(
+            XmlElement Project,
+            List<string> FilterNames,
+            List<(string Target, string Filter)> HeaderNames,
+            List<(string Target, string Filter)> SourceNames,
+            List<(string Target, string Filter)> OtherNames)
+        {
+            XmlElement FilterItems = Project.OwnerDocument.CreateElement(
+                "ItemGroup",
+                DefaultNamespaceString);
+            foreach (var FilterName in FilterNames)
+            {
+                XmlElement FilterItem = Project.OwnerDocument.CreateElement(
+                    "Filter",
+                    DefaultNamespaceString);
+                if (FilterItem != null)
+                {
+                    FilterItem.SetAttribute(
+                        "Include",
+                        FilterName);
+                    XmlElement UniqueIdentifier =
+                        Project.OwnerDocument.CreateElement(
+                            "UniqueIdentifier",
+                            DefaultNamespaceString);
+                    if (UniqueIdentifier != null)
+                    {
+                        UniqueIdentifier.InnerText =
+                            string.Format("{{{0}}}", Guid.NewGuid());
+                        FilterItem.AppendChild(UniqueIdentifier);
+                    }
+                    FilterItems.AppendChild(FilterItem);
+                }
+            }
+            Project.AppendChild(FilterItems);
+
+            XmlElement HeaderItems = Project.OwnerDocument.CreateElement(
+                "ItemGroup",
+                DefaultNamespaceString);
+            foreach (var Name in HeaderNames)
+            {
+                XmlElement Item = CreateItemElement(
+                    Project.OwnerDocument,
+                    "ClInclude",
+                    Name.Target);
+                Item.AppendChild(CreateFilterElement(
+                    Project.OwnerDocument,
+                    Name.Filter));
+                HeaderItems.AppendChild(Item);
+            }
+            Project.AppendChild(HeaderItems);
+
+            XmlElement SourceItems = Project.OwnerDocument.CreateElement(
+               "ItemGroup",
+               DefaultNamespaceString);
+            foreach (var Name in SourceNames)
+            {
+                XmlElement Item = CreateItemElement(
+                    Project.OwnerDocument,
+                    "ClCompile",
+                    Name.Target);
+                Item.AppendChild(CreateFilterElement(
+                    Project.OwnerDocument,
+                    Name.Filter));
+                SourceItems.AppendChild(Item);
+            }
+            Project.AppendChild(SourceItems);
+
+            XmlElement OtherItems = Project.OwnerDocument.CreateElement(
+               "ItemGroup",
+               DefaultNamespaceString);
+            foreach (var Name in OtherNames)
+            {
+                XmlElement Item = CreateItemElement(
+                    Project.OwnerDocument,
+                    "None",
+                    Name.Target);
+                Item.AppendChild(CreateFilterElement(
+                    Project.OwnerDocument,
+                    Name.Filter));
+                OtherItems.AppendChild(Item);
+            }
+            Project.AppendChild(OtherItems);
+        }
+
         public static XmlDocument CreateCppSharedProject(
             Guid ProjectGuid,
             List<(string Target, string Filter)> HeaderNames,
@@ -142,80 +227,12 @@ namespace LvglSubmoduleProjectFileGenerator
                 "ToolsVersion",
                 "4.0");
 
-            XmlElement FilterItems = Document.CreateElement(
-                "ItemGroup",
-                DefaultNamespaceString);
-            foreach (var FilterName in FilterNames)
-            {
-                XmlElement FilterItem = Document.CreateElement(
-                    "Filter",
-                    DefaultNamespaceString);
-                if (FilterItem != null)
-                {
-                    FilterItem.SetAttribute(
-                        "Include",
-                        FilterName);
-                    XmlElement UniqueIdentifier = Document.CreateElement(
-                        "UniqueIdentifier",
-                        DefaultNamespaceString);
-                    if (UniqueIdentifier != null)
-                    {
-                        UniqueIdentifier.InnerText =
-                            string.Format("{{{0}}}", Guid.NewGuid());
-                        FilterItem.AppendChild(UniqueIdentifier);
-                    }
-                    FilterItems.AppendChild(FilterItem);
-                }
-            }
-            Project.AppendChild(FilterItems);
-
-            XmlElement HeaderItems = Document.CreateElement(
-                "ItemGroup",
-                DefaultNamespaceString);
-            foreach (var Name in HeaderNames)
-            {
-                XmlElement Item = CreateItemElement(
-                    Document,
-                    "ClInclude",
-                    Name.Target);
-                Item.AppendChild(CreateFilterElement(
-                    Document,
-                    Name.Filter));
-                HeaderItems.AppendChild(Item);
-            }
-            Project.AppendChild(HeaderItems);
-
-            XmlElement SourceItems = Document.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
-            foreach (var Name in SourceNames)
-            {
-                XmlElement Item = CreateItemElement(
-                    Document,
-                    "ClCompile",
-                    Name.Target);
-                Item.AppendChild(CreateFilterElement(
-                    Document,
-                    Name.Filter));
-                SourceItems.AppendChild(Item);
-            }
-            Project.AppendChild(SourceItems);
-
-            XmlElement OtherItems = Document.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
-            foreach (var Name in OtherNames)
-            {
-                XmlElement Item = CreateItemElement(
-                    Document,
-                    "None",
-                    Name.Target);
-                Item.AppendChild(CreateFilterElement(
-                    Document,
-                    Name.Filter));
-                OtherItems.AppendChild(Item);
-            }
-            Project.AppendChild(OtherItems);
+            AppendItemsToCppFilters(
+                Project,
+                FilterNames,
+                HeaderNames,
+                SourceNames,
+                OtherNames);
 
             Document.AppendChild(Project);
 
