@@ -20,7 +20,7 @@ namespace LvglSubmoduleProjectFileGenerator
             return Element;
         }
 
-        private static XmlElement AppendItemElementToItemGroup(
+        private static XmlElement AppendItemToItemGroup(
             XmlElement ItemGroup,
             string Type,
             string Target)
@@ -58,7 +58,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement HeaderItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in HeaderNames)
             {
-                AppendItemElementToItemGroup(
+                AppendItemToItemGroup(
                     HeaderItems,
                     "ClInclude",
                     Name.Target);
@@ -67,7 +67,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement SourceItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in SourceNames)
             {
-                AppendItemElementToItemGroup(
+                AppendItemToItemGroup(
                     SourceItems,
                     "ClCompile",
                     Name.Target);
@@ -76,7 +76,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement OtherItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in OtherNames)
             {
-                AppendItemElementToItemGroup(
+                AppendItemToItemGroup(
                     OtherItems,
                     "None",
                     Name.Target);
@@ -93,7 +93,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement FilterItems = AppendEmptyItemGroupToProject(Project);
             foreach (var FilterName in FilterNames)
             {
-                XmlElement FilterItem = AppendItemElementToItemGroup(
+                XmlElement FilterItem = AppendItemToItemGroup(
                     FilterItems,
                     "Filter",
                     FilterName);
@@ -109,7 +109,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement HeaderItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in HeaderNames)
             {
-                XmlElement Item = AppendItemElementToItemGroup(
+                XmlElement Item = AppendItemToItemGroup(
                     HeaderItems,
                     "ClInclude",
                     Name.Target);
@@ -119,7 +119,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement SourceItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in SourceNames)
             {
-                XmlElement Item = AppendItemElementToItemGroup(
+                XmlElement Item = AppendItemToItemGroup(
                     SourceItems,
                     "ClCompile",
                     Name.Target);
@@ -129,7 +129,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement OtherItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in OtherNames)
             {
-                XmlElement Item = AppendItemElementToItemGroup(
+                XmlElement Item = AppendItemToItemGroup(
                     OtherItems,
                     "None",
                     Name.Target);
