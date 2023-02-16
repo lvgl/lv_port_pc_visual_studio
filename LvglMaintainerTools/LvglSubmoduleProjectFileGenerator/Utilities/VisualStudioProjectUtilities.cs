@@ -10,24 +10,15 @@ namespace LvglSubmoduleProjectFileGenerator
         private static string DefaultNamespaceString =
             @"http://schemas.microsoft.com/developer/msbuild/2003";
 
-        private static XmlElement CreateFilterElement(
-            XmlDocument Document,
-            string Name)
-        {
-            XmlElement Element = Document.CreateElement(
-                "Filter",
-                DefaultNamespaceString);
-            Element.InnerText = Name;
-            return Element;
-        }
-
         private static void AppendFilterElementToItems(
             XmlElement Item,
             string Name)
         {
-            Item.AppendChild(CreateFilterElement(
-                Item.OwnerDocument,
-                Name));
+            XmlElement Element = Item.OwnerDocument.CreateElement(
+                "Filter",
+                DefaultNamespaceString);
+            Element.InnerText = Name;
+            Item.AppendChild(Element);
         }
 
         private static XmlElement CreateItemElement(
