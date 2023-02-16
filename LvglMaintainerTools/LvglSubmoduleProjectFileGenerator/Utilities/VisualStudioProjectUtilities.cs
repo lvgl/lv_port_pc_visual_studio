@@ -18,6 +18,21 @@ namespace LvglSubmoduleProjectFileGenerator
             return Tag;
         }
 
+        private static XmlElement AppendPropertyGroupToProject(
+            XmlElement Project)
+        {
+            return AppendTagToElement(Project, "PropertyGroup");
+        }
+
+        private static XmlElement AppendPropertyGroupToProject(
+            XmlElement Project,
+            string Label)
+        {
+            XmlElement Element = AppendPropertyGroupToProject(Project);
+            Element.SetAttribute("Label", Label);
+            return Element;
+        }
+
         private static XmlElement AppendItemGroupToProject(
             XmlElement Project)
         {
@@ -138,17 +153,13 @@ namespace LvglSubmoduleProjectFileGenerator
                 "ToolsVersion",
                 "4.0");
 
-            XmlElement GlobalPropertyGroup = Document.CreateElement(
-                "PropertyGroup",
-                DefaultNamespaceString);
-            GlobalPropertyGroup.SetAttribute(
-                "Label",
-                "Globals");
+            XmlElement GlobalPropertyGroup = AppendPropertyGroupToProject(
+                Project,
+                "Globals");    
             AppendTagToElement(
                 GlobalPropertyGroup,
                 "ItemsProjectGuid",
                 string.Format("{{{0}}}", ProjectGuid));
-            Project.AppendChild(GlobalPropertyGroup);
 
             AppendItemsToCppProject(
                 Project,
