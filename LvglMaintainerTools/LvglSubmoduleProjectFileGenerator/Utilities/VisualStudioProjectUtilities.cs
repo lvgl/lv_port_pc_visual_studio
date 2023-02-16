@@ -35,17 +35,25 @@ namespace LvglSubmoduleProjectFileGenerator
             return Element;
         }
 
+        private static void AppendTagToElement(
+            XmlElement Element,
+            string Name,
+            string Content)
+        {
+            XmlElement Tag = Element.OwnerDocument.CreateElement(
+                Name,
+                DefaultNamespaceString);
+            Tag.InnerText = Content;
+            Element.AppendChild(Tag);
+        }
+
         private static void AppendFilterElementToItem(
             XmlElement Item,
             string Name)
         {
             if (Name != string.Empty)
             {
-                XmlElement Filter = Item.OwnerDocument.CreateElement(
-                    "Filter",
-                    DefaultNamespaceString);
-                Filter.InnerText = Name;
-                Item.AppendChild(Filter);
+                AppendTagToElement(Item, "Filter", Name);
             }
         }
 
@@ -97,13 +105,10 @@ namespace LvglSubmoduleProjectFileGenerator
                     FilterItems,
                     "Filter",
                     FilterName);
-                XmlElement UniqueIdentifier =
-                    Project.OwnerDocument.CreateElement(
-                        "UniqueIdentifier",
-                        DefaultNamespaceString);
-                UniqueIdentifier.InnerText =
-                         string.Format("{{{0}}}", Guid.NewGuid());
-                FilterItem.AppendChild(UniqueIdentifier);
+                AppendTagToElement(
+                    FilterItem,
+                    "UniqueIdentifier",
+                    string.Format("{{{0}}}", Guid.NewGuid()));
             }
 
             XmlElement HeaderItems = AppendEmptyItemGroupToProject(Project);
@@ -156,18 +161,16 @@ namespace LvglSubmoduleProjectFileGenerator
                 "ToolsVersion",
                 "4.0");
 
-            XmlElement ItemsProjectGuid = Document.CreateElement(
-                "ItemsProjectGuid",
-                DefaultNamespaceString);
-            ItemsProjectGuid.InnerText =
-                string.Format("{{{0}}}", ProjectGuid);
             XmlElement GlobalPropertyGroup = Document.CreateElement(
                 "PropertyGroup",
                 DefaultNamespaceString);
             GlobalPropertyGroup.SetAttribute(
                 "Label",
                 "Globals");
-            GlobalPropertyGroup.AppendChild(ItemsProjectGuid);
+            AppendTagToElement(
+                GlobalPropertyGroup,
+                "ItemsProjectGuid",
+                string.Format("{{{0}}}", ProjectGuid));
             Project.AppendChild(GlobalPropertyGroup);
 
             AppendItemsToCppProject(
