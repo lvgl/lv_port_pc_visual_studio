@@ -36,16 +36,16 @@ namespace LvglSubmoduleProjectFileGenerator
         }
 
         private static void AppendFilterElementToItem(
-            XmlElement Element,
+            XmlElement Item,
             string Name)
         {
             if (Name != string.Empty)
             {
-                XmlElement Filter = Element.OwnerDocument.CreateElement(
+                XmlElement Filter = Item.OwnerDocument.CreateElement(
                     "Filter",
                     DefaultNamespaceString);
                 Filter.InnerText = Name;
-                Element.AppendChild(Filter);
+                Item.AppendChild(Filter);
             }
         }
 
