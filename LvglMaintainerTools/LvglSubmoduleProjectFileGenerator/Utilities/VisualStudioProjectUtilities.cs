@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace LvglSubmoduleProjectFileGenerator
 {
@@ -18,6 +19,15 @@ namespace LvglSubmoduleProjectFileGenerator
                 DefaultNamespaceString);
             Element.InnerText = Name;
             return Element;
+        }
+
+        private static void AppendFilterElementToItems(
+            XmlElement Item,
+            string Name)
+        {
+            Item.AppendChild(CreateFilterElement(
+                Item.OwnerDocument,
+                Name));
         }
 
         private static XmlElement CreateItemElement(
@@ -124,9 +134,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     Project.OwnerDocument,
                     "ClInclude",
                     Name.Target);
-                Item.AppendChild(CreateFilterElement(
-                    Project.OwnerDocument,
-                    Name.Filter));
+                AppendFilterElementToItems(Item, Name.Filter);
                 HeaderItems.AppendChild(Item);
             }
             Project.AppendChild(HeaderItems);
@@ -140,9 +148,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     Project.OwnerDocument,
                     "ClCompile",
                     Name.Target);
-                Item.AppendChild(CreateFilterElement(
-                    Project.OwnerDocument,
-                    Name.Filter));
+                AppendFilterElementToItems(Item, Name.Filter);
                 SourceItems.AppendChild(Item);
             }
             Project.AppendChild(SourceItems);
@@ -156,9 +162,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     Project.OwnerDocument,
                     "None",
                     Name.Target);
-                Item.AppendChild(CreateFilterElement(
-                    Project.OwnerDocument,
-                    Name.Filter));
+                AppendFilterElementToItems(Item, Name.Filter);
                 OtherItems.AppendChild(Item);
             }
             Project.AppendChild(OtherItems);
