@@ -10,6 +10,16 @@ namespace LvglSubmoduleProjectFileGenerator
         private static string DefaultNamespaceString =
             @"http://schemas.microsoft.com/developer/msbuild/2003";
 
+        private static XmlElement AppendEmptyItemGroupToProject(
+            XmlElement Project)
+        {
+            XmlElement Element = Project.OwnerDocument.CreateElement(
+               "ItemGroup",
+               DefaultNamespaceString);
+            Project.AppendChild(Element);
+            return Element;
+        }
+
         private static void AppendFilterElementToItem(
             XmlElement Element,
             string Name)
@@ -44,9 +54,7 @@ namespace LvglSubmoduleProjectFileGenerator
             List<(string Target, string Filter)> SourceNames,
             List<(string Target, string Filter)> OtherNames)
         {
-            XmlElement HeaderItems = Project.OwnerDocument.CreateElement(
-                "ItemGroup",
-                DefaultNamespaceString);
+            XmlElement HeaderItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in HeaderNames)
             {
                 XmlElement Item = CreateItemElement(
@@ -55,11 +63,8 @@ namespace LvglSubmoduleProjectFileGenerator
                     Name.Target);
                 HeaderItems.AppendChild(Item);
             }
-            Project.AppendChild(HeaderItems);
 
-            XmlElement SourceItems = Project.OwnerDocument.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
+            XmlElement SourceItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in SourceNames)
             {
                 XmlElement Item = CreateItemElement(
@@ -68,11 +73,8 @@ namespace LvglSubmoduleProjectFileGenerator
                     Name.Target);
                 SourceItems.AppendChild(Item);
             }
-            Project.AppendChild(SourceItems);
 
-            XmlElement OtherItems = Project.OwnerDocument.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
+            XmlElement OtherItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in OtherNames)
             {
                 XmlElement Item = CreateItemElement(
@@ -81,7 +83,6 @@ namespace LvglSubmoduleProjectFileGenerator
                     Name.Target);
                 OtherItems.AppendChild(Item);
             }
-            Project.AppendChild(OtherItems);
         }
 
         public static void AppendItemsToCppFilters(
@@ -91,9 +92,7 @@ namespace LvglSubmoduleProjectFileGenerator
             List<(string Target, string Filter)> SourceNames,
             List<(string Target, string Filter)> OtherNames)
         {
-            XmlElement FilterItems = Project.OwnerDocument.CreateElement(
-                "ItemGroup",
-                DefaultNamespaceString);
+            XmlElement FilterItems = AppendEmptyItemGroupToProject(Project);
             foreach (var FilterName in FilterNames)
             {
                 XmlElement FilterItem = Project.OwnerDocument.CreateElement(
@@ -117,11 +116,8 @@ namespace LvglSubmoduleProjectFileGenerator
                     FilterItems.AppendChild(FilterItem);
                 }
             }
-            Project.AppendChild(FilterItems);
 
-            XmlElement HeaderItems = Project.OwnerDocument.CreateElement(
-                "ItemGroup",
-                DefaultNamespaceString);
+            XmlElement HeaderItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in HeaderNames)
             {
                 XmlElement Item = CreateItemElement(
@@ -131,11 +127,8 @@ namespace LvglSubmoduleProjectFileGenerator
                 AppendFilterElementToItem(Item, Name.Filter);
                 HeaderItems.AppendChild(Item);
             }
-            Project.AppendChild(HeaderItems);
 
-            XmlElement SourceItems = Project.OwnerDocument.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
+            XmlElement SourceItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in SourceNames)
             {
                 XmlElement Item = CreateItemElement(
@@ -145,11 +138,8 @@ namespace LvglSubmoduleProjectFileGenerator
                 AppendFilterElementToItem(Item, Name.Filter);
                 SourceItems.AppendChild(Item);
             }
-            Project.AppendChild(SourceItems);
 
-            XmlElement OtherItems = Project.OwnerDocument.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
+            XmlElement OtherItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in OtherNames)
             {
                 XmlElement Item = CreateItemElement(
@@ -159,7 +149,6 @@ namespace LvglSubmoduleProjectFileGenerator
                 AppendFilterElementToItem(Item, Name.Filter);
                 OtherItems.AppendChild(Item);
             }
-            Project.AppendChild(OtherItems);
         }
 
         public static XmlDocument CreateCppSharedProject(
