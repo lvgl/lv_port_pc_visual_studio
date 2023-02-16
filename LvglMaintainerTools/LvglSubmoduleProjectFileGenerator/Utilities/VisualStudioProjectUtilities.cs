@@ -7,7 +7,7 @@ namespace LvglSubmoduleProjectFileGenerator
         private static readonly string DefaultNamespaceString =
             @"http://schemas.microsoft.com/developer/msbuild/2003";
 
-        private static XmlElement AppendEmptyTagToElement(
+        private static XmlElement AppendTagToElement(
             XmlElement Element,
             string Name)
         {
@@ -21,7 +21,7 @@ namespace LvglSubmoduleProjectFileGenerator
         private static XmlElement AppendItemGroupToProject(
             XmlElement Project)
         {
-            return AppendEmptyTagToElement(Project, "ItemGroup");
+            return AppendTagToElement(Project, "ItemGroup");
         }
 
         private static XmlElement AppendItemToItemGroup(
@@ -29,7 +29,7 @@ namespace LvglSubmoduleProjectFileGenerator
             string Type,
             string Target)
         {
-            XmlElement Element = AppendEmptyTagToElement(ItemGroup, Type);
+            XmlElement Element = AppendTagToElement(ItemGroup, Type);
             Element.SetAttribute("Include", Target);
             return Element;
         }
@@ -39,7 +39,7 @@ namespace LvglSubmoduleProjectFileGenerator
             string Name,
             string Content)
         {
-            XmlElement Tag = AppendEmptyTagToElement(Element, Name);
+            XmlElement Tag = AppendTagToElement(Element, Name);
             Tag.InnerText = Content;
         }
 
