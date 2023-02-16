@@ -47,16 +47,6 @@ namespace LvglSubmoduleProjectFileGenerator
             Element.AppendChild(Tag);
         }
 
-        private static void AppendFilterElementToItem(
-            XmlElement Item,
-            string Name)
-        {
-            if (Name != string.Empty)
-            {
-                AppendTagToElement(Item, "Filter", Name);
-            }
-        }
-
         public static void AppendItemsToCppProject(
             XmlElement Project,
             List<(string Target, string Filter)> HeaderNames,
@@ -118,7 +108,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     HeaderItems,
                     "ClInclude",
                     Name.Target);
-                AppendFilterElementToItem(Item, Name.Filter);
+                AppendTagToElement(Item, "Filter", Name.Filter);
             }
 
             XmlElement SourceItems = AppendEmptyItemGroupToProject(Project);
@@ -128,7 +118,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     SourceItems,
                     "ClCompile",
                     Name.Target);
-                AppendFilterElementToItem(Item, Name.Filter);
+                AppendTagToElement(Item, "Filter", Name.Filter);
             }
 
             XmlElement OtherItems = AppendEmptyItemGroupToProject(Project);
@@ -138,7 +128,7 @@ namespace LvglSubmoduleProjectFileGenerator
                     OtherItems,
                     "None",
                     Name.Target);
-                AppendFilterElementToItem(Item, Name.Filter);
+                AppendTagToElement(Item, "Filter", Name.Filter);
             }
         }
 
