@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Xml;
-using System.Xml.Linq;
+﻿using System.Xml;
 
 namespace LvglSubmoduleProjectFileGenerator
 {
@@ -28,9 +25,7 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement Element = ItemGroup.OwnerDocument.CreateElement(
                 Type,
                 DefaultNamespaceString);
-            Element.SetAttribute(
-                "Include",
-                Target);
+            Element.SetAttribute("Include", Target);
             ItemGroup.AppendChild(Element);
             return Element;
         }
@@ -56,28 +51,19 @@ namespace LvglSubmoduleProjectFileGenerator
             XmlElement HeaderItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in HeaderNames)
             {
-                AppendItemToItemGroup(
-                    HeaderItems,
-                    "ClInclude",
-                    Name.Target);
+                AppendItemToItemGroup(HeaderItems, "ClInclude", Name.Target);
             }
 
             XmlElement SourceItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in SourceNames)
             {
-                AppendItemToItemGroup(
-                    SourceItems,
-                    "ClCompile",
-                    Name.Target);
+                AppendItemToItemGroup(SourceItems, "ClCompile", Name.Target);
             }
 
             XmlElement OtherItems = AppendEmptyItemGroupToProject(Project);
             foreach (var Name in OtherNames)
             {
-                AppendItemToItemGroup(
-                    OtherItems,
-                    "None",
-                    Name.Target);
+                AppendItemToItemGroup(OtherItems, "None", Name.Target);
             }
         }
 
