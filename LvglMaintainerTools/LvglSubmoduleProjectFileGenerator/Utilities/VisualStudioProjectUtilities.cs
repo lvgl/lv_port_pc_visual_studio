@@ -20,6 +20,21 @@ namespace LvglSubmoduleProjectFileGenerator
             return Element;
         }
 
+        private static XmlElement AppendItemElementToItemGroup(
+            XmlElement ItemGroup,
+            string Type,
+            string Target)
+        {
+            XmlElement Element = ItemGroup.OwnerDocument.CreateElement(
+                Type,
+                DefaultNamespaceString);
+            Element.SetAttribute(
+                "Include",
+                Target);
+            ItemGroup.AppendChild(Element);
+            return Element;
+        }
+
         private static void AppendFilterElementToItem(
             XmlElement Element,
             string Name)
@@ -32,33 +47,6 @@ namespace LvglSubmoduleProjectFileGenerator
                 Filter.InnerText = Name;
                 Element.AppendChild(Filter);
             }
-        }
-
-        private static XmlElement CreateItemElement(
-            XmlDocument Document,
-            string Type,
-            string Target)
-        {
-            XmlElement Element = Document.CreateElement(
-                Type,
-                DefaultNamespaceString);
-            Element.SetAttribute(
-                "Include",
-                Target);
-            return Element;
-        }
-
-        private static XmlElement AppendItemElementToItemGroup(
-            XmlElement ItemGroup,
-            string Type,
-            string Target)
-        {
-            XmlElement Element = CreateItemElement(
-                ItemGroup.OwnerDocument,
-                Type,
-                Target);
-            ItemGroup.AppendChild(Element);
-            return Element;
         }
 
         public static void AppendItemsToCppProject(
