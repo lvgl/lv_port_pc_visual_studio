@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Reflection.Metadata;
+using System.Xml;
 
 namespace LvglSubmoduleProjectFileGenerator
 {
@@ -30,6 +31,52 @@ namespace LvglSubmoduleProjectFileGenerator
                 "Include",
                 Target);
             return Element;
+        }
+
+        public static void AppendItemsToCppProject(
+            XmlElement Project,
+            List<(string Target, string Filter)> HeaderNames,
+            List<(string Target, string Filter)> SourceNames,
+            List<(string Target, string Filter)> OtherNames)
+        {
+            XmlElement HeaderItems = Project.OwnerDocument.CreateElement(
+                "ItemGroup",
+                DefaultNamespaceString);
+            foreach (var Name in HeaderNames)
+            {
+                XmlElement Item = CreateItemElement(
+                    Project.OwnerDocument,
+                    "ClInclude",
+                    Name.Target);
+                HeaderItems.AppendChild(Item);
+            }
+            Project.AppendChild(HeaderItems);
+
+            XmlElement SourceItems = Project.OwnerDocument.CreateElement(
+               "ItemGroup",
+               DefaultNamespaceString);
+            foreach (var Name in SourceNames)
+            {
+                XmlElement Item = CreateItemElement(
+                    Project.OwnerDocument,
+                    "ClCompile",
+                    Name.Target);
+                SourceItems.AppendChild(Item);
+            }
+            Project.AppendChild(SourceItems);
+
+            XmlElement OtherItems = Project.OwnerDocument.CreateElement(
+               "ItemGroup",
+               DefaultNamespaceString);
+            foreach (var Name in OtherNames)
+            {
+                XmlElement Item = CreateItemElement(
+                    Project.OwnerDocument,
+                    "None",
+                    Name.Target);
+                OtherItems.AppendChild(Item);
+            }
+            Project.AppendChild(OtherItems);
         }
 
         public static XmlDocument CreateCppSharedProject(
@@ -65,44 +112,11 @@ namespace LvglSubmoduleProjectFileGenerator
             GlobalPropertyGroup.AppendChild(ItemsProjectGuid);
             Project.AppendChild(GlobalPropertyGroup);
 
-            XmlElement HeaderItems = Document.CreateElement(
-                "ItemGroup",
-                DefaultNamespaceString);
-            foreach (var Name in HeaderNames)
-            {
-                XmlElement Item = CreateItemElement(
-                    Document,
-                    "ClInclude",
-                    Name.Target);
-                HeaderItems.AppendChild(Item);
-            }
-            Project.AppendChild(HeaderItems);
-
-            XmlElement SourceItems = Document.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
-            foreach (var Name in SourceNames)
-            {
-                XmlElement Item = CreateItemElement(
-                    Document,
-                    "ClCompile",
-                    Name.Target);
-                SourceItems.AppendChild(Item);
-            }
-            Project.AppendChild(SourceItems);
-
-            XmlElement OtherItems = Document.CreateElement(
-               "ItemGroup",
-               DefaultNamespaceString);
-            foreach (var Name in OtherNames)
-            {
-                XmlElement Item = CreateItemElement(
-                    Document,
-                    "None",
-                    Name.Target);
-                OtherItems.AppendChild(Item);
-            }
-            Project.AppendChild(OtherItems);
+            AppendItemsToCppProject(
+                Project,
+                HeaderNames,
+                SourceNames,
+                OtherNames);
 
             Document.AppendChild(Project);
 
