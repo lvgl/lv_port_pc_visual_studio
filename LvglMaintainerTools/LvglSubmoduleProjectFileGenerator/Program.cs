@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Mile.Project.Helpers;
+using System.Text;
 using System.Xml;
 
 namespace LvglSubmoduleProjectFileGenerator
@@ -102,7 +103,7 @@ namespace LvglSubmoduleProjectFileGenerator
 
         static void Main(string[] args)
         {
-            string Root = GitRepositoryUtilities.GetRepositoryRoot();
+            string Root = GitRepository.GetRootPath();
 
             Console.WriteLine(Root);
 
