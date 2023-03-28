@@ -1,4 +1,13 @@
-﻿# Visual Studio simulator project for LVGL embedded GUI Library
+﻿# LVGL for Windows Visual Studio port
+
+**IMPORTANT NOTE The next major version (v9.0.0) is developed in the 
+master branch. The last stable version is available in the release/v8.3
+branch.**
+
+**WARNING The compilation for the master branch will be failed in the
+recent days because the maintainer, or Kenji Mouri are making a new
+Win32 support for the 
+[new LVGL driver architecture](https://github.com/lvgl/lvgl/issues/4011).**
 
 ![Screenshot](Screenshot.png)
 
