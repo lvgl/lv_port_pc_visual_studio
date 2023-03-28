@@ -111,10 +111,6 @@ namespace LvglSubmoduleProjectFileGenerator
 
             EnumerateFolder(RootPath + @"freetype");
             EnumerateFolder(RootPath + @"lvgl");
-            EnumerateFolder(RootPath + @"lv_drivers");
-            OtherNames.Add((
-                "$(MSBuildThisFileDirectory)LvglPlatform.props",
-                string.Empty));
 
             List<(string, string)> NewHeaderNames = new List<(string, string)>();
             List<(string, string)> NewSourceNames = new List<(string, string)>();
@@ -125,7 +121,7 @@ namespace LvglSubmoduleProjectFileGenerator
                 NewHeaderNames.Add((
                     HeaderName.Item1.Replace(
                         RootPath,
-                        "$(MSBuildThisFileDirectory)"),
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
                     HeaderName.Item2));
             }
 
@@ -134,7 +130,7 @@ namespace LvglSubmoduleProjectFileGenerator
                 NewSourceNames.Add((
                     SourceName.Item1.Replace(
                         RootPath,
-                        "$(MSBuildThisFileDirectory)"),
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
                     SourceName.Item2));
             }
 
@@ -143,7 +139,7 @@ namespace LvglSubmoduleProjectFileGenerator
                 NewOtherNames.Add((
                     OtherName.Item1.Replace(
                         RootPath,
-                        "$(MSBuildThisFileDirectory)"),
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
                     OtherName.Item2));
             }
 
@@ -168,7 +164,7 @@ namespace LvglSubmoduleProjectFileGenerator
                 XmlWriter Writer = XmlWriter.Create(
                     string.Format(
                         @"{0}\LvglPlatform.vcxitems",
-                        RootPath),
+                        Path.GetFullPath(Root + @"\LVGL.Simulator\")),
                     WriterSettings);
                 Document.Save(Writer);
                 Writer.Flush();
@@ -188,7 +184,7 @@ namespace LvglSubmoduleProjectFileGenerator
                 XmlWriter Writer = XmlWriter.Create(
                     string.Format(
                         @"{0}\LvglPlatform.vcxitems.filters",
-                        RootPath),
+                        Path.GetFullPath(Root + @"\LVGL.Simulator\")),
                     WriterSettings);
                 Document.Save(Writer);
                 Writer.Flush();
