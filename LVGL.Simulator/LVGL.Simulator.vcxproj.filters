@@ -3,6 +3,7 @@
   <Import Project="LvglPlatform.vcxitems.filters" />
   <ItemGroup>
     <ClInclude Include="lv_conf.h" />
+    <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LVGL.Simulator.manifest" />
@@ -13,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LVGL.Simulator.cpp" />
+    <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LVGL.Simulator.rc" />

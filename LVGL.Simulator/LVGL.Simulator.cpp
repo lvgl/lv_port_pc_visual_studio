@@ -25,19 +25,43 @@
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
 
+#include "win32drv.h"
+
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
 #pragma warning(pop)
 #endif
 
+bool single_display_mode_initialization()
+{
+    if (!lv_win32_init(
+        GetModuleHandleW(NULL),
+        SW_SHOW,
+        800,
+        480,
+        LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
+    {
+        return false;
+    }
+
+    lv_win32_add_all_input_devices_to_group(NULL);
+
+    return true;
+}
+
 int main()
 {
     lv_init();
 
+    if (!single_display_mode_initialization())
+    {
+        return -1;
+    }
+
     lv_demo_widgets();
     //lv_demo_benchmark();
 
-    while (true)
+    while (!lv_win32_quit_signal)
     {
         lv_task_handler();
         Sleep(1);
