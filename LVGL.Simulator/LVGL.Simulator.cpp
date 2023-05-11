@@ -58,8 +58,8 @@ int main()
         return -1;
     }
 
-    lv_demo_widgets();
-    //lv_demo_benchmark();
+    //lv_demo_widgets();
+    lv_demo_benchmark(LV_DEMO_BENCHMARK_MODE_RENDER_AND_DRIVER);
 
     while (!lv_win32_quit_signal)
     {
