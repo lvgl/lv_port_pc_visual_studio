@@ -670,13 +670,17 @@ static void lv_win32_display_driver_flush_callback(
         return;
     }
 
-    if (lv_disp_flush_is_last(disp_drv))
+    if (lv_disp_flush_is_last(disp_drv) && !context->display_refreshing)
     {
 #if (LV_COLOR_DEPTH == 32) || \
     (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP == 0) || \
     (LV_COLOR_DEPTH == 8) || \
     (LV_COLOR_DEPTH == 1)
         UNREFERENCED_PARAMETER(color_p);
+        memcpy(
+            context->display_framebuffer_base,
+            context->display_draw_buffer_base,
+            context->display_draw_buffer_size);
 #elif (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP != 0)
         SIZE_T count = context->display_framebuffer_size / sizeof(UINT16);
         PUINT16 source = (PUINT16)color_p;
@@ -702,6 +706,8 @@ static void lv_win32_display_driver_flush_callback(
             }
         }
 #endif
+
+        context->display_refreshing = true;
 
         InvalidateRect(window_handle, NULL, FALSE);
     }
@@ -810,6 +816,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         context->display_ver_res =
             request_content_size.bottom - request_content_size.top;
         context->display_dpi = lv_win32_get_dpi_for_window(hWnd);
+        context->display_refreshing = true;
         context->display_framebuffer_context_handle =
             lv_win32_create_frame_buffer(
                 hWnd,
@@ -830,27 +837,21 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         lv_disp_set_user_data(
             context->display_device_object,
             hWnd);
-        size_t draw_buffer_size = sizeof(lv_color_t);
-        draw_buffer_size *= context->display_hor_res;
-        draw_buffer_size *= context->display_ver_res;
-#if (LV_COLOR_DEPTH == 32) || \
-    (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP == 0) || \
-    (LV_COLOR_DEPTH == 8) || \
-    (LV_COLOR_DEPTH == 1)
+        context->display_draw_buffer_size = sizeof(lv_color_t);
+        context->display_draw_buffer_size *= context->display_hor_res;
+        context->display_draw_buffer_size *= context->display_ver_res;
+        context->display_draw_buffer_base =
+            malloc(context->display_draw_buffer_size);
+        if (!context->display_draw_buffer_base)
+        {
+            return -1;
+        }
         lv_disp_set_draw_buffers(
             context->display_device_object,
-            context->display_framebuffer_base,
+            context->display_draw_buffer_base,
             NULL,
-            draw_buffer_size,
+            context->display_draw_buffer_size,
             LV_DISP_RENDER_MODE_DIRECT);
-#else
-        lv_disp_set_draw_buffers(
-            context->display_device_object,
-            malloc(draw_buffer_size),
-            NULL,
-            draw_buffer_size,
-            LV_DISP_RENDER_MODE_DIRECT);
-#endif   
 
         context->mouse_state = LV_INDEV_STATE_REL;
         context->mouse_point.x = 0;
@@ -1252,15 +1253,15 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     }
     case WM_PAINT:
     {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
-
         lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
             if (context->display_framebuffer_context_handle)
             {
+                PAINTSTRUCT ps;
+                HDC hdc = BeginPaint(hWnd, &ps);
+
                 SetStretchBltMode(hdc, HALFTONE);
 
                 StretchBlt(
@@ -1281,10 +1282,12 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                         USER_DEFAULT_SCREEN_DPI,
                         WIN32DRV_MONITOR_ZOOM * context->display_dpi),
                     SRCCOPY);
-            }
-        }
 
-        EndPaint(hWnd, &ps);
+                EndPaint(hWnd, &ps);
+            }
+
+            context->display_refreshing = false;
+        }
 
         break;
     }
@@ -1297,13 +1300,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_disp_t* display_device_object = context->display_device_object;
             context->display_device_object = NULL;
             lv_disp_remove(display_device_object);
-#if (LV_COLOR_DEPTH == 32) || \
-    (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP == 0) || \
-    (LV_COLOR_DEPTH == 8) || \
-    (LV_COLOR_DEPTH == 1)
-#else
-            //free(context->display_buffer.buf1);
-#endif
+            free(context->display_draw_buffer_base);
             DeleteDC(context->display_framebuffer_context_handle);
 
             lv_indev_t* mouse_device_object =
