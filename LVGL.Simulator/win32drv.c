@@ -655,45 +655,55 @@ static void lv_win32_display_driver_flush_callback(
     const lv_area_t* area,
     lv_color_t* color_p)
 {
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_window_context((HWND)lv_disp_get_user_data(disp_drv)));
-    if (context)
+    HWND window_handle = (HWND)lv_disp_get_user_data(disp_drv);
+    if (!window_handle)
     {
-        if (lv_disp_flush_is_last(disp_drv))
-        {
+        lv_disp_flush_ready(disp_drv);
+        return;
+    }
+
+    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+        lv_win32_get_window_context(window_handle));
+    if (!context)
+    {
+        lv_disp_flush_ready(disp_drv);
+        return;
+    }
+
+    if (lv_disp_flush_is_last(disp_drv))
+    {
 #if (LV_COLOR_DEPTH == 32) || \
     (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP == 0) || \
     (LV_COLOR_DEPTH == 8) || \
     (LV_COLOR_DEPTH == 1)
-            UNREFERENCED_PARAMETER(color_p);
+        UNREFERENCED_PARAMETER(color_p);
 #elif (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP != 0)
-            SIZE_T count = context->display_framebuffer_size / sizeof(UINT16);
-            PUINT16 source = (PUINT16)color_p;
-            PUINT16 destination = (PUINT16)context->display_framebuffer_base;
-            for (SIZE_T i = 0; i < count; ++i)
-            {
-                UINT16 current = *source;
-                *destination = (LOBYTE(current) << 8) | HIBYTE(current);
+        SIZE_T count = context->display_framebuffer_size / sizeof(UINT16);
+        PUINT16 source = (PUINT16)color_p;
+        PUINT16 destination = (PUINT16)context->display_framebuffer_base;
+        for (SIZE_T i = 0; i < count; ++i)
+        {
+            UINT16 current = *source;
+            *destination = (LOBYTE(current) << 8) | HIBYTE(current);
 
-                ++source;
-                ++destination;
-            }
+            ++source;
+            ++destination;
+        }
 #else
-            uint32_t* destination = context->display_framebuffer_base;
+        uint32_t* destination = context->display_framebuffer_base;
 
-            for (int y = area->y1; y <= area->y2; ++y)
+        for (int y = area->y1; y <= area->y2; ++y)
+        {
+            for (int x = area->x1; x <= area->x2; ++x)
             {
-                for (int x = area->x1; x <= area->x2; ++x)
-                {
-                    destination[y * disp_drv->hor_res + x] =
-                        lv_color_to32(*color_p);
-                    color_p++;
-                }
+                destination[y * context->display_hor_res + x] =
+                    lv_color_to32(*color_p);
+                color_p++;
             }
+        }
 #endif
 
-            InvalidateRect(disp_drv->user_data, NULL, FALSE);
-        }
+        InvalidateRect(window_handle, NULL, FALSE);
     }
 
     lv_disp_flush_ready(disp_drv);
