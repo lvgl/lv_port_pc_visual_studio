@@ -1,4 +1,5 @@
-﻿using Mile.Project.Helpers;
+﻿using Microsoft.Build.Construction;
+using Mile.Project.Helpers;
 using System.Text;
 using System.Xml;
 
@@ -101,7 +102,7 @@ namespace LvglSubmoduleProjectFileGenerator
         }
 
 
-        static void Main(string[] args)
+        static void OldMain(string[] args)
         {
             string Root = GitRepository.GetRootPath();
 
@@ -143,7 +144,6 @@ namespace LvglSubmoduleProjectFileGenerator
                     OtherName.Item2));
             }
 
-
             XmlWriterSettings WriterSettings = new XmlWriterSettings();
             WriterSettings.Indent = true;
             WriterSettings.IndentChars = "  ";
@@ -152,44 +152,240 @@ namespace LvglSubmoduleProjectFileGenerator
             WriterSettings.Encoding = new UTF8Encoding(true);
 
             {
-                XmlDocument Document =
-                    VisualStudioProjectUtilities.CreateCppSharedProject(
-                        Guid.NewGuid(),
-                        NewHeaderNames,
-                        NewSourceNames,
-                        NewOtherNames);
+                string ProjectPath = string.Format(
+                    @"{0}\LVGL.Simulator.vcxproj",
+                    Path.GetFullPath(Root + @"\LVGL.Simulator\"));
+
+                XmlDocument Document = new XmlDocument();
+                //Document.PreserveWhitespace = true;
+                Document.Load(ProjectPath);
+
+                XmlElement? ProjectNode = Document["Project"];
+                if (ProjectNode != null)
+                {
+                    XmlNode? LastItemGroupNode = null;
+
+                    foreach (XmlNode Node in ProjectNode.ChildNodes)
+                    {
+                        if (Node.NodeType == XmlNodeType.Element)
+                        {
+                            if (Node.Name == "ItemGroup")
+                            {
+                                LastItemGroupNode = Node;
+                            }
+                        }
+                    }
+                    if (LastItemGroupNode != null)
+                    {
+                        XmlElement AppendItemsNode =
+                            Document.CreateElement("AppendItems");
+
+                        VisualStudioProjectUtilities.AppendItemsToCppProject(
+                            AppendItemsNode,
+                            NewHeaderNames,
+                            NewSourceNames,
+                            NewOtherNames);
+
+                        foreach (XmlNode Node in AppendItemsNode.ChildNodes)
+                        {
+                            ProjectNode.InsertAfter(AppendItemsNode, LastItemGroupNode);
+                        }
+                    }
+                }
+
                 Document.InnerXml = Document.InnerXml.Replace(
                     RootPath,
                     "");
+
                 XmlWriter Writer = XmlWriter.Create(
-                    string.Format(
-                        @"{0}\LvglPlatform.vcxitems",
-                        Path.GetFullPath(Root + @"\LVGL.Simulator\")),
+                    ProjectPath,
                     WriterSettings);
                 Document.Save(Writer);
                 Writer.Flush();
                 Writer.Dispose();
             }
 
+
+
+            //{
+            //    XmlDocument Document =
+            //        VisualStudioProjectUtilities.CreateCppSharedProject(
+            //            Guid.NewGuid(),
+            //            NewHeaderNames,
+            //            NewSourceNames,
+            //            NewOtherNames);
+            //    Document.InnerXml = Document.InnerXml.Replace(
+            //        RootPath,
+            //        "");
+            //    XmlWriter Writer = XmlWriter.Create(
+            //        string.Format(
+            //            @"{0}\LvglPlatform.vcxitems",
+            //            Path.GetFullPath(Root + @"\LVGL.Simulator\")),
+            //        WriterSettings);
+            //    Document.Save(Writer);
+            //    Writer.Flush();
+            //    Writer.Dispose();
+            //}
+
+            //{
+            //    XmlDocument Document =
+            //        VisualStudioProjectUtilities.CreateCppSharedFilters(
+            //            FilterNames,
+            //            NewHeaderNames,
+            //            NewSourceNames,
+            //            NewOtherNames);
+            //    Document.InnerXml = Document.InnerXml.Replace(
+            //        RootPath,
+            //        "");
+            //    XmlWriter Writer = XmlWriter.Create(
+            //        string.Format(
+            //            @"{0}\LvglPlatform.vcxitems.filters",
+            //            Path.GetFullPath(Root + @"\LVGL.Simulator\")),
+            //        WriterSettings);
+            //    Document.Save(Writer);
+            //    Writer.Flush();
+            //    Writer.Dispose();
+            //}
+
+            Console.WriteLine("Hello, World!");
+
+            Console.ReadKey();
+        }
+
+        static void Main(string[] args)
+        {
+            string Root = GitRepository.GetRootPath();
+
+            Console.WriteLine(Root);
+
+            string RootPath = Path.GetFullPath(Root + @"\LvglPlatform\");
+
+            EnumerateFolder(RootPath + @"freetype");
+            EnumerateFolder(RootPath + @"lvgl");
+
+            List<string> NewFilterNames = new List<string>();
+            List<(string, string)> NewHeaderNames = new List<(string, string)>();
+            List<(string, string)> NewSourceNames = new List<(string, string)>();
+            List<(string, string)> NewOtherNames = new List<(string, string)>();
+            
+            foreach (var FilterName in FilterNames)
             {
-                XmlDocument Document =
-                    VisualStudioProjectUtilities.CreateCppSharedFilters(
-                        FilterNames,
-                        NewHeaderNames,
-                        NewSourceNames,
-                        NewOtherNames);
-                Document.InnerXml = Document.InnerXml.Replace(
-                    RootPath,
-                    "");
-                XmlWriter Writer = XmlWriter.Create(
-                    string.Format(
-                        @"{0}\LvglPlatform.vcxitems.filters",
-                        Path.GetFullPath(Root + @"\LVGL.Simulator\")),
-                    WriterSettings);
-                Document.Save(Writer);
-                Writer.Flush();
-                Writer.Dispose();
+                NewFilterNames.Add(
+                    FilterName.Replace(
+                        RootPath,
+                        @""));
             }
+
+            foreach (var HeaderName in HeaderNames)
+            {
+                NewHeaderNames.Add((
+                    HeaderName.Item1.Replace(
+                        RootPath,
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
+                    HeaderName.Item2.Replace(
+                        RootPath,
+                        @"")));
+            }
+
+            foreach (var SourceName in SourceNames)
+            {
+                NewSourceNames.Add((
+                    SourceName.Item1.Replace(
+                        RootPath,
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
+                    SourceName.Item2.Replace(
+                        RootPath,
+                        @"")));
+            }
+
+            foreach (var OtherName in OtherNames)
+            {
+                NewOtherNames.Add((
+                    OtherName.Item1.Replace(
+                        RootPath,
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
+                    OtherName.Item2.Replace(
+                        RootPath,
+                        @"")));
+            }
+
+            ProjectRootElement ProjectRoot = ProjectRootElement.Open(
+                string.Format(
+                    @"{0}\LVGL.Simulator.vcxproj",
+                    Path.GetFullPath(Root + @"\LVGL.Simulator\")));
+
+            foreach (ProjectItemElement Item in ProjectRoot.Items)
+            {
+                if (Item.Include.StartsWith(
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
+                {
+                    Item.Parent.RemoveChild(Item);
+                }
+            }
+
+            ProjectRootElement FiltersRoot = ProjectRootElement.Open(
+                string.Format(
+                    @"{0}\LVGL.Simulator.vcxproj.filters",
+                    Path.GetFullPath(Root + @"\LVGL.Simulator\")));
+
+            foreach (ProjectItemElement Item in FiltersRoot.Items)
+            {
+                if (Item.Include.StartsWith(
+                        @"lvgl\") ||
+                    Item.Include.StartsWith(
+                        @"freetype\") ||
+                    Item.Include.StartsWith(
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
+                {
+                    Item.Parent.RemoveChild(Item);
+                }
+            }
+
+            foreach (var CurrentName in NewFilterNames)
+            {
+                ProjectItemElement Item =
+                    FiltersRoot.AddItem("Filter", CurrentName);
+                Item.AddMetadata(
+                    "UniqueIdentifier",
+                    string.Format("{{{0}}}", Guid.NewGuid()));
+            }
+
+            foreach (var CurrentName in NewHeaderNames)
+            {
+                ProjectRoot.AddItem("ClInclude", CurrentName.Item1);
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("ClInclude", CurrentName.Item1);
+                    Item.AddMetadata("Filter", CurrentName.Item2);
+                }
+            }
+
+            foreach (var CurrentName in NewSourceNames)
+            {
+                ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("ClCompile", CurrentName.Item1);
+                    Item.AddMetadata("Filter", CurrentName.Item2);
+                }
+            }
+
+            foreach (var CurrentName in NewOtherNames)
+            {
+                ProjectRoot.AddItem("None", CurrentName.Item1);
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("None", CurrentName.Item1);
+                    Item.AddMetadata("Filter", CurrentName.Item2);
+                }
+            }
+
+            ProjectRoot.Save(Encoding.UTF8);
+
+            FiltersRoot.Save(Encoding.UTF8);
 
             Console.WriteLine("Hello, World!");
 
