@@ -50,7 +50,7 @@
     #endif
 #endif  /*LV_USE_BUILTIN_MALLOC*/
 
-/*Enable lv_memcpy_builtin, lv_memset_builtin, lv_strlen_builtin, lv_strncpy_builtin*/
+/*Enable lv_memcpy_builtin, lv_memset_builtin, lv_strlen_builtin, lv_strncpy_builtin, lv_strcpy_builtin*/
 #define LV_USE_BUILTIN_MEMCPY 1
 
 /*Enable and configure the built-in (v)snprintf */
@@ -71,6 +71,7 @@
 #define LV_VSNPRINTF    lv_vsnprintf_builtin
 #define LV_STRLEN       lv_strlen_builtin
 #define LV_STRNCPY      lv_strncpy_builtin
+#define LV_STRCPY       lv_strcpy_builtin
 
 #define LV_COLOR_EXTERN_INCLUDE <stdint.h>
 #define LV_COLOR_MIX      lv_color_mix
@@ -277,14 +278,19 @@
  * Others
  *-----------*/
 
-/*1: Show CPU usage and FPS count*/
+/*1: Show CPU usage and FPS count
+ * Requires `LV_USE_SYSMON = 1`*/
 #define LV_USE_PERF_MONITOR 1
 #if LV_USE_PERF_MONITOR
     #define LV_USE_PERF_MONITOR_POS LV_ALIGN_BOTTOM_RIGHT
+
+    /*0: Displays performance data on the screen, 1: Prints performance data using log.*/
+    #define LV_USE_PERF_MONITOR_LOG_MODE 0
 #endif
 
 /*1: Show the used memory and the memory fragmentation
- * Requires `LV_USE_BUILTIN_MALLOC = 1`*/
+ * Requires `LV_USE_BUILTIN_MALLOC = 1`
+ * Requires `LV_USE_SYSMON = 1`*/
 #define LV_USE_MEM_MONITOR 1
 #if LV_USE_MEM_MONITOR
     #define LV_USE_MEM_MONITOR_POS LV_ALIGN_BOTTOM_LEFT
@@ -691,6 +697,15 @@
 /*1: Enable API to take snapshot for object*/
 #define LV_USE_SNAPSHOT 0
 
+/*1: Enable system monitor component*/
+#define LV_USE_SYSMON 1
+
+/*1: Enable the run-time performance profiler*/
+#define LV_USE_PROFILER 0
+#define LV_PROFILER_INCLUDE <stdint.h>
+#define LV_PROFILER_BEGIN
+#define LV_PROFILER_END
+
 /*1: Enable Monkey test*/
 #define LV_USE_MONKEY 0
 
@@ -794,7 +809,7 @@
 #define LV_USE_DEMO_STRESS 1
 
 /*Music player demo*/
-#define LV_USE_DEMO_MUSIC 1
+#define LV_USE_DEMO_MUSIC 0
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_SQUARE    1
     #define LV_DEMO_MUSIC_LANDSCAPE 1
