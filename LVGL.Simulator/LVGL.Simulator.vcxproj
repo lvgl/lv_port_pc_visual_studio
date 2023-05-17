@@ -27,7 +27,6 @@
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
     </ClCompile>
   </ItemDefinitionGroup>
-  <Import Project="LvglPlatform.vcxitems" />
   <ItemGroup>
     <ClInclude Include="lv_conf.h" />
     <ClInclude Include="win32drv.h" />
