@@ -100,7 +100,7 @@ namespace LvglSubmoduleProjectFileGenerator
             }
         }
 
-        static void Main(string[] args)
+        static void UpdateLvglWindowsSimulator()
         {
             string Root = GitRepository.GetRootPath();
 
@@ -234,6 +234,11 @@ namespace LvglSubmoduleProjectFileGenerator
             ProjectRoot.Save(Encoding.UTF8);
 
             FiltersRoot.Save(Encoding.UTF8);
+        }
+
+        static void Main(string[] args)
+        {
+            UpdateLvglWindowsSimulator();
 
             Console.WriteLine("Hello, World!");
 
