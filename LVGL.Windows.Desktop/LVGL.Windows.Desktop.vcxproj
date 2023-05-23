@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.Win32.props" />
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.x64.props" />
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.ARM64.props" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
+    <RootNamespace>LVGL</RootNamespace>
+    <MileProjectType>WindowsApplication</MileProjectType>
+    <MileProjectManifestFile>LVGL.Windows.Desktop.manifest</MileProjectManifestFile>
+    <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
+  </PropertyGroup>
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="..\LVGL.Windows\LVGL.Windows.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Manifest Include="LVGL.Windows.Desktop.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Mile.Project.Properties.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LVGL.Windows.Desktop.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LVGL.Windows.Desktop.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="LVGL.ico" />
+  </ItemGroup>
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.targets" />
+</Project>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="LVGL.Portable.vcxitems.filters" />
+  <ItemGroup>
+    <ClInclude Include="lv_conf.h" />
+    <ClInclude Include="LVGL.Resource.FontAwesome5Free.h">
+      <Filter>LVGL.Resource.FontAwesome5Free</Filter>
+    </ClInclude>
+    <ClInclude Include="LVGL.Resource.FontAwesome5FreeLVGL.h">
+      <Filter>LVGL.Resource.FontAwesome5FreeLVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="LVGL.Windows.Font.h">
+      <Filter>LVGL.Windows.Font</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LVGL.Resource.FontAwesome5Free.c">
+      <Filter>LVGL.Resource.FontAwesome5Free</Filter>
+    </ClCompile>
+    <ClCompile Include="LVGL.Resource.FontAwesome5FreeLVGL.c">
+      <Filter>LVGL.Resource.FontAwesome5FreeLVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="LVGL.Windows.Font.cpp">
+      <Filter>LVGL.Windows.Font</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="LVGL.Resource.FontAwesome5Free">
+      <UniqueIdentifier>{4fe19ff6-75e3-4093-9d85-9fc02a92a9fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LVGL.Resource.FontAwesome5FreeLVGL">
+      <UniqueIdentifier>{81011523-6013-4c65-b43e-6b3dac1ef893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LVGL.Windows.Font">
+      <UniqueIdentifier>{20a6a3c2-16d9-4766-8d6b-246666ef17b9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LVGL.Windows.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="LVGL.Resource.FontAwesome5Free.ttf">
+      <Filter>LVGL.Resource.FontAwesome5Free</Filter>
+    </Font>
+    <Font Include="LVGL.Resource.FontAwesome5FreeLVGL.ttf">
+      <Filter>LVGL.Resource.FontAwesome5FreeLVGL</Filter>
+    </Font>
+  </ItemGroup>
+</Project>

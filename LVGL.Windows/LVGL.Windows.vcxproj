@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.Win32.props" />
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.x64.props" />
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.ARM64.props" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}</ProjectGuid>
+    <RootNamespace>LVGL.Windows</RootNamespace>
+    <MileProjectType>StaticLibrary</MileProjectType>
+    <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
+  </PropertyGroup>
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="LVGL.Windows.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="LVGL.Portable.vcxitems" />
+  <ItemGroup>
+    <ClInclude Include="LVGL.Resource.FontAwesome5Free.h" />
+    <ClInclude Include="LVGL.Resource.FontAwesome5FreeLVGL.h" />
+    <ClInclude Include="LVGL.Windows.Font.h" />
+    <ClInclude Include="lv_conf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LVGL.Resource.FontAwesome5Free.c" />
+    <ClCompile Include="LVGL.Resource.FontAwesome5FreeLVGL.c" />
+    <ClCompile Include="LVGL.Windows.Font.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LVGL.Windows.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="LVGL.Resource.FontAwesome5Free.ttf" />
+    <Font Include="LVGL.Resource.FontAwesome5FreeLVGL.ttf" />
+  </ItemGroup>
+  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.targets" />
+</Project>
