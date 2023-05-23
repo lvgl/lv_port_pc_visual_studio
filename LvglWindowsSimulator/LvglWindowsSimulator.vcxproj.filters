@@ -683,7 +683,7 @@
     <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="LVGL.Simulator.manifest" />
+    <Manifest Include="LvglWindowsSimulator.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
@@ -2055,11 +2055,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c">
       <Filter>lvgl\src\widgets\win</Filter>
     </ClCompile>
-    <ClCompile Include="LVGL.Simulator.cpp" />
+    <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LVGL.Simulator.rc" />
+    <ResourceCompile Include="LvglWindowsSimulator.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="LVGL.ico" />

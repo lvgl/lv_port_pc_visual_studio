@@ -7,7 +7,7 @@
     <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>ConsoleApplication</MileProjectType>
-    <MileProjectManifestFile>LVGL.Simulator.manifest</MileProjectManifestFile>
+    <MileProjectManifestFile>LvglWindowsSimulator.manifest</MileProjectManifestFile>
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
@@ -258,7 +258,7 @@
     <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="LVGL.Simulator.manifest" />
+    <Manifest Include="LvglWindowsSimulator.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
@@ -720,11 +720,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\textarea\lv_textarea.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\tileview\lv_tileview.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c" />
-    <ClCompile Include="LVGL.Simulator.cpp" />
+    <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LVGL.Simulator.rc" />
+    <ResourceCompile Include="LvglWindowsSimulator.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="LVGL.ico" />

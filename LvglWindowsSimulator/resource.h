@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ 生成的包含文件。
-// 供 LVGL.Simulator.rc 使用
+// 供 LvglWindowsSimulator.rc 使用
 //
 #define IDI_LVGL                       101
 

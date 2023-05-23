@@ -115,7 +115,7 @@ namespace LvglSubmoduleProjectFileGenerator
             List<(string, string)> NewHeaderNames = new List<(string, string)>();
             List<(string, string)> NewSourceNames = new List<(string, string)>();
             List<(string, string)> NewOtherNames = new List<(string, string)>();
-            
+
             foreach (var FilterName in FilterNames)
             {
                 NewFilterNames.Add(
@@ -159,8 +159,8 @@ namespace LvglSubmoduleProjectFileGenerator
 
             ProjectRootElement ProjectRoot = ProjectRootElement.Open(
                 string.Format(
-                    @"{0}\LVGL.Simulator.vcxproj",
-                    Path.GetFullPath(Root + @"\LVGL.Simulator\")));
+                    @"{0}\LvglWindowsSimulator.vcxproj",
+                    Path.GetFullPath(Root + @"\LvglWindowsSimulator\")));
 
             foreach (ProjectItemElement Item in ProjectRoot.Items)
             {
@@ -173,8 +173,8 @@ namespace LvglSubmoduleProjectFileGenerator
 
             ProjectRootElement FiltersRoot = ProjectRootElement.Open(
                 string.Format(
-                    @"{0}\LVGL.Simulator.vcxproj.filters",
-                    Path.GetFullPath(Root + @"\LVGL.Simulator\")));
+                    @"{0}\LvglWindowsSimulator.vcxproj.filters",
+                    Path.GetFullPath(Root + @"\LvglWindowsSimulator\")));
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
