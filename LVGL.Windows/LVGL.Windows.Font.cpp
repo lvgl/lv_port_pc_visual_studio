@@ -158,7 +158,7 @@ static void LvglWindowsGdiFontCheckDpiValue(
     lv_disp_t* CurrentDisplay = ::lv_disp_get_default();
     if (CurrentDisplay)
     {
-        DpiValue = CurrentDisplay->driver->dpi;
+        DpiValue = ::lv_disp_get_dpi(CurrentDisplay);
     }
 
     if (DpiValue != Context->DpiValue)
@@ -308,7 +308,7 @@ EXTERN_C BOOL WINAPI LvglWindowsGdiFontCreateFont(
         lv_disp_t* CurrentDisplay = ::lv_disp_get_default();
         if (CurrentDisplay)
         {
-            DpiValue = CurrentDisplay->driver->dpi;
+            DpiValue = ::lv_disp_get_dpi(CurrentDisplay);
         }
 
         Context = new LVGL_WINDOWS_GDI_FONT_CONTEXT();
