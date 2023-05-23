@@ -236,9 +236,143 @@ namespace LvglSubmoduleProjectFileGenerator
             FiltersRoot.Save(Encoding.UTF8);
         }
 
+        static void UpdateLvglWindowsDesktopApplication()
+        {
+            string Root = GitRepository.GetRootPath();
+
+            Console.WriteLine(Root);
+
+            string RootPath = Path.GetFullPath(Root + @"\LvglPlatform\");
+
+            EnumerateFolder(RootPath + @"lvgl");
+
+            List<string> NewFilterNames = new List<string>();
+            List<(string, string)> NewHeaderNames = new List<(string, string)>();
+            List<(string, string)> NewSourceNames = new List<(string, string)>();
+            List<(string, string)> NewOtherNames = new List<(string, string)>();
+
+            foreach (var FilterName in FilterNames)
+            {
+                NewFilterNames.Add(
+                    FilterName.Replace(
+                        RootPath,
+                        @""));
+            }
+
+            foreach (var HeaderName in HeaderNames)
+            {
+                NewHeaderNames.Add((
+                    HeaderName.Item1.Replace(
+                        RootPath,
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
+                    HeaderName.Item2.Replace(
+                        RootPath,
+                        @"")));
+            }
+
+            foreach (var SourceName in SourceNames)
+            {
+                NewSourceNames.Add((
+                    SourceName.Item1.Replace(
+                        RootPath,
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
+                    SourceName.Item2.Replace(
+                        RootPath,
+                        @"")));
+            }
+
+            foreach (var OtherName in OtherNames)
+            {
+                NewOtherNames.Add((
+                    OtherName.Item1.Replace(
+                        RootPath,
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
+                    OtherName.Item2.Replace(
+                        RootPath,
+                        @"")));
+            }
+
+            ProjectRootElement ProjectRoot = ProjectRootElement.Open(
+                string.Format(
+                    @"{0}\LVGL.Windows.vcxproj",
+                    Path.GetFullPath(Root + @"\LVGL.Windows\")));
+
+            foreach (ProjectItemElement Item in ProjectRoot.Items)
+            {
+                if (Item.Include.StartsWith(
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
+                {
+                    Item.Parent.RemoveChild(Item);
+                }
+            }
+
+            ProjectRootElement FiltersRoot = ProjectRootElement.Open(
+                string.Format(
+                    @"{0}\LVGL.Windows.vcxproj.filters",
+                    Path.GetFullPath(Root + @"\LVGL.Windows\")));
+
+            foreach (ProjectItemElement Item in FiltersRoot.Items)
+            {
+                if (Item.Include.StartsWith(
+                        @"lvgl\") ||
+                    Item.Include.StartsWith(
+                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
+                {
+                    Item.Parent.RemoveChild(Item);
+                }
+            }
+
+            foreach (var CurrentName in NewFilterNames)
+            {
+                ProjectItemElement Item =
+                    FiltersRoot.AddItem("Filter", CurrentName);
+                Item.AddMetadata(
+                    "UniqueIdentifier",
+                    string.Format("{{{0}}}", Guid.NewGuid()));
+            }
+
+            foreach (var CurrentName in NewHeaderNames)
+            {
+                ProjectRoot.AddItem("ClInclude", CurrentName.Item1);
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("ClInclude", CurrentName.Item1);
+                    Item.AddMetadata("Filter", CurrentName.Item2);
+                }
+            }
+
+            foreach (var CurrentName in NewSourceNames)
+            {
+                ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("ClCompile", CurrentName.Item1);
+                    Item.AddMetadata("Filter", CurrentName.Item2);
+                }
+            }
+
+            foreach (var CurrentName in NewOtherNames)
+            {
+                ProjectRoot.AddItem("None", CurrentName.Item1);
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("None", CurrentName.Item1);
+                    Item.AddMetadata("Filter", CurrentName.Item2);
+                }
+            }
+
+            ProjectRoot.Save(Encoding.UTF8);
+
+            FiltersRoot.Save(Encoding.UTF8);
+        }
+
         static void Main(string[] args)
         {
-            UpdateLvglWindowsSimulator();
+            //UpdateLvglWindowsSimulator();
+            UpdateLvglWindowsDesktopApplication();
 
             Console.WriteLine("Hello, World!");
 
