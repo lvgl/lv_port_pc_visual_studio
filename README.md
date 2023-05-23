@@ -47,9 +47,7 @@ Instructions for cloning, building and running the application are found below.
 
 ## Supported Features
 
-This repo is designed for keeping the simulator behavior. If you wonder to 
-adapt your LVGL application to Windows, please visit 
-[lvgl/lv_port_windows](https://github.com/lvgl/lv_port_windows).
+### Simulator Mode
 
 - [x] Only depends on Win32 API, C Runtime and C++ STL.
 - [x] Native support for x86, x64 and ARM64 Windows.
@@ -58,6 +56,21 @@ adapt your LVGL application to Windows, please visit
 - [x] Support Per-monitor DPI Aware.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
 - [x] FreeType integration.
+
+### Application Mode
+
+- [x] Only depends on Win32 API, C Runtime and C++ STL.
+- [x] Native support for x86, x64 and ARM64 Windows.
+- [x] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL)
+  toolchain to make the binary size as smaller as using MinGW.
+- [x] Support resizing the Window in the HAL level.
+- [x] Support Per-monitor DPI Aware in the HAL level.
+- [x] Support Windows keyboard and mouse wheel event in the HAL level.
+- [x] Provide the easy way to reference lvgl, lv_examples project for Visual
+  Studio.
+- [x] Provide Windows GDI font engine support.
+- [x] Support Windows touch input in the HAL level.
+- [x] Support Windows IME input in the HAL level.
 
 ## How to Clone
 
