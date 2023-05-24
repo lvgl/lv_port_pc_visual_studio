@@ -1,7 +1,7 @@
 ﻿/*
- * PROJECT:   LVGL ported to Windows Desktop
- * FILE:      LVGL.Windows.Desktop.cpp
- * PURPOSE:   Implementation for LVGL ported to Windows Desktop
+ * PROJECT:   LVGL Windows Desktop Application Demo
+ * FILE:      LvglWindowsDesktopApplication.cpp
+ * PURPOSE:   Implementation for LVGL Windows Desktop Application Demo
  *
  * LICENSE:   The MIT License
  *
@@ -899,7 +899,7 @@ bool LvglWindowsInitialize(
     g_WindowHandle = ::CreateWindowExW(
         WS_EX_CLIENTEDGE,
         WindowClass.lpszClassName,
-        L"LVGL ported to Windows Desktop",
+        L"LVGL Windows Desktop Application Demo",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         0,

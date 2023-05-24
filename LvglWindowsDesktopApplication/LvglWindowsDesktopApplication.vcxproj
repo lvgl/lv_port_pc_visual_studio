@@ -7,7 +7,7 @@
     <ProjectGuid>{7148D2C8-4594-4054-95F2-6211DA069D8F}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>WindowsApplication</MileProjectType>
-    <MileProjectManifestFile>LVGL.Windows.Desktop.manifest</MileProjectManifestFile>
+    <MileProjectManifestFile>LvglWindowsDesktopApplication.manifest</MileProjectManifestFile>
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
   </PropertyGroup>
   <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
@@ -1427,17 +1427,17 @@
     <Font Include="LVGL.Resource.FontAwesome5FreeLVGL.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="LVGL.Windows.Desktop.manifest" />
+    <Manifest Include="LvglWindowsDesktopApplication.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LVGL.Windows.Desktop.cpp" />
+    <ClCompile Include="LvglWindowsDesktopApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LVGL.Windows.Desktop.rc" />
+    <ResourceCompile Include="LvglWindowsDesktopApplication.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="LVGL.ico" />

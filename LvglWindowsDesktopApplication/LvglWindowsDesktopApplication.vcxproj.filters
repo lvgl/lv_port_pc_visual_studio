@@ -4834,17 +4834,17 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="LVGL.Windows.Desktop.manifest" />
+    <Manifest Include="LvglWindowsDesktopApplication.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LVGL.Windows.Desktop.cpp" />
+    <ClCompile Include="LvglWindowsDesktopApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LVGL.Windows.Desktop.rc" />
+    <ResourceCompile Include="LvglWindowsDesktopApplication.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="LVGL.ico" />
