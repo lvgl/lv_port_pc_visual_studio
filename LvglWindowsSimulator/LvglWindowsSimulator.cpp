@@ -1,7 +1,7 @@
 ﻿/*
  * PROJECT:   LVGL Windows Simulator
  * FILE:      LvglWindowsSimulator.cpp
- * PURPOSE:   Implementation for LVGL ported to Windows Desktop
+ * PURPOSE:   Implementation for LVGL Windows Simulator
  *
  * LICENSE:   The MIT License
  *
