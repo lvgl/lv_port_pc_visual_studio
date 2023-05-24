@@ -5,12 +5,7 @@ VisualStudioVersion = 17.6.33717.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LvglWindowsSimulator", "LvglWindowsSimulator\LvglWindowsSimulator.vcxproj", "{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LVGL.Windows", "LVGL.Windows\LVGL.Windows.vcxproj", "{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LVGL.Windows.Desktop", "LVGL.Windows.Desktop\LVGL.Windows.Desktop.vcxproj", "{7148D2C8-4594-4054-95F2-6211DA069D8F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA} = {AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,18 +29,6 @@ Global
 		{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}.Release|x64.Build.0 = Release|x64
 		{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}.Release|x86.ActiveCfg = Release|Win32
 		{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}.Release|x86.Build.0 = Release|Win32
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Debug|ARM64.Build.0 = Debug|ARM64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Debug|x64.ActiveCfg = Debug|x64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Debug|x64.Build.0 = Debug|x64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Debug|x86.ActiveCfg = Debug|Win32
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Debug|x86.Build.0 = Debug|Win32
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Release|ARM64.ActiveCfg = Release|ARM64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Release|ARM64.Build.0 = Release|ARM64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Release|x64.ActiveCfg = Release|x64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Release|x64.Build.0 = Release|x64
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Release|x86.ActiveCfg = Release|Win32
-		{AAE3B2DC-AEFC-49B0-89F9-9675CE3A0EAA}.Release|x86.Build.0 = Release|Win32
 		{7148D2C8-4594-4054-95F2-6211DA069D8F}.Debug|ARM64.ActiveCfg = Debug|ARM64
 		{7148D2C8-4594-4054-95F2-6211DA069D8F}.Debug|ARM64.Build.0 = Debug|ARM64
 		{7148D2C8-4594-4054-95F2-6211DA069D8F}.Debug|x64.ActiveCfg = Debug|x64

@@ -294,8 +294,8 @@ namespace LvglSubmoduleProjectFileGenerator
 
             ProjectRootElement ProjectRoot = ProjectRootElement.Open(
                 string.Format(
-                    @"{0}\LVGL.Windows.vcxproj",
-                    Path.GetFullPath(Root + @"\LVGL.Windows\")));
+                    @"{0}\LVGL.Windows.Desktop.vcxproj",
+                    Path.GetFullPath(Root + @"\LVGL.Windows.Desktop\")));
 
             foreach (ProjectItemElement Item in ProjectRoot.Items)
             {
@@ -308,8 +308,8 @@ namespace LvglSubmoduleProjectFileGenerator
 
             ProjectRootElement FiltersRoot = ProjectRootElement.Open(
                 string.Format(
-                    @"{0}\LVGL.Windows.vcxproj.filters",
-                    Path.GetFullPath(Root + @"\LVGL.Windows\")));
+                    @"{0}\LVGL.Windows.Desktop.vcxproj.filters",
+                    Path.GetFullPath(Root + @"\LVGL.Windows.Desktop\")));
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
