@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.Win32.props" />
-  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.x64.props" />
-  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Platform.ARM64.props" />
+  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.Win32.props" />
+  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.x64.props" />
+  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.ARM64.props" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7148D2C8-4594-4054-95F2-6211DA069D8F}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
@@ -10,7 +10,7 @@
     <MileProjectManifestFile>LvglWindowsDesktopApplication.manifest</MileProjectManifestFile>
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
   </PropertyGroup>
-  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
+  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Cpp.props" />
   <Import Project="..\LvglPlatform\LvglWindowsIconResource\LvglWindowsIconResource.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\;$(MSBuildThisFileDirectory)..\LvglPlatform\;$(IncludePath)</IncludePath>
@@ -1436,5 +1436,5 @@
   <ItemGroup>
     <ClCompile Include="LvglWindowsDesktopApplication.cpp" />
   </ItemGroup>
-  <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.targets" />
+  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Cpp.targets" />
 </Project>
