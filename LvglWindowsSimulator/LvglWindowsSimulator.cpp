@@ -10,7 +10,7 @@
 
 #include <Windows.h>
 
-#include "resource.h"
+#include <LvglWindowsIconResource.h>
 
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
@@ -39,7 +39,7 @@ bool single_display_mode_initialization()
         SW_SHOW,
         800,
         480,
-        LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
+        LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL_WINDOWS))))
     {
         return false;
     }

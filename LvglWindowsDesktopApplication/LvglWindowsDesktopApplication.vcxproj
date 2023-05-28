@@ -11,6 +11,7 @@
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
   </PropertyGroup>
   <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
+  <Import Project="..\LvglPlatform\LvglWindowsIconResource\LvglWindowsIconResource.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\;$(MSBuildThisFileDirectory)..\LvglPlatform\;$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -1431,16 +1432,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LvglWindowsDesktopApplication.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="LvglWindowsDesktopApplication.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="LVGL.ico" />
   </ItemGroup>
   <Import Project="..\Mile.Project.Windows.Legacy\Mile.Project.Cpp.targets" />
 </Project>

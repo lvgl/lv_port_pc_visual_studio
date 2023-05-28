@@ -687,7 +687,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha256.c">
@@ -2057,12 +2056,6 @@
     </ClCompile>
     <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="win32drv.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="LvglWindowsSimulator.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="LVGL.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\freetype\.clang-format">

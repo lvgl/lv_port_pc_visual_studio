@@ -860,7 +860,7 @@ LRESULT CALLBACK WndProc(
     return 0;
 }
 
-#include "resource.h"
+#include <LvglWindowsIconResource.h>
 
 bool LvglWindowsInitialize(
     _In_ HINSTANCE hInstance,
@@ -871,7 +871,7 @@ bool LvglWindowsInitialize(
 
     HICON IconHandle = ::LoadIconW(
         ::GetModuleHandleW(nullptr),
-        MAKEINTRESOURCE(IDI_LVGL));
+        MAKEINTRESOURCE(IDI_LVGL_WINDOWS));
 
     WNDCLASSEXW WindowClass;
 

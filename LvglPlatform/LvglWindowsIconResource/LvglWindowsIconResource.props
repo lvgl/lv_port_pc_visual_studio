@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PROJECT:   LVGL Platform for Windows
+  FILE:      LvglWindowsIconResource.props
+  PURPOSE:   Windows icon resource for LVGL
+
+  LICENSE:   The MIT License
+
+  DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludePath>$(MSBuildThisFileDirectory);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <Target Name="LvglWindowsBuildIconResource" BeforeTargets="BeforeResourceCompile">
+    <ItemGroup>
+      <ResourceCompile Include="$(MSBuildThisFileDirectory)LvglWindowsIconResource.rc" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -14,6 +14,7 @@
     <SupportLTL>false</SupportLTL>
   </PropertyGroup>
   <Import Project="Mile.Project.Windows.Legacy\Mile.Project.Cpp.props" />
+  <Import Project="..\LvglPlatform\LvglWindowsIconResource\LvglWindowsIconResource.props" />
   <Import Project="freetype.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\;$(MSBuildThisFileDirectory)..\LvglPlatform\;$(IncludePath)</IncludePath>
@@ -262,7 +263,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Project.Properties.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha256.c" />
@@ -722,12 +722,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c" />
     <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="win32drv.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="LvglWindowsSimulator.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="LVGL.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\freetype\.clang-format" />
