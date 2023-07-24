@@ -837,7 +837,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         lv_disp_set_user_data(
             context->display_device_object,
             hWnd);
-        context->display_draw_buffer_size = sizeof(lv_color_t);
+        context->display_draw_buffer_size =
+            lv_color_format_get_size(LV_COLOR_FORMAT_NATIVE);
         context->display_draw_buffer_size *= context->display_hor_res;
         context->display_draw_buffer_size *= context->display_ver_res;
         context->display_draw_buffer_base =
