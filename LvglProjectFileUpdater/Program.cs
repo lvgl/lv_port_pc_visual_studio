@@ -2,7 +2,7 @@
 using Mile.Project.Helpers;
 using System.Text;
 
-namespace LvglSubmoduleProjectFileGenerator
+namespace LvglProjectFileUpdater
 {
 
     internal class Program
