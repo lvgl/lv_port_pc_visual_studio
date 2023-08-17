@@ -62,7 +62,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\rlottie\lv_example_rlottie.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\sjpg\lv_example_sjpg.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\ubuntu_font.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\lv_examples.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\others\file_explorer\lv_example_file_explorer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\others\fragment\lv_example_fragment.h" />
@@ -103,6 +102,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\dev\sdl\lv_sdl_window.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\disp\lv_disp.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\disp\lv_disp_private.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\draw_buf\lv_draw_buf.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\lv_draw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\lv_draw_arc.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\lv_draw_img.h" />
@@ -412,6 +412,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\sjpg\lv_example_sjpg_1.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf_1.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf_2.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf_3.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\ubuntu_font.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\others\file_explorer\lv_example_file_explorer_1.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\others\file_explorer\lv_example_file_explorer_2.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\others\file_explorer\lv_example_file_explorer_3.c" />
@@ -560,6 +562,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\dev\sdl\lv_sdl_mousewheel.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\dev\sdl\lv_sdl_window.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\disp\lv_disp.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\draw_buf\lv_draw_buf.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\lv_draw.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\lv_draw_arc.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\draw\lv_draw_img.c" />
@@ -1710,6 +1713,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\renderers\sw.rst" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\renderers\vglite.rst" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\scroll.rst" />
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\style-props.md" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\style-props.rst" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\style.rst" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\docs\overview\timer.rst" />
@@ -1903,6 +1907,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\index.rst" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf_1.py" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf_2.py" />
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\lv_example_tiny_ttf_3.py" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\Ubuntu-Medium.ttf" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\libs\tiny_ttf\ubuntu_font.py" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\examples\others\file_explorer\index.rst" />
@@ -2125,6 +2130,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\calendar_05.png" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\calendar_06.png" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\calendar_07.png" />
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\clip_corner_1.png" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\colorwheel_01.png" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\colorwheel_02.png" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\ref_imgs\draw\arc_colored.png" />
@@ -2290,6 +2296,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_calendar.c" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_chart.c" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_checkbox.c" />
+    <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_clip_corner.c" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_config.c" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_demo_stress.c" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\src\test_cases\test_demo_widgets.c" />
