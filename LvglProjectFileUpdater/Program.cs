@@ -7,6 +7,8 @@ namespace LvglProjectFileUpdater
 
     internal class Program
     {
+        private static string RepositoryRoot = GitRepository.GetRootPath();
+
         private static List<string> FilterNames =
             new List<string>();
         private static List<(string Target, string Filter)> HeaderNames =
@@ -102,11 +104,13 @@ namespace LvglProjectFileUpdater
 
         static void UpdateLvglWindowsSimulator()
         {
-            string Root = GitRepository.GetRootPath();
+            string RootPath = Path.GetFullPath(
+                RepositoryRoot + @"\LvglPlatform\");
 
-            Console.WriteLine(Root);
-
-            string RootPath = Path.GetFullPath(Root + @"\LvglPlatform\");
+            FilterNames.Clear();
+            HeaderNames.Clear();
+            SourceNames.Clear();
+            OtherNames.Clear();
 
             EnumerateFolder(RootPath + @"freetype");
             EnumerateFolder(RootPath + @"lvgl");
@@ -160,7 +164,8 @@ namespace LvglProjectFileUpdater
             ProjectRootElement ProjectRoot = ProjectRootElement.Open(
                 string.Format(
                     @"{0}\LvglWindowsSimulator.vcxproj",
-                    Path.GetFullPath(Root + @"\LvglWindowsSimulator\")));
+                    Path.GetFullPath(
+                        RepositoryRoot + @"\LvglWindowsSimulator\")));
 
             foreach (ProjectItemElement Item in ProjectRoot.Items)
             {
@@ -174,7 +179,8 @@ namespace LvglProjectFileUpdater
             ProjectRootElement FiltersRoot = ProjectRootElement.Open(
                 string.Format(
                     @"{0}\LvglWindowsSimulator.vcxproj.filters",
-                    Path.GetFullPath(Root + @"\LvglWindowsSimulator\")));
+                    Path.GetFullPath(
+                        RepositoryRoot + @"\LvglWindowsSimulator\")));
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
@@ -238,11 +244,13 @@ namespace LvglProjectFileUpdater
 
         static void UpdateLvglWindowsDesktopApplication()
         {
-            string Root = GitRepository.GetRootPath();
+            string RootPath = Path.GetFullPath(
+                RepositoryRoot + @"\LvglPlatform\");
 
-            Console.WriteLine(Root);
-
-            string RootPath = Path.GetFullPath(Root + @"\LvglPlatform\");
+            FilterNames.Clear();
+            HeaderNames.Clear();
+            SourceNames.Clear();
+            OtherNames.Clear();
 
             EnumerateFolder(RootPath + @"lvgl");
 
@@ -295,7 +303,8 @@ namespace LvglProjectFileUpdater
             ProjectRootElement ProjectRoot = ProjectRootElement.Open(
                 string.Format(
                     @"{0}\LvglWindowsDesktopApplication.vcxproj",
-                    Path.GetFullPath(Root + @"\LvglWindowsDesktopApplication\")));
+                    Path.GetFullPath(
+                        RepositoryRoot + @"\LvglWindowsDesktopApplication\")));
 
             foreach (ProjectItemElement Item in ProjectRoot.Items)
             {
@@ -309,7 +318,8 @@ namespace LvglProjectFileUpdater
             ProjectRootElement FiltersRoot = ProjectRootElement.Open(
                 string.Format(
                     @"{0}\LvglWindowsDesktopApplication.vcxproj.filters",
-                    Path.GetFullPath(Root + @"\LvglWindowsDesktopApplication\")));
+                    Path.GetFullPath(
+                        RepositoryRoot + @"\LvglWindowsDesktopApplication\")));
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
@@ -371,7 +381,13 @@ namespace LvglProjectFileUpdater
 
         static void Main(string[] args)
         {
-            //UpdateLvglWindowsSimulator();
+            if (RepositoryRoot == string.Empty)
+            {
+                throw new NotSupportedException();
+            }
+            Console.WriteLine(RepositoryRoot);
+
+            UpdateLvglWindowsSimulator();
             UpdateLvglWindowsDesktopApplication();
 
             Console.WriteLine("Hello, World!");
