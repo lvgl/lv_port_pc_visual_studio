@@ -40,8 +40,6 @@
 #pragma warning(pop)
 #endif
 
-#include <LVGL.Windows.Font.h>
-
 /**
  * @brief Creates a B8G8R8A8 frame buffer.
  * @param WindowHandle A handle to the window for the creation of the frame
@@ -343,7 +341,7 @@ static lv_group_t* volatile g_DefaultGroup = nullptr;
 void LvglDisplayDriverFlushCallback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
-    lv_color_t* color_p)
+    uint8_t* color_p)
 {
     UNREFERENCED_PARAMETER(color_p);
 
@@ -365,123 +363,6 @@ void LvglDisplayDriverFlushCallback(
     }
 
     ::lv_disp_flush_ready(disp_drv);
-}
-
-#include <lvgl/src/draw/sw/lv_draw_sw.h>
-
-typedef lv_draw_sw_ctx_t LvglWindowsGdiRendererContext;
-
-std::map<std::uint32_t, HBRUSH> g_SolidBrushCache;
-
-void LvglWindowsGdiRendererBlendCallback(
-    lv_draw_ctx_t* draw_ctx,
-    const lv_draw_sw_blend_dsc_t* dsc)
-{
-    // Let's get the blend area which is the intersection of the area to fill
-    // and the clip area.
-    lv_area_t blend_area;
-    if (!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area))
-    {
-        return;
-    }
-
-    // Fallback: The GPU doesn't support these settings. Call the Software
-    // Renderer.
-    if (!(
-        dsc->mask_buf == nullptr &&
-        dsc->opa >= LV_OPA_MAX &&
-        dsc->blend_mode == LV_BLEND_MODE_NORMAL))
-    {
-        ::lv_draw_sw_blend_basic(draw_ctx, dsc);
-        return;
-    }
-
-    if (dsc->src_buf)
-    {
-        lv_coord_t Width = ::lv_area_get_width(&blend_area);
-        lv_coord_t Height = ::lv_area_get_height(&blend_area);
-
-        BITMAPINFO BitmapInfo = { 0 };
-        BitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-        BitmapInfo.bmiHeader.biWidth = Width;
-        BitmapInfo.bmiHeader.biHeight = -Height;
-        BitmapInfo.bmiHeader.biPlanes = 1;
-        BitmapInfo.bmiHeader.biBitCount = 32;
-        BitmapInfo.bmiHeader.biCompression = BI_RGB;
-
-        ::StretchDIBits(
-            g_BufferDCHandle,
-            blend_area.x1,
-            blend_area.y1,
-            Width,
-            Height,
-            0,
-            0,
-            Width,
-            Height,
-            dsc->src_buf,
-            &BitmapInfo,
-            DIB_RGB_COLORS,
-            SRCCOPY);
-    }
-    else
-    {
-        // Fill only non masked, fully opaque, normal blended and not too small
-        // areas.
-
-        HBRUSH Brush = nullptr;
-        {
-            std::uint32_t Color = RGB(
-                LV_COLOR_GET_R(dsc->color),
-                LV_COLOR_GET_G(dsc->color),
-                LV_COLOR_GET_B(dsc->color));
-            auto Iterator = g_SolidBrushCache.find(Color);
-            if (Iterator != g_SolidBrushCache.end())
-            {
-                Brush = Iterator->second;
-            }
-            else
-            {
-                Brush = ::CreateSolidBrush(Color);
-                if (Brush)
-                {
-                    g_SolidBrushCache.emplace(std::make_pair(Color, Brush));
-                }
-            }
-        }
-
-        if (Brush)
-        {
-            RECT RenderArea;
-            RenderArea.left = blend_area.x1;
-            RenderArea.top = blend_area.y1;
-            RenderArea.right = blend_area.x2 + 1;
-            RenderArea.bottom = blend_area.y2 + 1;
-            ::FillRect(g_BufferDCHandle, &RenderArea, Brush);
-        }
-    }
-}
-
-void LvglWindowsGdiRendererBaseDrawWaitForFinishCallback(
-    lv_draw_ctx_t* draw_ctx)
-{
-    ::lv_draw_sw_wait_for_finish(draw_ctx);
-}
-
-void LvglWindowsGdiRendererInitialize(
-    lv_disp_t* drv,
-    lv_draw_ctx_t* draw_ctx)
-{
-    // Initialize the LVGL Software Renderer
-    ::lv_draw_sw_init_ctx(drv, draw_ctx);
-
-    LvglWindowsGdiRendererContext* RendererContext =
-        reinterpret_cast<LvglWindowsGdiRendererContext*>(draw_ctx);
-
-    RendererContext->blend =
-        LvglWindowsGdiRendererBlendCallback;
-    RendererContext->base_draw.wait_for_finish =
-        LvglWindowsGdiRendererBaseDrawWaitForFinishCallback;
 }
 
 void LvglCreateDisplayDriver(
@@ -511,11 +392,6 @@ void LvglCreateDisplayDriver(
         NULL,
         sizeof(lv_color_t) * hor_res * ver_res,
         LV_DISP_RENDER_MODE_DIRECT);
-    /*::lv_disp_set_draw_ctx(
-        disp_drv,
-        ::LvglWindowsGdiRendererInitialize,
-        nullptr,
-        sizeof(LvglWindowsGdiRendererContext));*/
 }
 
 void LvglMouseDriverReadCallback(
@@ -864,11 +740,8 @@ LRESULT CALLBACK WndProc(
 
 bool LvglWindowsInitialize(
     _In_ HINSTANCE hInstance,
-    _In_ int nShowCmd,
-    _In_opt_ LPCWSTR DefaultFontName)
+    _In_ int nShowCmd)
 {
-    ::LvglWindowsGdiFontInitialize(DefaultFontName);
-
     HICON IconHandle = ::LoadIconW(
         ::GetModuleHandleW(nullptr),
         MAKEINTRESOURCE(IDI_LVGL_WINDOWS));
@@ -1029,10 +902,14 @@ int WINAPI wWinMain(
 
     ::lv_init();
 
+    lv_tick_set_cb([]() -> std::uint32_t
+    {
+        return GetTickCount();
+    });
+
     if (!LvglWindowsInitialize(
         hInstance,
-        nShowCmd,
-        nullptr))
+        nShowCmd))
     {
         return -1;
     }
