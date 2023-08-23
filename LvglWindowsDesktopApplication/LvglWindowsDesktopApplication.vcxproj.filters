@@ -638,15 +638,6 @@
       <Filter>lvgl\src\widgets\win</Filter>
     </ClInclude>
     <ClInclude Include="lv_conf.h" />
-    <ClInclude Include="LVGL.Resource.FontAwesome5Free.h">
-      <Filter>LVGL.Resource.FontAwesome5Free</Filter>
-    </ClInclude>
-    <ClInclude Include="LVGL.Resource.FontAwesome5FreeLVGL.h">
-      <Filter>LVGL.Resource.FontAwesome5FreeLVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="LVGL.Windows.Font.h">
-      <Filter>LVGL.Windows.Font</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha256.c">
@@ -2092,15 +2083,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c">
       <Filter>lvgl\src\widgets\win</Filter>
     </ClCompile>
-    <ClCompile Include="LVGL.Resource.FontAwesome5Free.c">
-      <Filter>LVGL.Resource.FontAwesome5Free</Filter>
-    </ClCompile>
-    <ClCompile Include="LVGL.Resource.FontAwesome5FreeLVGL.c">
-      <Filter>LVGL.Resource.FontAwesome5FreeLVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="LVGL.Windows.Font.cpp">
-      <Filter>LVGL.Windows.Font</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lvgl">
@@ -2114,15 +2096,6 @@
     </Filter>
     <Filter Include="lvgl">
       <UniqueIdentifier>{eca507ad-4126-4f76-a586-254f83f8c9e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LVGL.Resource.FontAwesome5Free">
-      <UniqueIdentifier>{4fe19ff6-75e3-4093-9d85-9fc02a92a9fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LVGL.Resource.FontAwesome5FreeLVGL">
-      <UniqueIdentifier>{81011523-6013-4c65-b43e-6b3dac1ef893}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LVGL.Windows.Font">
-      <UniqueIdentifier>{20a6a3c2-16d9-4766-8d6b-246666ef17b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="lvgl\.devcontainer">
       <UniqueIdentifier>{06a381f5-4557-4853-b12b-c05867b75442}</UniqueIdentifier>
@@ -5355,14 +5328,6 @@
       <Filter>lvgl\tests\unity</Filter>
     </None>
     <None Include="LVGL.Windows.props" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="LVGL.Resource.FontAwesome5Free.ttf">
-      <Filter>LVGL.Resource.FontAwesome5Free</Filter>
-    </Font>
-    <Font Include="LVGL.Resource.FontAwesome5FreeLVGL.ttf">
-      <Filter>LVGL.Resource.FontAwesome5FreeLVGL</Filter>
-    </Font>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsDesktopApplication.manifest" />

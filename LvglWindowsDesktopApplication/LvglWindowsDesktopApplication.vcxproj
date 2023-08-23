@@ -237,9 +237,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\textarea\lv_textarea.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\tileview\lv_tileview.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.h" />
-    <ClInclude Include="LVGL.Resource.FontAwesome5Free.h" />
-    <ClInclude Include="LVGL.Resource.FontAwesome5FreeLVGL.h" />
-    <ClInclude Include="LVGL.Windows.Font.h" />
     <ClInclude Include="lv_conf.h" />
   </ItemGroup>
   <ItemGroup>
@@ -724,9 +721,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\textarea\lv_textarea.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\tileview\lv_tileview.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c" />
-    <ClCompile Include="LVGL.Resource.FontAwesome5Free.c" />
-    <ClCompile Include="LVGL.Resource.FontAwesome5FreeLVGL.c" />
-    <ClCompile Include="LVGL.Windows.Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\.devcontainer\devcontainer.json" />
@@ -1584,10 +1578,6 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\unity\unity_support.c" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\unity\unity_support.h" />
     <None Include="LVGL.Windows.props" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="LVGL.Resource.FontAwesome5Free.ttf" />
-    <Font Include="LVGL.Resource.FontAwesome5FreeLVGL.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsDesktopApplication.manifest" />
