@@ -49,22 +49,29 @@ bool single_display_mode_initialization()
     return true;
 }
 
+uint32_t tick_count_callback()
+{
+    return GetTickCount();
+}
+
 int main()
 {
     lv_init();
+
+    lv_tick_set_cb(tick_count_callback);
 
     if (!single_display_mode_initialization())
     {
         return -1;
     }
 
-    //lv_demo_widgets();
-    lv_demo_benchmark(LV_DEMO_BENCHMARK_MODE_RENDER_AND_DRIVER);
+    lv_demo_widgets();
+    //lv_demo_benchmark(LV_DEMO_BENCHMARK_MODE_RENDER_AND_DRIVER);
 
     while (!lv_win32_quit_signal)
     {
-        lv_task_handler();
-        Sleep(1);
+        uint32_t time_till_next = lv_timer_handler();
+        Sleep(time_till_next);
     }
 
     return 0;
