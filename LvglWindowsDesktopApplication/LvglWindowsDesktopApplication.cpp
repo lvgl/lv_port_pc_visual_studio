@@ -401,7 +401,7 @@ void LvglMouseDriverReadCallback(
     UNREFERENCED_PARAMETER(indev_drv);
 
     data->state = static_cast<lv_indev_state_t>(
-        g_MousePressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
+        g_MousePressed ? LV_INDEV_STATE_PRESSED : LV_INDEV_STATE_RELEASED);
     data->point.x = GET_X_LPARAM(g_MouseValue);
     data->point.y = GET_Y_LPARAM(g_MouseValue);
 }
@@ -437,7 +437,7 @@ void LvglMousewheelDriverReadCallback(
     UNREFERENCED_PARAMETER(indev_drv);
 
     data->state = static_cast<lv_indev_state_t>(
-        g_MouseWheelPressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
+        g_MouseWheelPressed ? LV_INDEV_STATE_PRESSED : LV_INDEV_STATE_RELEASED);
     data->enc_diff = g_MouseWheelValue;
     g_MouseWheelValue = 0;
 }
@@ -536,8 +536,8 @@ LRESULT CALLBACK WndProc(
                 TranslatedKey,
                 static_cast<lv_indev_state_t>(
                     (uMsg == WM_KEYUP)
-                    ? LV_INDEV_STATE_REL
-                    : LV_INDEV_STATE_PR)));
+                    ? LV_INDEV_STATE_RELEASED
+                    : LV_INDEV_STATE_PRESSED)));
         }
 
         break;
@@ -570,15 +570,15 @@ LRESULT CALLBACK WndProc(
                 g_Utf16LowSurrogate = 0;
             }
 
-            uint32_t LvglCodePoint = ::_lv_txt_unicode_to_encoded(CodePoint);
+            uint32_t LvglCodePoint = ::_lv_text_unicode_to_encoded(CodePoint);
 
             g_KeyQueue.push(std::make_pair(
                 LvglCodePoint,
-                static_cast<lv_indev_state_t>(LV_INDEV_STATE_PR)));
+                static_cast<lv_indev_state_t>(LV_INDEV_STATE_PRESSED)));
 
             g_KeyQueue.push(std::make_pair(
                 LvglCodePoint,
-                static_cast<lv_indev_state_t>(LV_INDEV_STATE_REL)));
+                static_cast<lv_indev_state_t>(LV_INDEV_STATE_RELEASED)));
         }
 
         break;

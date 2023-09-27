@@ -854,7 +854,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             context->display_draw_buffer_size,
             LV_DISP_RENDER_MODE_DIRECT);
 
-        context->mouse_state = LV_INDEV_STATE_REL;
+        context->mouse_state = LV_INDEV_STATE_RELEASED;
         context->mouse_point.x = 0;
         context->mouse_point.y = 0;
         context->mouse_device_object = lv_indev_create();
@@ -872,7 +872,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             context->mouse_device_object,
             context->display_device_object);
         
-        context->mousewheel_state = LV_INDEV_STATE_REL;
+        context->mousewheel_state = LV_INDEV_STATE_RELEASED;
         context->mousewheel_enc_diff = 0;
         context->mousewheel_device_object = lv_indev_create();
         if (!context->mousewheel_device_object)
@@ -1003,15 +1003,15 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         {
             context->mouse_state = (
                 uMsg == WM_LBUTTONDOWN
-                ? LV_INDEV_STATE_PR
-                : LV_INDEV_STATE_REL);
+                ? LV_INDEV_STATE_PRESSED
+                : LV_INDEV_STATE_RELEASED);
         }
         else if (uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONUP)
         {
             context->mousewheel_state = (
                 uMsg == WM_MBUTTONDOWN
-                ? LV_INDEV_STATE_PR
-                : LV_INDEV_STATE_REL);
+                ? LV_INDEV_STATE_PRESSED
+                : LV_INDEV_STATE_RELEASED);
         }
         return 0;
     }
@@ -1077,8 +1077,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                     context,
                     translated_key,
                     ((uMsg == WM_KEYUP)
-                        ? LV_INDEV_STATE_REL
-                        : LV_INDEV_STATE_PR)); 
+                        ? LV_INDEV_STATE_RELEASED
+                        : LV_INDEV_STATE_PRESSED));
             }
 
             LeaveCriticalSection(&context->keyboard_mutex);
@@ -1125,16 +1125,16 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                 }
 
                 uint32_t lvgl_code_point =
-                    _lv_txt_unicode_to_encoded(code_point);
+                    _lv_text_unicode_to_encoded(code_point);
 
                 lv_win32_push_key_to_keyboard_queue(
                     context,
                     lvgl_code_point,
-                    LV_INDEV_STATE_PR);
+                    LV_INDEV_STATE_PRESSED);
                 lv_win32_push_key_to_keyboard_queue(
                     context,
                     lvgl_code_point,
-                    LV_INDEV_STATE_REL);
+                    LV_INDEV_STATE_RELEASED);
             }
 
             LeaveCriticalSection(&context->keyboard_mutex);
@@ -1196,8 +1196,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
                         context->mouse_state = (
                             pInputs[i].dwFlags & MousePressedMask
-                            ? LV_INDEV_STATE_PR
-                            : LV_INDEV_STATE_REL);
+                            ? LV_INDEV_STATE_PRESSED
+                            : LV_INDEV_STATE_RELEASED);
                     }
                 }
 
