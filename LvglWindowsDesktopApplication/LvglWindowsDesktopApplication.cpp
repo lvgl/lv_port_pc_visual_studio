@@ -341,14 +341,14 @@ static lv_group_t* volatile g_DefaultGroup = nullptr;
 void LvglDisplayDriverFlushCallback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
-    uint8_t* color_p)
+    uint8_t* px_map)
 {
-    UNREFERENCED_PARAMETER(color_p);
+    UNREFERENCED_PARAMETER(px_map);
 
     if (::lv_disp_flush_is_last(disp_drv))
     {
-        lv_coord_t Width = ::lv_area_get_width(area);
-        lv_coord_t Height = ::lv_area_get_height(area);
+        std::int32_t Width = ::lv_area_get_width(area);
+        std::int32_t Height = ::lv_area_get_height(area);
 
         ::BitBlt(
             g_WindowDCHandle,
@@ -362,7 +362,7 @@ void LvglDisplayDriverFlushCallback(
             SRCCOPY);
     }
 
-    ::lv_disp_flush_ready(disp_drv);
+    ::lv_display_flush_ready(disp_drv);
 }
 
 void LvglCreateDisplayDriver(
@@ -380,18 +380,18 @@ void LvglCreateDisplayDriver(
     ::DeleteDC(g_BufferDCHandle);
     g_BufferDCHandle = hNewBufferDC;
 
-    ::lv_disp_set_dpi(
+    ::lv_display_set_dpi(
         disp_drv,
-        static_cast<lv_coord_t>(g_WindowDPI));
-    ::lv_disp_set_flush_cb(
+        static_cast<std::int32_t>(g_WindowDPI));
+    ::lv_display_set_flush_cb(
         disp_drv,
         ::LvglDisplayDriverFlushCallback);
-    ::lv_disp_set_draw_buffers(
+    ::lv_display_set_draw_buffers(
         disp_drv,
         g_PixelBuffer,
         NULL,
         sizeof(lv_color_t) * hor_res * ver_res,
-        LV_DISP_RENDER_MODE_DIRECT);
+        LV_DISPLAY_RENDER_MODE_DIRECT);
 }
 
 void LvglMouseDriverReadCallback(
@@ -793,9 +793,9 @@ bool LvglWindowsInitialize(
     ::LvglEnableChildWindowDpiMessage(g_WindowHandle);
     g_WindowDPI = ::LvglGetDpiForWindow(g_WindowHandle);
 
-    lv_disp_t* disp_drv = ::lv_disp_create(
-        static_cast<lv_coord_t>(g_WindowWidth),
-        static_cast<lv_coord_t>(g_WindowHeight));
+    lv_disp_t* disp_drv = ::lv_display_create(
+        static_cast<std::int32_t>(g_WindowWidth),
+        static_cast<std::int32_t>(g_WindowHeight));
     ::LvglCreateDisplayDriver(
         disp_drv,
         g_WindowWidth,
@@ -849,17 +849,17 @@ void LvglTaskSchedulerLoop()
     {
         if (g_WindowResizingSignal)
         {
-            lv_disp_t* CurrentDisplay = ::lv_disp_get_default();
+            lv_disp_t* CurrentDisplay = ::lv_display_get_default();
             if (CurrentDisplay)
             {
                 ::LvglCreateDisplayDriver(
                     CurrentDisplay,
                     g_WindowWidth,
                     g_WindowHeight);
-                ::lv_disp_set_res(
+                ::lv_display_set_resolution(
                     CurrentDisplay,
-                    static_cast<lv_coord_t>(g_WindowWidth),
-                    static_cast<lv_coord_t>(g_WindowHeight));
+                    static_cast<std::int32_t>(g_WindowWidth),
+                    static_cast<std::int32_t>(g_WindowHeight));
 
                 ::lv_refr_now(CurrentDisplay);
             }

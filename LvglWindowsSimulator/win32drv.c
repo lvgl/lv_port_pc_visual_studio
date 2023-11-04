@@ -42,8 +42,8 @@ typedef struct _WINDOW_THREAD_PARAMETER
     HANDLE window_mutex;
     HINSTANCE instance_handle;
     HICON icon_handle;
-    lv_coord_t hor_res;
-    lv_coord_t ver_res;
+    int32_t hor_res;
+    int32_t ver_res;
     int show_window_mode;
 } WINDOW_THREAD_PARAMETER, * PWINDOW_THREAD_PARAMETER;
 
@@ -139,7 +139,7 @@ static UINT lv_win32_get_dpi_for_window(
 static void lv_win32_display_driver_flush_callback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
-    lv_color_t* color_p);
+    uint8_t* px_map);
 
 static void lv_win32_pointer_driver_read_callback(
     lv_indev_t* indev,
@@ -265,8 +265,8 @@ EXTERN_C bool lv_win32_init_window_class()
 
 EXTERN_C HWND lv_win32_create_display_window(
     const wchar_t* window_title,
-    lv_coord_t hor_res,
-    lv_coord_t ver_res,
+    int32_t hor_res,
+    int32_t ver_res,
     HINSTANCE instance_handle,
     HICON icon_handle,
     int show_window_mode)
@@ -307,8 +307,8 @@ EXTERN_C HWND lv_win32_create_display_window(
 EXTERN_C bool lv_win32_init(
     HINSTANCE instance_handle,
     int show_window_mode,
-    lv_coord_t hor_res,
-    lv_coord_t ver_res,
+    int32_t hor_res,
+    int32_t ver_res,
     HICON icon_handle)
 {
     if (!lv_win32_init_window_class())
@@ -653,12 +653,12 @@ static UINT lv_win32_get_dpi_for_window(
 static void lv_win32_display_driver_flush_callback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
-    lv_color_t* color_p)
+    uint8_t* px_map)
 {
-    HWND window_handle = (HWND)lv_disp_get_user_data(disp_drv);
+    HWND window_handle = (HWND)lv_display_get_user_data(disp_drv);
     if (!window_handle)
     {
-        lv_disp_flush_ready(disp_drv);
+        lv_display_flush_ready(disp_drv);
         return;
     }
 
@@ -666,24 +666,24 @@ static void lv_win32_display_driver_flush_callback(
         lv_win32_get_window_context(window_handle));
     if (!context)
     {
-        lv_disp_flush_ready(disp_drv);
+        lv_display_flush_ready(disp_drv);
         return;
     }
 
-    if (lv_disp_flush_is_last(disp_drv) && !context->display_refreshing)
+    if (lv_display_flush_is_last(disp_drv) && !context->display_refreshing)
     {
 #if (LV_COLOR_DEPTH == 32) || \
     (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP == 0) || \
     (LV_COLOR_DEPTH == 8) || \
     (LV_COLOR_DEPTH == 1)
-        UNREFERENCED_PARAMETER(color_p);
+        UNREFERENCED_PARAMETER(px_map);
         memcpy(
             context->display_framebuffer_base,
             context->display_draw_buffer_base,
             context->display_draw_buffer_size);
 #elif (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP != 0)
         SIZE_T count = context->display_framebuffer_size / sizeof(UINT16);
-        PUINT16 source = (PUINT16)color_p;
+        PUINT16 source = (PUINT16)px_map;
         PUINT16 destination = (PUINT16)context->display_framebuffer_base;
         for (SIZE_T i = 0; i < count; ++i)
         {
@@ -701,8 +701,8 @@ static void lv_win32_display_driver_flush_callback(
             for (int x = area->x1; x <= area->x2; ++x)
             {
                 destination[y * context->display_hor_res + x] =
-                    lv_color_to32(*color_p);
-                color_p++;
+                    lv_color_to32(*px_map);
+                px_map++;
             }
         }
 #endif
@@ -712,7 +712,7 @@ static void lv_win32_display_driver_flush_callback(
         InvalidateRect(window_handle, NULL, FALSE);
     }
 
-    lv_disp_flush_ready(disp_drv);
+    lv_display_flush_ready(disp_drv);
 }
 
 static void lv_win32_pointer_driver_read_callback(
@@ -824,17 +824,17 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                 context->display_ver_res,
                 &context->display_framebuffer_base,
                 &context->display_framebuffer_size);
-        context->display_device_object = lv_disp_create(
+        context->display_device_object = lv_display_create(
             context->display_hor_res,
             context->display_ver_res);
         if (!context->display_device_object)
         {
             return -1;
         }
-        lv_disp_set_flush_cb(
+        lv_display_set_flush_cb(
             context->display_device_object,
             lv_win32_display_driver_flush_callback);
-        lv_disp_set_user_data(
+        lv_display_set_user_data(
             context->display_device_object,
             hWnd);
         context->display_draw_buffer_size =
@@ -847,12 +847,12 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         {
             return -1;
         }
-        lv_disp_set_draw_buffers(
+        lv_display_set_draw_buffers(
             context->display_device_object,
             context->display_draw_buffer_base,
             NULL,
             context->display_draw_buffer_size,
-            LV_DISP_RENDER_MODE_DIRECT);
+            LV_DISPLAY_RENDER_MODE_DIRECT);
 
         context->mouse_state = LV_INDEV_STATE_RELEASED;
         context->mouse_point.x = 0;

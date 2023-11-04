@@ -58,8 +58,8 @@ typedef struct _lv_win32_window_context_t
     lv_indev_t* mousewheel_device_object;
     lv_indev_t* keyboard_device_object;
 
-    lv_coord_t display_hor_res;
-    lv_coord_t display_ver_res;
+    int32_t display_hor_res;
+    int32_t display_ver_res;
     uint32_t display_dpi;
     void* display_draw_buffer_base;
     size_t display_draw_buffer_size;
@@ -100,8 +100,8 @@ EXTERN_C bool lv_win32_init_window_class();
 
 EXTERN_C HWND lv_win32_create_display_window(
     const wchar_t* window_title,
-    lv_coord_t hor_res,
-    lv_coord_t ver_res,
+    int32_t hor_res,
+    int32_t ver_res,
     HINSTANCE instance_handle,
     HICON icon_handle,
     int show_window_mode);
@@ -109,8 +109,8 @@ EXTERN_C HWND lv_win32_create_display_window(
 EXTERN_C bool lv_win32_init(
     HINSTANCE instance_handle,
     int show_window_mode,
-    lv_coord_t hor_res,
-    lv_coord_t ver_res,
+    int32_t hor_res,
+    int32_t ver_res,
     HICON icon_handle);
 
 /**********************
