@@ -373,75 +373,34 @@ static HDC lv_win32_create_frame_buffer(
 
         if (hFrameBufferDC)
         {
-#if LV_COLOR_DEPTH == 32
+#if (LV_COLOR_DEPTH == 32) || (LV_COLOR_DEPTH == 24)
             BITMAPINFO BitmapInfo = { 0 };
-#elif LV_COLOR_DEPTH == 16
+#elif (LV_COLOR_DEPTH == 16)
             typedef struct _BITMAPINFO_16BPP {
                 BITMAPINFOHEADER bmiHeader;
                 DWORD bmiColorMask[3];
             } BITMAPINFO_16BPP, *PBITMAPINFO_16BPP;
 
             BITMAPINFO_16BPP BitmapInfo = { 0 };
-#elif LV_COLOR_DEPTH == 8
-            typedef struct _BITMAPINFO_8BPP {
-                BITMAPINFOHEADER bmiHeader;
-                RGBQUAD bmiColors[256];
-            } BITMAPINFO_8BPP, *PBITMAPINFO_8BPP;
-
-            BITMAPINFO_8BPP BitmapInfo = { 0 };
-#elif LV_COLOR_DEPTH == 1
-            typedef struct _BITMAPINFO_1BPP {
-                BITMAPINFOHEADER bmiHeader;
-                RGBQUAD bmiColors[2];
-            } BITMAPINFO_1BPP, *PBITMAPINFO_1BPP;
-
-            BITMAPINFO_1BPP BitmapInfo = { 0 };
 #else
-            BITMAPINFO BitmapInfo = { 0 };
+#error [lv_win32] Unsupported LV_COLOR_DEPTH.
 #endif
 
             BitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
             BitmapInfo.bmiHeader.biWidth = Width;
             BitmapInfo.bmiHeader.biHeight = -Height;
             BitmapInfo.bmiHeader.biPlanes = 1;
-#if LV_COLOR_DEPTH == 32
-            BitmapInfo.bmiHeader.biBitCount = 32;
+            BitmapInfo.bmiHeader.biBitCount = lv_color_format_get_bpp(
+                LV_COLOR_FORMAT_NATIVE);
+#if (LV_COLOR_DEPTH == 32) || (LV_COLOR_DEPTH == 24)
             BitmapInfo.bmiHeader.biCompression = BI_RGB;
-#elif LV_COLOR_DEPTH == 16
-            BitmapInfo.bmiHeader.biBitCount = 16;
+#elif (LV_COLOR_DEPTH == 16)
             BitmapInfo.bmiHeader.biCompression = BI_BITFIELDS;
             BitmapInfo.bmiColorMask[0] = 0xF800;
             BitmapInfo.bmiColorMask[1] = 0x07E0;
             BitmapInfo.bmiColorMask[2] = 0x001F;
-#elif LV_COLOR_DEPTH == 8
-            BitmapInfo.bmiHeader.biBitCount = 8;
-            BitmapInfo.bmiHeader.biCompression = BI_RGB;
-            for (size_t i = 0; i < 256; ++i)
-            {
-                lv_color8_t color;
-                color.full = i;
-
-                BitmapInfo.bmiColors[i].rgbRed = LV_COLOR_GET_R(color) * 36;
-                BitmapInfo.bmiColors[i].rgbGreen = LV_COLOR_GET_G(color) * 36;
-                BitmapInfo.bmiColors[i].rgbBlue = LV_COLOR_GET_B(color) * 85;
-                BitmapInfo.bmiColors[i].rgbReserved = 0xFF;
-            }
-#elif LV_COLOR_DEPTH == 1
-            BitmapInfo.bmiHeader.biBitCount = 8;
-            BitmapInfo.bmiHeader.biCompression = BI_RGB;
-            BitmapInfo.bmiHeader.biClrUsed = 2;
-            BitmapInfo.bmiHeader.biClrImportant = 2;
-            BitmapInfo.bmiColors[0].rgbRed = 0x00;
-            BitmapInfo.bmiColors[0].rgbGreen = 0x00;
-            BitmapInfo.bmiColors[0].rgbBlue = 0x00;
-            BitmapInfo.bmiColors[0].rgbReserved = 0xFF;
-            BitmapInfo.bmiColors[1].rgbRed = 0xFF;
-            BitmapInfo.bmiColors[1].rgbGreen = 0xFF;
-            BitmapInfo.bmiColors[1].rgbBlue = 0xFF;
-            BitmapInfo.bmiColors[1].rgbReserved = 0xFF;
 #else
-            BitmapInfo.bmiHeader.biBitCount = 32;
-            BitmapInfo.bmiHeader.biCompression = BI_RGB;
+#error [lv_win32] Unsupported LV_COLOR_DEPTH.
 #endif
 
             HBITMAP hBitmap = CreateDIBSection(
@@ -453,17 +412,9 @@ static HDC lv_win32_create_frame_buffer(
                 0);
             if (hBitmap)
             {
-#if LV_COLOR_DEPTH == 32
-                *PixelBufferSize = Width * Height * sizeof(UINT32);
-#elif LV_COLOR_DEPTH == 16
-                *PixelBufferSize = Width * Height * sizeof(UINT16);
-#elif LV_COLOR_DEPTH == 8
-                *PixelBufferSize = Width * Height * sizeof(UINT8);
-#elif LV_COLOR_DEPTH == 1
-                *PixelBufferSize = Width * Height * sizeof(UINT8);
-#else
-                *PixelBufferSize = Width * Height * sizeof(UINT32);
-#endif
+                *PixelBufferSize = Width * Height;
+                *PixelBufferSize *= lv_color_format_get_size(
+                    LV_COLOR_FORMAT_NATIVE);
 
                 DeleteObject(SelectObject(hFrameBufferDC, hBitmap));
                 DeleteObject(hBitmap);
@@ -673,38 +624,15 @@ static void lv_win32_display_driver_flush_callback(
     if (lv_display_flush_is_last(disp_drv) && !context->display_refreshing)
     {
 #if (LV_COLOR_DEPTH == 32) || \
-    (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP == 0) || \
-    (LV_COLOR_DEPTH == 8) || \
-    (LV_COLOR_DEPTH == 1)
+    (LV_COLOR_DEPTH == 24) || \
+    (LV_COLOR_DEPTH == 16)
         UNREFERENCED_PARAMETER(px_map);
         memcpy(
             context->display_framebuffer_base,
             context->display_draw_buffer_base,
             context->display_draw_buffer_size);
-#elif (LV_COLOR_DEPTH == 16 && LV_COLOR_16_SWAP != 0)
-        SIZE_T count = context->display_framebuffer_size / sizeof(UINT16);
-        PUINT16 source = (PUINT16)px_map;
-        PUINT16 destination = (PUINT16)context->display_framebuffer_base;
-        for (SIZE_T i = 0; i < count; ++i)
-        {
-            UINT16 current = *source;
-            *destination = (LOBYTE(current) << 8) | HIBYTE(current);
-
-            ++source;
-            ++destination;
-        }
 #else
-        uint32_t* destination = context->display_framebuffer_base;
-
-        for (int y = area->y1; y <= area->y2; ++y)
-        {
-            for (int x = area->x1; x <= area->x2; ++x)
-            {
-                destination[y * context->display_hor_res + x] =
-                    lv_color_to32(*px_map);
-                px_map++;
-            }
-        }
+#error [lv_win32] Unsupported LV_COLOR_DEPTH.
 #endif
 
         context->display_refreshing = true;
