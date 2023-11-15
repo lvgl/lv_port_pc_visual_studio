@@ -1,16 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.Win32.props" />
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.x64.props" />
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.ARM64.props" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7148D2C8-4594-4054-95F2-6211DA069D8F}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>WindowsApplication</MileProjectType>
     <MileProjectManifestFile>LvglWindowsDesktopApplication.manifest</MileProjectManifestFile>
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
+    <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
+    <MileProjectCompanyName>LVGL</MileProjectCompanyName>
+    <MileProjectFileDescription>LVGL Windows Desktop Application Demo</MileProjectFileDescription>
+    <MileProjectInternalName>LvglWindowsDesktopApplication</MileProjectInternalName>
+    <MileProjectLegalCopyright>© LVGL. All rights reserved.</MileProjectLegalCopyright>
+    <MileProjectOriginalFilename>LvglWindowsDesktopApplication.exe</MileProjectOriginalFilename>
+    <MileProjectProductName>LVGL</MileProjectProductName>
+    <MileProjectVersion>9.0.0.0</MileProjectVersion>
+    <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Cpp.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
   <Import Project="..\LvglPlatform\LvglWindowsIconResource\LvglWindowsIconResource.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\;$(MSBuildThisFileDirectory)..\LvglPlatform\;$(IncludePath)</IncludePath>
@@ -1223,9 +1233,6 @@
     <Manifest Include="LvglWindowsDesktopApplication.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mile.Project.Properties.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha256.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_argb.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_indexed16.c" />
@@ -1804,5 +1811,5 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c" />
     <ClCompile Include="LvglWindowsDesktopApplication.cpp" />
   </ItemGroup>
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Cpp.targets" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
 </Project>

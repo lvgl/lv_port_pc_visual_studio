@@ -1,19 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.Win32.props" />
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.x64.props" />
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Platform.ARM64.props" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}</ProjectGuid>
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>ConsoleApplication</MileProjectType>
     <MileProjectManifestFile>LvglWindowsSimulator.manifest</MileProjectManifestFile>
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
+    <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
+    <MileProjectCompanyName>LVGL</MileProjectCompanyName>
+    <MileProjectFileDescription>LVGL Windows Simulator</MileProjectFileDescription>
+    <MileProjectInternalName>LvglWindowsSimulator</MileProjectInternalName>
+    <MileProjectLegalCopyright>© LVGL. All rights reserved.</MileProjectLegalCopyright>
+    <MileProjectOriginalFilename>LvglWindowsSimulator.exe</MileProjectOriginalFilename>
+    <MileProjectProductName>LVGL</MileProjectProductName>
+    <MileProjectVersion>9.0.0.0</MileProjectVersion>
+    <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
     <SupportLTL>false</SupportLTL>
   </PropertyGroup>
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Cpp.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
   <Import Project="..\LvglPlatform\LvglWindowsIconResource\LvglWindowsIconResource.props" />
   <Import Project="freetype.props" />
   <PropertyGroup>
@@ -309,9 +319,6 @@
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsSimulator.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Mile.Project.Properties.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha256.c" />
@@ -2570,5 +2577,5 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\unity\unity_support.h" />
     <None Include="freetype.props" />
   </ItemGroup>
-  <Import Project="..\LvglPlatform\LvglWindowsProject\Mile.Project.Cpp.targets" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
 </Project>

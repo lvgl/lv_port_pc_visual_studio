@@ -4348,9 +4348,6 @@
     <Manifest Include="LvglWindowsDesktopApplication.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mile.Project.Properties.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha256.c">
       <Filter>lvgl\demos\benchmark\assets</Filter>
     </ClCompile>
