@@ -709,7 +709,7 @@ static lv_win32_window_context_t* lv_win32_get_display_context(
     if (display)
     {
         return lv_win32_get_window_context(
-            (HWND)lv_disp_get_user_data(display));
+            (HWND)lv_display_get_user_data(display));
     }
 
     return NULL;
@@ -1238,7 +1238,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         {
             lv_disp_t* display_device_object = context->display_device_object;
             context->display_device_object = NULL;
-            lv_disp_remove(display_device_object);
+            lv_display_delete(display_device_object);
             free(context->display_draw_buffer_base);
             DeleteDC(context->display_framebuffer_context_handle);
 
