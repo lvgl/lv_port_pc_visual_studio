@@ -170,16 +170,16 @@ static void lv_win32_push_key_to_keyboard_queue(
     uint32_t key,
     lv_indev_state_t state)
 {
-    lv_win32_keyboard_queue_item_t* current =
-        (lv_win32_keyboard_queue_item_t*)(_aligned_malloc(
-            sizeof(lv_win32_keyboard_queue_item_t),
+    lv_win32_keypad_queue_item_t* current =
+        (lv_win32_keypad_queue_item_t*)(_aligned_malloc(
+            sizeof(lv_win32_keypad_queue_item_t),
             MEMORY_ALLOCATION_ALIGNMENT));
     if (current)
     {
         current->key = key;
         current->state = state;
         InterlockedPushEntrySList(
-            context->keyboard_queue,
+            context->keypad.queue,
             &current->ItemEntry);
     }
 }
@@ -654,8 +654,8 @@ static void lv_win32_pointer_driver_read_callback(
         return;
     }
 
-    data->state = context->mouse_state;
-    data->point = context->mouse_point;
+    data->state = context->pointer.state;
+    data->point = context->pointer.point;
 }
 
 static void lv_win32_keypad_driver_read_callback(
@@ -669,11 +669,11 @@ static void lv_win32_keypad_driver_read_callback(
         return;
     }
 
-    EnterCriticalSection(&context->keyboard_mutex);
+    EnterCriticalSection(&context->keypad.mutex);
 
-    lv_win32_keyboard_queue_item_t* current =
-        (lv_win32_keyboard_queue_item_t*)(InterlockedPopEntrySList(
-            context->keyboard_queue));
+    lv_win32_keypad_queue_item_t* current =
+        (lv_win32_keypad_queue_item_t*)(InterlockedPopEntrySList(
+            context->keypad.queue));
     if (current)
     {
         data->key = current->key;
@@ -684,7 +684,7 @@ static void lv_win32_keypad_driver_read_callback(
         data->continue_reading = true;
     }
 
-    LeaveCriticalSection(&context->keyboard_mutex);
+    LeaveCriticalSection(&context->keypad.mutex);
 }
 
 static void lv_win32_encoder_driver_read_callback(
@@ -698,9 +698,9 @@ static void lv_win32_encoder_driver_read_callback(
         return;
     }
 
-    data->state = context->mousewheel_state;
-    data->enc_diff = context->mousewheel_enc_diff;
-    context->mousewheel_enc_diff = 0;
+    data->state = context->encoder.state;
+    data->enc_diff = context->encoder.enc_diff;
+    context->encoder.enc_diff = 0;
 }
 
 static lv_win32_window_context_t* lv_win32_get_display_context(
@@ -782,9 +782,9 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             context->display_draw_buffer_size,
             LV_DISPLAY_RENDER_MODE_DIRECT);
 
-        context->mouse_state = LV_INDEV_STATE_RELEASED;
-        context->mouse_point.x = 0;
-        context->mouse_point.y = 0;
+        context->pointer.state = LV_INDEV_STATE_RELEASED;
+        context->pointer.point.x = 0;
+        context->pointer.point.y = 0;
         context->mouse_device_object = lv_indev_create();
         if (!context->mouse_device_object)
         {
@@ -800,8 +800,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             context->mouse_device_object,
             context->display_device_object);
         
-        context->mousewheel_state = LV_INDEV_STATE_RELEASED;
-        context->mousewheel_enc_diff = 0;
+        context->encoder.state = LV_INDEV_STATE_RELEASED;
+        context->encoder.enc_diff = 0;
         context->mousewheel_device_object = lv_indev_create();
         if (!context->mousewheel_device_object)
         {
@@ -817,17 +817,17 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             context->mousewheel_device_object,
             context->display_device_object);
 
-        InitializeCriticalSection(&context->keyboard_mutex);
-        context->keyboard_queue = _aligned_malloc(
+        InitializeCriticalSection(&context->keypad.mutex);
+        context->keypad.queue = _aligned_malloc(
             sizeof(SLIST_HEADER),
             MEMORY_ALLOCATION_ALIGNMENT);
-        if (!context->keyboard_queue)
+        if (!context->keypad.queue)
         {
             return -1;
         }
-        InitializeSListHead(context->keyboard_queue);
-        context->keyboard_utf16_high_surrogate = 0;
-        context->keyboard_utf16_low_surrogate = 0;
+        InitializeSListHead(context->keypad.queue);
+        context->keypad.utf16_high_surrogate = 0;
+        context->keypad.utf16_low_surrogate = 0;
         context->keyboard_device_object = lv_indev_create();
         if (!context->keyboard_device_object)
         {
@@ -895,29 +895,29 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
-            context->mouse_point.x = MulDiv(
+            context->pointer.point.x = MulDiv(
                 GET_X_LPARAM(lParam),
                 USER_DEFAULT_SCREEN_DPI,
                 WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-            context->mouse_point.y = MulDiv(
+            context->pointer.point.y = MulDiv(
                 GET_Y_LPARAM(lParam),
                 USER_DEFAULT_SCREEN_DPI,
                 WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-            if (context->mouse_point.x < 0)
+            if (context->pointer.point.x < 0)
             {
-                context->mouse_point.x = 0;
+                context->pointer.point.x = 0;
             }
-            if (context->mouse_point.x > context->display_hor_res - 1)
+            if (context->pointer.point.x > context->display_hor_res - 1)
             {
-                context->mouse_point.x = context->display_hor_res - 1;
+                context->pointer.point.x = context->display_hor_res - 1;
             }
-            if (context->mouse_point.y < 0)
+            if (context->pointer.point.y < 0)
             {
-                context->mouse_point.y = 0;
+                context->pointer.point.y = 0;
             }
-            if (context->mouse_point.y > context->display_ver_res - 1)
+            if (context->pointer.point.y > context->display_ver_res - 1)
             {
-                context->mouse_point.y = context->display_ver_res - 1;
+                context->pointer.point.y = context->display_ver_res - 1;
             }
         }
 
@@ -930,7 +930,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
-            context->mouse_state = (
+            context->pointer.state = (
                 uMsg == WM_LBUTTONDOWN
                 ? LV_INDEV_STATE_PRESSED
                 : LV_INDEV_STATE_RELEASED);
@@ -966,11 +966,11 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                             continue;
                         }
 
-                        context->mouse_point.x = MulDiv(
+                        context->pointer.point.x = MulDiv(
                             Point.x,
                             USER_DEFAULT_SCREEN_DPI,
                             WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-                        context->mouse_point.y = MulDiv(
+                        context->pointer.point.y = MulDiv(
                             Point.y,
                             USER_DEFAULT_SCREEN_DPI,
                             WIN32DRV_MONITOR_ZOOM * context->display_dpi);
@@ -978,7 +978,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                         DWORD MousePressedMask =
                             TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
 
-                        context->mouse_state = (
+                        context->pointer.state = (
                             pInputs[i].dwFlags & MousePressedMask
                             ? LV_INDEV_STATE_PRESSED
                             : LV_INDEV_STATE_RELEASED);
@@ -1000,7 +1000,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
-            EnterCriticalSection(&context->keyboard_mutex);
+            EnterCriticalSection(&context->keypad.mutex);
 
             bool skip_translation = false;
             uint32_t translated_key = 0;
@@ -1059,7 +1059,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                         : LV_INDEV_STATE_PRESSED));
             }
 
-            LeaveCriticalSection(&context->keyboard_mutex);
+            LeaveCriticalSection(&context->keypad.mutex);
         }
 
         break;
@@ -1070,7 +1070,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
-            EnterCriticalSection(&context->keyboard_mutex);
+            EnterCriticalSection(&context->keypad.mutex);
 
             uint16_t raw_code_point = (uint16_t)(wParam);
 
@@ -1078,28 +1078,28 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             {
                 if (IS_HIGH_SURROGATE(raw_code_point))
                 {
-                    context->keyboard_utf16_high_surrogate = raw_code_point;
+                    context->keypad.utf16_high_surrogate = raw_code_point;
                 }
                 else if (IS_LOW_SURROGATE(raw_code_point))
                 {
-                    context->keyboard_utf16_low_surrogate = raw_code_point;
+                    context->keypad.utf16_low_surrogate = raw_code_point;
                 }
 
                 uint32_t code_point = raw_code_point;
 
-                if (context->keyboard_utf16_high_surrogate &&
-                    context->keyboard_utf16_low_surrogate)
+                if (context->keypad.utf16_high_surrogate &&
+                    context->keypad.utf16_low_surrogate)
                 {
                     uint16_t high_surrogate =
-                        context->keyboard_utf16_high_surrogate;
+                        context->keypad.utf16_high_surrogate;
                     uint16_t low_surrogate =
-                        context->keyboard_utf16_low_surrogate;
+                        context->keypad.utf16_low_surrogate;
 
                     code_point = (low_surrogate & 0x03FF);
                     code_point += (((high_surrogate & 0x03FF) + 0x40) << 10);
 
-                    context->keyboard_utf16_high_surrogate = 0;
-                    context->keyboard_utf16_low_surrogate = 0;
+                    context->keypad.utf16_high_surrogate = 0;
+                    context->keypad.utf16_low_surrogate = 0;
                 }
 
                 uint32_t lvgl_code_point =
@@ -1115,7 +1115,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                     LV_INDEV_STATE_RELEASED);
             }
 
-            LeaveCriticalSection(&context->keyboard_mutex);
+            LeaveCriticalSection(&context->keypad.mutex);
         }
 
         break;
@@ -1127,7 +1127,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
-            context->mousewheel_state = (
+            context->encoder.state = (
                 uMsg == WM_MBUTTONDOWN
                 ? LV_INDEV_STATE_PRESSED
                 : LV_INDEV_STATE_RELEASED);
@@ -1141,7 +1141,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             lv_win32_get_window_context(hWnd));
         if (context)
         {
-            context->mousewheel_enc_diff =
+            context->encoder.enc_diff =
                 -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
         }
 
@@ -1259,18 +1259,18 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             do
             {
                 PSLIST_ENTRY current = InterlockedPopEntrySList(
-                    context->keyboard_queue);
+                    context->keypad.queue);
                 if (!current)
                 {
-                    _aligned_free(context->keyboard_queue);
-                    context->keyboard_queue = NULL;
+                    _aligned_free(context->keypad.queue);
+                    context->keypad.queue = NULL;
                     break;
                 }
 
                 _aligned_free(current);
 
             } while (true);
-            DeleteCriticalSection(&context->keyboard_mutex);
+            DeleteCriticalSection(&context->keypad.mutex);
 
             free(context);
         }
