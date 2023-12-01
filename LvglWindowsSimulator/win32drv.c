@@ -737,24 +737,10 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         }
 
         RECT request_content_size;
-        GetWindowRect(hWnd, &request_content_size);
-
-        context->display_hor_res =
-            request_content_size.right - request_content_size.left;
-        context->display_ver_res =
-            request_content_size.bottom - request_content_size.top;
-        context->display_dpi = lv_win32_get_dpi_for_window(hWnd);
-        context->display_refreshing = true;
-        context->display_framebuffer_context_handle =
-            lv_win32_create_frame_buffer(
-                hWnd,
-                context->display_hor_res,
-                context->display_ver_res,
-                &context->display_framebuffer_base,
-                &context->display_framebuffer_size);
+        GetWindowRect(hWnd, &request_content_size);      
         context->display_device_object = lv_display_create(
-            context->display_hor_res,
-            context->display_ver_res);
+            request_content_size.right - request_content_size.left,
+            request_content_size.bottom - request_content_size.top);
         if (!context->display_device_object)
         {
             return -1;
@@ -765,10 +751,25 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         lv_display_set_user_data(
             context->display_device_object,
             hWnd);
+        context->display_dpi = lv_win32_get_dpi_for_window(hWnd);
+        context->display_refreshing = true;
+        context->display_framebuffer_context_handle =
+            lv_win32_create_frame_buffer(
+                hWnd,
+                lv_display_get_horizontal_resolution(
+                    context->display_device_object),
+                lv_display_get_vertical_resolution(
+                    context->display_device_object),
+                &context->display_framebuffer_base,
+                &context->display_framebuffer_size);
         context->display_draw_buffer_size =
             lv_color_format_get_size(LV_COLOR_FORMAT_NATIVE);
-        context->display_draw_buffer_size *= context->display_hor_res;
-        context->display_draw_buffer_size *= context->display_ver_res;
+        context->display_draw_buffer_size *=
+            lv_display_get_horizontal_resolution(
+                context->display_device_object);
+        context->display_draw_buffer_size *=
+            lv_display_get_vertical_resolution(
+                context->display_device_object);
         context->display_draw_buffer_base =
             malloc(context->display_draw_buffer_size);
         if (!context->display_draw_buffer_base)
@@ -855,12 +856,14 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
         calculated_window_size.left = 0;
         calculated_window_size.right = MulDiv(
-            context->display_hor_res * WIN32DRV_MONITOR_ZOOM,
+            lv_display_get_horizontal_resolution(
+                context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
             context->display_dpi,
             USER_DEFAULT_SCREEN_DPI);
         calculated_window_size.top = 0;
         calculated_window_size.bottom = MulDiv(
-            context->display_ver_res * WIN32DRV_MONITOR_ZOOM,
+            lv_display_get_vertical_resolution(
+                context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
             context->display_dpi,
             USER_DEFAULT_SCREEN_DPI);
 
@@ -907,17 +910,21 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             {
                 context->pointer.point.x = 0;
             }
-            if (context->pointer.point.x > context->display_hor_res - 1)
+            if (context->pointer.point.x > lv_display_get_horizontal_resolution(
+                context->display_device_object) - 1)
             {
-                context->pointer.point.x = context->display_hor_res - 1;
+                context->pointer.point.x = lv_display_get_horizontal_resolution(
+                    context->display_device_object) - 1;
             }
             if (context->pointer.point.y < 0)
             {
                 context->pointer.point.y = 0;
             }
-            if (context->pointer.point.y > context->display_ver_res - 1)
+            if (context->pointer.point.y > lv_display_get_vertical_resolution(
+                context->display_device_object) - 1)
             {
-                context->pointer.point.y = context->display_ver_res - 1;
+                context->pointer.point.y = lv_display_get_vertical_resolution(
+                    context->display_device_object) - 1;
             }
         }
 
@@ -1170,11 +1177,13 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             GetClientRect(hWnd, &ClientRect);
 
             int WindowWidth = MulDiv(
-                context->display_hor_res * WIN32DRV_MONITOR_ZOOM,
+                lv_display_get_horizontal_resolution(
+                    context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
                 context->display_dpi,
                 USER_DEFAULT_SCREEN_DPI);
             int WindowHeight = MulDiv(
-                context->display_ver_res * WIN32DRV_MONITOR_ZOOM,
+                lv_display_get_vertical_resolution(
+                    context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
                 context->display_dpi,
                 USER_DEFAULT_SCREEN_DPI);
 

@@ -86,8 +86,6 @@ typedef struct _lv_win32_window_context_t
     lv_indev_t* mousewheel_device_object;
     lv_indev_t* keyboard_device_object;
 
-    int32_t display_hor_res;
-    int32_t display_ver_res;
     uint32_t display_dpi;
     void* display_draw_buffer_base;
     size_t display_draw_buffer_size;
