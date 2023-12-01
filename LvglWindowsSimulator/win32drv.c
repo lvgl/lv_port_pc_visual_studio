@@ -890,58 +890,108 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         break;
     }
     case WM_MOUSEMOVE:
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    case WM_MBUTTONDOWN:
-    case WM_MBUTTONUP:
     {
         lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
             lv_win32_get_window_context(hWnd));
-        if (!context)
+        if (context)
         {
-            return 0;
+            context->mouse_point.x = MulDiv(
+                GET_X_LPARAM(lParam),
+                USER_DEFAULT_SCREEN_DPI,
+                WIN32DRV_MONITOR_ZOOM * context->display_dpi);
+            context->mouse_point.y = MulDiv(
+                GET_Y_LPARAM(lParam),
+                USER_DEFAULT_SCREEN_DPI,
+                WIN32DRV_MONITOR_ZOOM * context->display_dpi);
+            if (context->mouse_point.x < 0)
+            {
+                context->mouse_point.x = 0;
+            }
+            if (context->mouse_point.x > context->display_hor_res - 1)
+            {
+                context->mouse_point.x = context->display_hor_res - 1;
+            }
+            if (context->mouse_point.y < 0)
+            {
+                context->mouse_point.y = 0;
+            }
+            if (context->mouse_point.y > context->display_ver_res - 1)
+            {
+                context->mouse_point.y = context->display_ver_res - 1;
+            }
         }
 
-        context->mouse_point.x = MulDiv(
-            GET_X_LPARAM(lParam),
-            USER_DEFAULT_SCREEN_DPI,
-            WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-        context->mouse_point.y = MulDiv(
-            GET_Y_LPARAM(lParam),
-            USER_DEFAULT_SCREEN_DPI,
-            WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-        if (context->mouse_point.x < 0)
-        {
-            context->mouse_point.x = 0;
-        }
-        if (context->mouse_point.x > context->display_hor_res - 1)
-        {
-            context->mouse_point.x = context->display_hor_res - 1;
-        }
-        if (context->mouse_point.y < 0)
-        {
-            context->mouse_point.y = 0;
-        }
-        if (context->mouse_point.y > context->display_ver_res - 1)
-        {
-            context->mouse_point.y = context->display_ver_res - 1;
-        }
-
-        if (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONUP)
+        break;
+    }
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+    {
+        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+            lv_win32_get_window_context(hWnd));
+        if (context)
         {
             context->mouse_state = (
                 uMsg == WM_LBUTTONDOWN
                 ? LV_INDEV_STATE_PRESSED
                 : LV_INDEV_STATE_RELEASED);
         }
-        else if (uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONUP)
+
+        break;
+    }
+    case WM_TOUCH:
+    {
+        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+            lv_win32_get_window_context(hWnd));
+        if (context)
         {
-            context->mousewheel_state = (
-                uMsg == WM_MBUTTONDOWN
-                ? LV_INDEV_STATE_PRESSED
-                : LV_INDEV_STATE_RELEASED);
+            UINT cInputs = LOWORD(wParam);
+            HTOUCHINPUT hTouchInput = (HTOUCHINPUT)(lParam);
+
+            PTOUCHINPUT pInputs = malloc(cInputs * sizeof(TOUCHINPUT));
+            if (pInputs)
+            {
+                if (lv_win32_get_touch_input_info(
+                    hTouchInput,
+                    cInputs,
+                    pInputs,
+                    sizeof(TOUCHINPUT)))
+                {
+                    for (UINT i = 0; i < cInputs; ++i)
+                    {
+                        POINT Point;
+                        Point.x = TOUCH_COORD_TO_PIXEL(pInputs[i].x);
+                        Point.y = TOUCH_COORD_TO_PIXEL(pInputs[i].y);
+                        if (!ScreenToClient(hWnd, &Point))
+                        {
+                            continue;
+                        }
+
+                        context->mouse_point.x = MulDiv(
+                            Point.x,
+                            USER_DEFAULT_SCREEN_DPI,
+                            WIN32DRV_MONITOR_ZOOM * context->display_dpi);
+                        context->mouse_point.y = MulDiv(
+                            Point.y,
+                            USER_DEFAULT_SCREEN_DPI,
+                            WIN32DRV_MONITOR_ZOOM * context->display_dpi);
+
+                        DWORD MousePressedMask =
+                            TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
+
+                        context->mouse_state = (
+                            pInputs[i].dwFlags & MousePressedMask
+                            ? LV_INDEV_STATE_PRESSED
+                            : LV_INDEV_STATE_RELEASED);
+                    }
+                }
+
+                free(pInputs);
+            }
+
+            lv_win32_close_touch_input_handle(hTouchInput);
         }
-        return 0;
+
+        break;
     }
     case WM_KEYDOWN:
     case WM_KEYUP:
@@ -1070,6 +1120,21 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
         break;
     }
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+    {
+        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+            lv_win32_get_window_context(hWnd));
+        if (context)
+        {
+            context->mousewheel_state = (
+                uMsg == WM_MBUTTONDOWN
+                ? LV_INDEV_STATE_PRESSED
+                : LV_INDEV_STATE_RELEASED);
+        }
+
+        break;
+    }
     case WM_MOUSEWHEEL:
     {
         lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
@@ -1078,61 +1143,6 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         {
             context->mousewheel_enc_diff =
                 -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
-        }
-
-        break;
-    }
-    case WM_TOUCH:
-    {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
-        if (context)
-        {
-            UINT cInputs = LOWORD(wParam);
-            HTOUCHINPUT hTouchInput = (HTOUCHINPUT)(lParam);
-
-            PTOUCHINPUT pInputs = malloc(cInputs * sizeof(TOUCHINPUT));
-            if (pInputs)
-            {
-                if (lv_win32_get_touch_input_info(
-                    hTouchInput,
-                    cInputs,
-                    pInputs,
-                    sizeof(TOUCHINPUT)))
-                {
-                    for (UINT i = 0; i < cInputs; ++i)
-                    {
-                        POINT Point;
-                        Point.x = TOUCH_COORD_TO_PIXEL(pInputs[i].x);
-                        Point.y = TOUCH_COORD_TO_PIXEL(pInputs[i].y);
-                        if (!ScreenToClient(hWnd, &Point))
-                        {
-                            continue;
-                        }
-
-                        context->mouse_point.x = MulDiv(
-                            Point.x,
-                            USER_DEFAULT_SCREEN_DPI,
-                            WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-                        context->mouse_point.y = MulDiv(
-                            Point.y,
-                            USER_DEFAULT_SCREEN_DPI,
-                            WIN32DRV_MONITOR_ZOOM * context->display_dpi);
-
-                        DWORD MousePressedMask =
-                            TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
-
-                        context->mouse_state = (
-                            pInputs[i].dwFlags & MousePressedMask
-                            ? LV_INDEV_STATE_PRESSED
-                            : LV_INDEV_STATE_RELEASED);
-                    }
-                }
-
-                free(pInputs);
-            }
-
-            lv_win32_close_touch_input_handle(hTouchInput);
         }
 
         break;
