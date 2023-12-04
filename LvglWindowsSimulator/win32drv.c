@@ -23,6 +23,8 @@
 
 #define LV_WINDOWS_ZOOM_LEVEL 100
 
+#define LV_WINDOWS_ALLOW_DPI_OVERRIDE 0
+
 #define WINDOW_EX_STYLE \
     WS_EX_CLIENTEDGE
 
@@ -757,9 +759,11 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         lv_display_set_user_data(
             context->display_device_object,
             hWnd);
+#if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
         lv_display_set_dpi(
             context->display_device_object,
             lv_win32_get_dpi_for_window(hWnd));
+#endif     
         context->display_refreshing = true;
         context->display_framebuffer_context_handle =
             lv_win32_create_frame_buffer(
@@ -1220,6 +1224,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
         break;
     }
+#if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
     case WM_DPICHANGED:
     {
         lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
@@ -1265,6 +1270,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
         break;
     }
+#endif 
     case WM_PAINT:
     {
         lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
