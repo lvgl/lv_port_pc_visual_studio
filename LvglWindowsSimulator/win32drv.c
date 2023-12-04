@@ -19,14 +19,18 @@
  *      DEFINES
  *********************/
 
+#define LV_WINDOWS_ZOOM_LEVEL 100
+
 #define WINDOW_EX_STYLE \
     WS_EX_CLIENTEDGE
 
 #define WINDOW_STYLE \
     (WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME))
 
-#ifndef WIN32DRV_MONITOR_ZOOM
-#define WIN32DRV_MONITOR_ZOOM 1
+#define LV_WINDOWS_ZOOM_BASE_LEVEL 100
+
+#ifndef LV_WINDOWS_ZOOM_LEVEL
+#define LV_WINDOWS_ZOOM_LEVEL LV_WINDOWS_ZOOM_BASE_LEVEL
 #endif
 
 #ifndef USER_DEFAULT_SCREEN_DPI
@@ -859,15 +863,15 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         calculated_window_size.left = 0;
         calculated_window_size.right = MulDiv(
             lv_display_get_horizontal_resolution(
-                context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
-            lv_display_get_dpi(context->display_device_object),
-            USER_DEFAULT_SCREEN_DPI);
+                context->display_device_object),
+            LV_WINDOWS_ZOOM_LEVEL,
+            LV_WINDOWS_ZOOM_BASE_LEVEL);
         calculated_window_size.top = 0;
         calculated_window_size.bottom = MulDiv(
             lv_display_get_vertical_resolution(
-                context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
-            lv_display_get_dpi(context->display_device_object),
-            USER_DEFAULT_SCREEN_DPI);
+                context->display_device_object),
+            LV_WINDOWS_ZOOM_LEVEL,
+            LV_WINDOWS_ZOOM_BASE_LEVEL);
 
         AdjustWindowRectEx(
             &calculated_window_size,
@@ -902,14 +906,12 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         {
             context->pointer.point.x = MulDiv(
                 GET_X_LPARAM(lParam),
-                USER_DEFAULT_SCREEN_DPI,
-                WIN32DRV_MONITOR_ZOOM * lv_display_get_dpi(
-                    context->display_device_object));
+                LV_WINDOWS_ZOOM_BASE_LEVEL,
+                LV_WINDOWS_ZOOM_LEVEL);
             context->pointer.point.y = MulDiv(
                 GET_Y_LPARAM(lParam),
-                USER_DEFAULT_SCREEN_DPI,
-                WIN32DRV_MONITOR_ZOOM * lv_display_get_dpi(
-                    context->display_device_object));
+                LV_WINDOWS_ZOOM_BASE_LEVEL,
+                LV_WINDOWS_ZOOM_LEVEL);
             if (context->pointer.point.x < 0)
             {
                 context->pointer.point.x = 0;
@@ -979,14 +981,12 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
                         context->pointer.point.x = MulDiv(
                             Point.x,
-                            USER_DEFAULT_SCREEN_DPI,
-                            WIN32DRV_MONITOR_ZOOM * lv_display_get_dpi(
-                                context->display_device_object));
+                            LV_WINDOWS_ZOOM_BASE_LEVEL,
+                            LV_WINDOWS_ZOOM_LEVEL);
                         context->pointer.point.y = MulDiv(
                             Point.y,
-                            USER_DEFAULT_SCREEN_DPI,
-                            WIN32DRV_MONITOR_ZOOM * lv_display_get_dpi(
-                                context->display_device_object));
+                            LV_WINDOWS_ZOOM_BASE_LEVEL,
+                            LV_WINDOWS_ZOOM_LEVEL);
 
                         DWORD MousePressedMask =
                             TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
@@ -1184,14 +1184,14 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
             int WindowWidth = MulDiv(
                 lv_display_get_horizontal_resolution(
-                    context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
-                lv_display_get_dpi(context->display_device_object),
-                USER_DEFAULT_SCREEN_DPI);
+                    context->display_device_object),
+                LV_WINDOWS_ZOOM_LEVEL,
+                LV_WINDOWS_ZOOM_BASE_LEVEL);
             int WindowHeight = MulDiv(
                 lv_display_get_vertical_resolution(
-                    context->display_device_object) * WIN32DRV_MONITOR_ZOOM,
-                lv_display_get_dpi(context->display_device_object),
-                USER_DEFAULT_SCREEN_DPI);
+                    context->display_device_object),
+                LV_WINDOWS_ZOOM_LEVEL,
+                LV_WINDOWS_ZOOM_BASE_LEVEL);
 
             SetWindowPos(
                 hWnd,
@@ -1229,14 +1229,12 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                     0,
                     MulDiv(
                         ps.rcPaint.right - ps.rcPaint.left,
-                        USER_DEFAULT_SCREEN_DPI,
-                        WIN32DRV_MONITOR_ZOOM * lv_display_get_dpi(
-                            context->display_device_object)),
+                        LV_WINDOWS_ZOOM_BASE_LEVEL,
+                        LV_WINDOWS_ZOOM_LEVEL),
                     MulDiv(
                         ps.rcPaint.bottom - ps.rcPaint.top,
-                        USER_DEFAULT_SCREEN_DPI,
-                        WIN32DRV_MONITOR_ZOOM * lv_display_get_dpi(
-                            context->display_device_object)),
+                        LV_WINDOWS_ZOOM_BASE_LEVEL,
+                        LV_WINDOWS_ZOOM_LEVEL),
                     SRCCOPY);
 
                 EndPaint(hWnd, &ps);
