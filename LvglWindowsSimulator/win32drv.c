@@ -15,6 +15,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#pragma comment(lib, "Imm32.lib")
+
 /*********************
  *      DEFINES
  *********************/
@@ -1132,6 +1134,64 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         }
 
         break;
+    }
+    case WM_IME_SETCONTEXT:
+    {
+        if (wParam == TRUE)
+        {
+            HIMC hInputMethodContext = ImmGetContext(hWnd);
+            if (hInputMethodContext)
+            {
+                ImmAssociateContext(hWnd, hInputMethodContext);
+                ImmReleaseContext(hWnd, hInputMethodContext);
+            }
+        }
+
+        return DefWindowProcW(hWnd, uMsg, wParam, wParam);
+    }
+    case WM_IME_STARTCOMPOSITION:
+    {
+        HIMC hInputMethodContext = ImmGetContext(hWnd);
+        if (hInputMethodContext)
+        {
+            lv_obj_t* TextareaObject = NULL;
+            lv_obj_t* FocusedObject = lv_group_get_focused(lv_group_get_default());
+            if (FocusedObject)
+            {
+                const lv_obj_class_t* ObjectClass = lv_obj_get_class(
+                    FocusedObject);
+
+                if (ObjectClass == &lv_textarea_class)
+                {
+                    TextareaObject = FocusedObject;
+                }
+                else if (ObjectClass == &lv_keyboard_class)
+                {
+                    TextareaObject = lv_keyboard_get_textarea(FocusedObject);
+                }
+            }
+
+            COMPOSITIONFORM CompositionForm;
+            CompositionForm.dwStyle = CFS_POINT;
+            CompositionForm.ptCurrentPos.x = 0;
+            CompositionForm.ptCurrentPos.y = 0;
+
+            if (TextareaObject)
+            {
+                lv_textarea_t* Textarea = (lv_textarea_t*)(TextareaObject);
+                lv_obj_t* Label = lv_textarea_get_label(TextareaObject);
+
+                CompositionForm.ptCurrentPos.x =
+                    Label->coords.x1 + Textarea->cursor.area.x1;
+                CompositionForm.ptCurrentPos.y =
+                    Label->coords.y1 + Textarea->cursor.area.y1;
+            }
+
+            ImmSetCompositionWindow(hInputMethodContext, &CompositionForm);
+            ImmReleaseContext(hWnd, hInputMethodContext);
+        }
+
+        return DefWindowProcW(hWnd, uMsg, wParam, wParam);
     }
     case WM_MBUTTONDOWN:
     case WM_MBUTTONUP:
