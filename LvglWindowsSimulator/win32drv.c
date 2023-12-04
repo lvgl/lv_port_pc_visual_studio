@@ -29,7 +29,7 @@
     WS_EX_CLIENTEDGE
 
 #define WINDOW_STYLE \
-    (WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME))
+    WS_OVERLAPPEDWINDOW //(WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME))
 
 #define LV_WINDOWS_ZOOM_BASE_LEVEL 100
 
@@ -1222,6 +1222,22 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                 -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
         }
 
+        break;
+    }
+    case WM_SIZE:
+    {
+        if (wParam != SIZE_MINIMIZED)
+        {
+            lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+                lv_win32_get_window_context(hWnd));
+            if (context)
+            {
+                /*lv_display_set_resolution(
+                    context->display_device_object,
+                    LOWORD(lParam),
+                    HIWORD(lParam));*/
+            }
+        }
         break;
     }
 #if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
