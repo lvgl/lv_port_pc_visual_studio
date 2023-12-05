@@ -60,7 +60,6 @@ typedef struct _lv_windows_pointer_device_context_t
 
 typedef struct _lv_win32_keypad_queue_item_t
 {
-    SLIST_ENTRY ItemEntry;
     uint32_t key;
     lv_indev_state_t state;
 } lv_win32_keypad_queue_item_t;
@@ -68,7 +67,7 @@ typedef struct _lv_win32_keypad_queue_item_t
 typedef struct _lv_windows_keypad_device_context_t
 {
     CRITICAL_SECTION mutex;
-    PSLIST_HEADER queue;
+    lv_ll_t queue;
     uint16_t utf16_high_surrogate;
     uint16_t utf16_low_surrogate;
 } lv_windows_keypad_device_context_t;

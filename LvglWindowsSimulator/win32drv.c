@@ -178,17 +178,12 @@ static void lv_win32_push_key_to_keyboard_queue(
     uint32_t key,
     lv_indev_state_t state)
 {
-    lv_win32_keypad_queue_item_t* current =
-        (lv_win32_keypad_queue_item_t*)(_aligned_malloc(
-            sizeof(lv_win32_keypad_queue_item_t),
-            MEMORY_ALLOCATION_ALIGNMENT));
+    lv_win32_keypad_queue_item_t* current = (lv_win32_keypad_queue_item_t*)(
+        _lv_ll_ins_tail(&context->keypad.queue));
     if (current)
     {
         current->key = key;
         current->state = state;
-        InterlockedPushEntrySList(
-            context->keypad.queue,
-            &current->ItemEntry);
     }
 }
 
@@ -679,15 +674,15 @@ static void lv_win32_keypad_driver_read_callback(
 
     EnterCriticalSection(&context->keypad.mutex);
 
-    lv_win32_keypad_queue_item_t* current =
-        (lv_win32_keypad_queue_item_t*)(InterlockedPopEntrySList(
-            context->keypad.queue));
+    lv_win32_keypad_queue_item_t* current = (lv_win32_keypad_queue_item_t*)(
+        _lv_ll_get_head(&context->keypad.queue));
     if (current)
     {
         data->key = current->key;
         data->state = current->state;
 
-        _aligned_free(current);
+        _lv_ll_remove(&context->keypad.queue, current);
+        lv_free(current);
 
         data->continue_reading = true;
     }
@@ -831,14 +826,9 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             context->display_device_object);
 
         InitializeCriticalSection(&context->keypad.mutex);
-        context->keypad.queue = _aligned_malloc(
-            sizeof(SLIST_HEADER),
-            MEMORY_ALLOCATION_ALIGNMENT);
-        if (!context->keypad.queue)
-        {
-            return -1;
-        }
-        InitializeSListHead(context->keypad.queue);
+        _lv_ll_init(
+            &context->keypad.queue,
+            sizeof(lv_win32_keypad_queue_item_t));
         context->keypad.utf16_high_surrogate = 0;
         context->keypad.utf16_low_surrogate = 0;
         context->keyboard_device_object = lv_indev_create();
@@ -1353,20 +1343,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                 context->keyboard_device_object;
             context->keyboard_device_object = NULL;
             lv_indev_delete(keyboard_device_object);
-            do
-            {
-                PSLIST_ENTRY current = InterlockedPopEntrySList(
-                    context->keypad.queue);
-                if (!current)
-                {
-                    _aligned_free(context->keypad.queue);
-                    context->keypad.queue = NULL;
-                    break;
-                }
-
-                _aligned_free(current);
-
-            } while (true);
+            _lv_ll_clear(&context->keypad.queue);
             DeleteCriticalSection(&context->keypad.mutex);
 
             free(context);
