@@ -609,7 +609,7 @@ static void lv_win32_display_driver_flush_callback(
     const lv_area_t* area,
     uint8_t* px_map)
 {
-    HWND window_handle = (HWND)lv_display_get_user_data(disp_drv);
+    HWND window_handle = (HWND)lv_display_get_driver_data(disp_drv);
     if (!window_handle)
     {
         lv_display_flush_ready(disp_drv);
@@ -712,7 +712,7 @@ static lv_win32_window_context_t* lv_win32_get_display_context(
     if (display)
     {
         return lv_win32_get_window_context(
-            (HWND)lv_display_get_user_data(display));
+            (HWND)lv_display_get_driver_data(display));
     }
 
     return NULL;
@@ -751,7 +751,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         lv_display_set_flush_cb(
             context->display_device_object,
             lv_win32_display_driver_flush_callback);
-        lv_display_set_user_data(
+        lv_display_set_driver_data(
             context->display_device_object,
             hWnd);
 #if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
