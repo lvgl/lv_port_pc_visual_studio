@@ -34,7 +34,7 @@
 
 bool single_display_mode_initialization()
 {
-    if (!lv_win32_init(
+    if (!lv_windows_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
         800,
@@ -44,7 +44,7 @@ bool single_display_mode_initialization()
         return false;
     }
 
-    lv_win32_add_all_input_devices_to_group(NULL);
+    lv_windows_add_all_input_devices_to_group(NULL);
 
     return true;
 }
@@ -68,7 +68,7 @@ int main()
     lv_demo_widgets();
     //lv_demo_benchmark();
 
-    while (!lv_win32_quit_signal)
+    while (!lv_windows_quit_signal)
     {
         uint32_t time_till_next = lv_timer_handler();
         Sleep(time_till_next);

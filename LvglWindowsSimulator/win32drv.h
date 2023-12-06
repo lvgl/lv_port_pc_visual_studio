@@ -3,8 +3,8 @@
  *
  */
 
-#ifndef LV_WIN32DRV_H
-#define LV_WIN32DRV_H
+#ifndef LV_WINDOWS_DRV_H
+#define LV_WINDOWS_DRV_H
 
 /*********************
  *      INCLUDES
@@ -58,11 +58,11 @@ typedef struct _lv_windows_pointer_device_context_t
     lv_point_t point;
 } lv_windows_pointer_device_context_t;
 
-typedef struct _lv_win32_keypad_queue_item_t
+typedef struct _lv_windows_keypad_queue_item_t
 {
     uint32_t key;
     lv_indev_state_t state;
-} lv_win32_keypad_queue_item_t;
+} lv_windows_keypad_queue_item_t;
 
 typedef struct _lv_windows_keypad_device_context_t
 {
@@ -78,7 +78,7 @@ typedef struct _lv_windows_encoder_device_context_t
     int16_t enc_diff;
 } lv_windows_encoder_device_context_t;
 
-typedef struct _lv_win32_window_context_t
+typedef struct _lv_windows_window_context_t
 {
     lv_disp_t* display_device_object;
     lv_indev_t* mouse_device_object;
@@ -95,28 +95,28 @@ typedef struct _lv_win32_window_context_t
     lv_windows_pointer_device_context_t pointer;
     lv_windows_keypad_device_context_t keypad;
     lv_windows_encoder_device_context_t encoder;
-    
-} lv_win32_window_context_t;
+
+} lv_windows_window_context_t;
 
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
 
-EXTERN_C bool lv_win32_quit_signal;
+EXTERN_C bool lv_windows_quit_signal;
 
-EXTERN_C lv_indev_t* lv_win32_pointer_device_object;
-EXTERN_C lv_indev_t* lv_win32_keypad_device_object;
-EXTERN_C lv_indev_t* lv_win32_encoder_device_object;
+EXTERN_C lv_indev_t* lv_windows_pointer_device_object;
+EXTERN_C lv_indev_t* lv_windows_keypad_device_object;
+EXTERN_C lv_indev_t* lv_windows_encoder_device_object;
 
-EXTERN_C void lv_win32_add_all_input_devices_to_group(
+EXTERN_C void lv_windows_add_all_input_devices_to_group(
     lv_group_t* group);
 
-EXTERN_C lv_win32_window_context_t* lv_win32_get_window_context(
+EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
     HWND window_handle);
 
-EXTERN_C bool lv_win32_init_window_class();
+EXTERN_C bool lv_windows_init_window_class();
 
-EXTERN_C HWND lv_win32_create_display_window(
+EXTERN_C HWND lv_windows_create_display_window(
     const wchar_t* window_title,
     int32_t hor_res,
     int32_t ver_res,
@@ -124,7 +124,7 @@ EXTERN_C HWND lv_win32_create_display_window(
     HICON icon_handle,
     int show_window_mode);
 
-EXTERN_C bool lv_win32_init(
+EXTERN_C bool lv_windows_init(
     HINSTANCE instance_handle,
     int show_window_mode,
     int32_t hor_res,
@@ -135,4 +135,4 @@ EXTERN_C bool lv_win32_init(
  *      MACROS
  **********************/
 
-#endif /*LV_WIN32DRV_H*/
+#endif /*LV_WINDOWS_DRV_H*/

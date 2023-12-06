@@ -72,7 +72,7 @@ typedef struct _WINDOW_THREAD_PARAMETER
  *         context (DC) for the frame buffer. If the function fails, the return
  *         value is NULL, and PixelBuffer parameter is NULL.
 */
-static HDC lv_win32_create_frame_buffer(
+static HDC lv_windows_create_frame_buffer(
     _In_opt_ HWND WindowHandle,
     _In_ LONG Width,
     _In_ LONG Height,
@@ -89,7 +89,7 @@ static HDC lv_win32_create_frame_buffer(
  * @remarks You need to use this function in Windows 10 Threshold 1 or Windows
  *          10 Threshold 2.
 */
-static BOOL lv_win32_enable_child_window_dpi_message(
+static BOOL lv_windows_enable_child_window_dpi_message(
     _In_ HWND WindowHandle);
 
 /**
@@ -100,7 +100,7 @@ static BOOL lv_win32_enable_child_window_dpi_message(
  *         function fails, the return value is zero.
  * @remark For more information, see RegisterTouchWindow.
 */
-static BOOL lv_win32_register_touch_window(
+static BOOL lv_windows_register_touch_window(
     HWND hWnd,
     ULONG ulFlags);
 
@@ -118,7 +118,7 @@ static BOOL lv_win32_register_touch_window(
  *         function fails, the return value is zero.
  * @remark For more information, see GetTouchInputInfo.
 */
-static BOOL lv_win32_get_touch_input_info(
+static BOOL lv_windows_get_touch_input_info(
     HTOUCHINPUT hTouchInput,
     UINT cInputs,
     PTOUCHINPUT pInputs,
@@ -133,7 +133,7 @@ static BOOL lv_win32_get_touch_input_info(
  *         function fails, the return value is zero.
  * @remark For more information, see CloseTouchInputHandle.
 */
-static BOOL lv_win32_close_touch_input_handle(
+static BOOL lv_windows_close_touch_input_handle(
     HTOUCHINPUT hTouchInput);
 
 /**
@@ -141,44 +141,44 @@ static BOOL lv_win32_close_touch_input_handle(
  * @param WindowHandle The window you want to get information about.
  * @return The DPI for the window.
 */
-static UINT lv_win32_get_dpi_for_window(
+static UINT lv_windows_get_dpi_for_window(
     _In_ HWND WindowHandle);
 
-static void lv_win32_display_driver_flush_callback(
+static void lv_windows_display_driver_flush_callback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
     uint8_t* px_map);
 
-static void lv_win32_pointer_driver_read_callback(
+static void lv_windows_pointer_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data);
 
-static void lv_win32_keypad_driver_read_callback(
+static void lv_windows_keypad_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data);
 
-static void lv_win32_encoder_driver_read_callback(
+static void lv_windows_encoder_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data);
 
-static lv_win32_window_context_t* lv_win32_get_display_context(
+static lv_windows_window_context_t* lv_windows_get_display_context(
     lv_disp_t* display);
 
-static LRESULT CALLBACK lv_win32_window_message_callback(
+static LRESULT CALLBACK lv_windows_window_message_callback(
     HWND   hWnd,
     UINT   uMsg,
     WPARAM wParam,
     LPARAM lParam);
 
-static unsigned int __stdcall lv_win32_window_thread_entrypoint(
+static unsigned int __stdcall lv_windows_window_thread_entrypoint(
     void* raw_parameter);
 
-static void lv_win32_push_key_to_keyboard_queue(
-    lv_win32_window_context_t* context,
+static void lv_windows_push_key_to_keyboard_queue(
+    lv_windows_window_context_t* context,
     uint32_t key,
     lv_indev_state_t state)
 {
-    lv_win32_keypad_queue_item_t* current = (lv_win32_keypad_queue_item_t*)(
+    lv_windows_keypad_queue_item_t* current = (lv_windows_keypad_queue_item_t*)(
         _lv_ll_ins_tail(&context->keypad.queue));
     if (current)
     {
@@ -191,11 +191,11 @@ static void lv_win32_push_key_to_keyboard_queue(
  *  GLOBAL VARIABLES
  **********************/
 
-EXTERN_C bool lv_win32_quit_signal = false;
+EXTERN_C bool lv_windows_quit_signal = false;
 
-EXTERN_C lv_indev_t* lv_win32_pointer_device_object = NULL;
-EXTERN_C lv_indev_t* lv_win32_keypad_device_object = NULL;
-EXTERN_C lv_indev_t* lv_win32_encoder_device_object = NULL;
+EXTERN_C lv_indev_t* lv_windows_pointer_device_object = NULL;
+EXTERN_C lv_indev_t* lv_windows_keypad_device_object = NULL;
+EXTERN_C lv_indev_t* lv_windows_encoder_device_object = NULL;
 
 /**********************
  *  STATIC VARIABLES
@@ -211,7 +211,7 @@ static HWND g_window_handle = NULL;
  *   GLOBAL FUNCTIONS
  **********************/
 
-EXTERN_C void lv_win32_add_all_input_devices_to_group(
+EXTERN_C void lv_windows_add_all_input_devices_to_group(
     lv_group_t* group)
 {
     if (!group)
@@ -236,24 +236,24 @@ EXTERN_C void lv_win32_add_all_input_devices_to_group(
 
     LV_ASSERT_MSG(group, "Cannot obtain an available group object.");
 
-    lv_indev_set_group(lv_win32_pointer_device_object, group);
-    lv_indev_set_group(lv_win32_keypad_device_object, group);
-    lv_indev_set_group(lv_win32_encoder_device_object, group);
+    lv_indev_set_group(lv_windows_pointer_device_object, group);
+    lv_indev_set_group(lv_windows_keypad_device_object, group);
+    lv_indev_set_group(lv_windows_encoder_device_object, group);
 }
 
-EXTERN_C lv_win32_window_context_t* lv_win32_get_window_context(
+EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
     HWND window_handle)
 {
-    return (lv_win32_window_context_t*)(
+    return (lv_windows_window_context_t*)(
         GetPropW(window_handle, L"LVGL.SimulatorWindow.WindowContext"));
 }
 
-EXTERN_C bool lv_win32_init_window_class()
+EXTERN_C bool lv_windows_init_window_class()
 {
     WNDCLASSEXW window_class;
     window_class.cbSize = sizeof(WNDCLASSEXW);
     window_class.style = 0;
-    window_class.lpfnWndProc = lv_win32_window_message_callback;
+    window_class.lpfnWndProc = lv_windows_window_message_callback;
     window_class.cbClsExtra = 0;
     window_class.cbWndExtra = 0;
     window_class.hInstance = NULL;
@@ -266,7 +266,7 @@ EXTERN_C bool lv_win32_init_window_class()
     return RegisterClassExW(&window_class);
 }
 
-EXTERN_C HWND lv_win32_create_display_window(
+EXTERN_C HWND lv_windows_create_display_window(
     const wchar_t* window_title,
     int32_t hor_res,
     int32_t ver_res,
@@ -307,14 +307,14 @@ EXTERN_C HWND lv_win32_create_display_window(
     return display_window_handle;
 }
 
-EXTERN_C bool lv_win32_init(
+EXTERN_C bool lv_windows_init(
     HINSTANCE instance_handle,
     int show_window_mode,
     int32_t hor_res,
     int32_t ver_res,
     HICON icon_handle)
 {
-    if (!lv_win32_init_window_class())
+    if (!lv_windows_init_window_class())
     {
         return false;
     }
@@ -331,23 +331,23 @@ EXTERN_C bool lv_win32_init(
     _beginthreadex(
         NULL,
         0,
-        lv_win32_window_thread_entrypoint,
+        lv_windows_window_thread_entrypoint,
         parameter,
         0,
         NULL);
 
     WaitForSingleObjectEx(parameter->window_mutex, INFINITE, FALSE);
 
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_window_context(g_window_handle));
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_window_context(g_window_handle));
     if (!context)
     {
         return false;
     }
 
-    lv_win32_pointer_device_object = context->mouse_device_object;
-    lv_win32_keypad_device_object = context->keyboard_device_object;
-    lv_win32_encoder_device_object = context->mousewheel_device_object;
+    lv_windows_pointer_device_object = context->mouse_device_object;
+    lv_windows_keypad_device_object = context->keyboard_device_object;
+    lv_windows_encoder_device_object = context->mousewheel_device_object;
 
     return true;
 }
@@ -356,7 +356,7 @@ EXTERN_C bool lv_win32_init(
  *   STATIC FUNCTIONS
  **********************/
 
-static HDC lv_win32_create_frame_buffer(
+static HDC lv_windows_create_frame_buffer(
     HWND WindowHandle,
     LONG Width,
     LONG Height,
@@ -386,7 +386,7 @@ static HDC lv_win32_create_frame_buffer(
 
             BITMAPINFO_16BPP BitmapInfo = { 0 };
 #else
-#error [lv_win32] Unsupported LV_COLOR_DEPTH.
+#error [lv_windows] Unsupported LV_COLOR_DEPTH.
 #endif
 
             BitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
@@ -403,7 +403,7 @@ static HDC lv_win32_create_frame_buffer(
             BitmapInfo.bmiColorMask[1] = 0x07E0;
             BitmapInfo.bmiColorMask[2] = 0x001F;
 #else
-#error [lv_win32] Unsupported LV_COLOR_DEPTH.
+#error [lv_windows] Unsupported LV_COLOR_DEPTH.
 #endif
 
             HBITMAP hBitmap = CreateDIBSection(
@@ -433,7 +433,7 @@ static HDC lv_win32_create_frame_buffer(
     return hFrameBufferDC;
 }
 
-static BOOL lv_win32_enable_child_window_dpi_message(
+static BOOL lv_windows_enable_child_window_dpi_message(
     HWND WindowHandle)
 {
     // This hack is only for Windows 10 TH1/TH2 only.
@@ -478,7 +478,7 @@ static BOOL lv_win32_enable_child_window_dpi_message(
     return pFunction(WindowHandle, TRUE);
 }
 
-static BOOL lv_win32_register_touch_window(
+static BOOL lv_windows_register_touch_window(
     HWND hWnd,
     ULONG ulFlags)
 {
@@ -500,7 +500,7 @@ static BOOL lv_win32_register_touch_window(
     return pFunction(hWnd, ulFlags);
 }
 
-static BOOL lv_win32_get_touch_input_info(
+static BOOL lv_windows_get_touch_input_info(
     HTOUCHINPUT hTouchInput,
     UINT cInputs,
     PTOUCHINPUT pInputs,
@@ -524,7 +524,7 @@ static BOOL lv_win32_get_touch_input_info(
     return pFunction(hTouchInput, cInputs, pInputs, cbSize);
 }
 
-static BOOL lv_win32_close_touch_input_handle(
+static BOOL lv_windows_close_touch_input_handle(
     HTOUCHINPUT hTouchInput)
 {
     HMODULE ModuleHandle = GetModuleHandleW(L"user32.dll");
@@ -545,7 +545,7 @@ static BOOL lv_win32_close_touch_input_handle(
     return pFunction(hTouchInput);
 }
 
-static UINT lv_win32_get_dpi_for_window(
+static UINT lv_windows_get_dpi_for_window(
     _In_ HWND WindowHandle)
 {
     UINT Result = (UINT)(-1);
@@ -604,7 +604,7 @@ static UINT lv_win32_get_dpi_for_window(
     return Result;
 }
 
-static void lv_win32_display_driver_flush_callback(
+static void lv_windows_display_driver_flush_callback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
     uint8_t* px_map)
@@ -616,8 +616,8 @@ static void lv_win32_display_driver_flush_callback(
         return;
     }
 
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_window_context(window_handle));
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_window_context(window_handle));
     if (!context)
     {
         lv_display_flush_ready(disp_drv);
@@ -635,7 +635,7 @@ static void lv_win32_display_driver_flush_callback(
             context->display_draw_buffer_base,
             context->display_draw_buffer_size);
 #else
-#error [lv_win32] Unsupported LV_COLOR_DEPTH.
+#error [lv_windows] Unsupported LV_COLOR_DEPTH.
 #endif
 
         context->display_refreshing = true;
@@ -646,12 +646,12 @@ static void lv_win32_display_driver_flush_callback(
     lv_display_flush_ready(disp_drv);
 }
 
-static void lv_win32_pointer_driver_read_callback(
+static void lv_windows_pointer_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
 {
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_display_context(lv_indev_get_disp(indev)));
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_display_context(lv_indev_get_disp(indev)));
     if (!context)
     {
         return;
@@ -661,12 +661,12 @@ static void lv_win32_pointer_driver_read_callback(
     data->point = context->pointer.point;
 }
 
-static void lv_win32_keypad_driver_read_callback(
+static void lv_windows_keypad_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
 {
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_display_context(lv_indev_get_disp(indev)));
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_display_context(lv_indev_get_disp(indev)));
     if (!context)
     {
         return;
@@ -674,7 +674,7 @@ static void lv_win32_keypad_driver_read_callback(
 
     EnterCriticalSection(&context->keypad.mutex);
 
-    lv_win32_keypad_queue_item_t* current = (lv_win32_keypad_queue_item_t*)(
+    lv_windows_keypad_queue_item_t* current = (lv_windows_keypad_queue_item_t*)(
         _lv_ll_get_head(&context->keypad.queue));
     if (current)
     {
@@ -690,12 +690,12 @@ static void lv_win32_keypad_driver_read_callback(
     LeaveCriticalSection(&context->keypad.mutex);
 }
 
-static void lv_win32_encoder_driver_read_callback(
+static void lv_windows_encoder_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
 {
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_display_context(lv_indev_get_disp(indev)));
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_display_context(lv_indev_get_disp(indev)));
     if (!context)
     {
         return;
@@ -706,19 +706,19 @@ static void lv_win32_encoder_driver_read_callback(
     context->encoder.enc_diff = 0;
 }
 
-static lv_win32_window_context_t* lv_win32_get_display_context(
+static lv_windows_window_context_t* lv_windows_get_display_context(
     lv_disp_t* display)
 {
     if (display)
     {
-        return lv_win32_get_window_context(
+        return lv_windows_get_window_context(
             (HWND)lv_display_get_driver_data(display));
     }
 
     return NULL;
 }
 
-static LRESULT CALLBACK lv_win32_window_message_callback(
+static LRESULT CALLBACK lv_windows_window_message_callback(
     HWND   hWnd,
     UINT   uMsg,
     WPARAM wParam,
@@ -732,15 +732,15 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         // when destroy the window automatically. We free the resource when
         // processing the WM_DESTROY message of this window.
 
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            malloc(sizeof(lv_win32_window_context_t)));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            malloc(sizeof(lv_windows_window_context_t)));
         if (!context)
         {
             return -1;
         }
 
         RECT request_content_size;
-        GetWindowRect(hWnd, &request_content_size);      
+        GetWindowRect(hWnd, &request_content_size);
         context->display_device_object = lv_display_create(
             request_content_size.right - request_content_size.left,
             request_content_size.bottom - request_content_size.top);
@@ -750,18 +750,18 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         }
         lv_display_set_flush_cb(
             context->display_device_object,
-            lv_win32_display_driver_flush_callback);
+            lv_windows_display_driver_flush_callback);
         lv_display_set_driver_data(
             context->display_device_object,
             hWnd);
 #if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
         lv_display_set_dpi(
             context->display_device_object,
-            lv_win32_get_dpi_for_window(hWnd));
-#endif     
+            lv_windows_get_dpi_for_window(hWnd));
+#endif
         context->display_refreshing = true;
         context->display_framebuffer_context_handle =
-            lv_win32_create_frame_buffer(
+            lv_windows_create_frame_buffer(
                 hWnd,
                 lv_display_get_horizontal_resolution(
                     context->display_device_object),
@@ -803,11 +803,11 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             LV_INDEV_TYPE_POINTER);
         lv_indev_set_read_cb(
             context->mouse_device_object,
-            lv_win32_pointer_driver_read_callback);
+            lv_windows_pointer_driver_read_callback);
         lv_indev_set_disp(
             context->mouse_device_object,
             context->display_device_object);
-        
+
         context->encoder.state = LV_INDEV_STATE_RELEASED;
         context->encoder.enc_diff = 0;
         context->mousewheel_device_object = lv_indev_create();
@@ -820,7 +820,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             LV_INDEV_TYPE_ENCODER);
         lv_indev_set_read_cb(
             context->mousewheel_device_object,
-            lv_win32_encoder_driver_read_callback);
+            lv_windows_encoder_driver_read_callback);
         lv_indev_set_disp(
             context->mousewheel_device_object,
             context->display_device_object);
@@ -828,7 +828,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
         InitializeCriticalSection(&context->keypad.mutex);
         _lv_ll_init(
             &context->keypad.queue,
-            sizeof(lv_win32_keypad_queue_item_t));
+            sizeof(lv_windows_keypad_queue_item_t));
         context->keypad.utf16_high_surrogate = 0;
         context->keypad.utf16_low_surrogate = 0;
         context->keyboard_device_object = lv_indev_create();
@@ -841,10 +841,10 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             LV_INDEV_TYPE_KEYPAD);
         lv_indev_set_read_cb(
             context->keyboard_device_object,
-            lv_win32_keypad_driver_read_callback);
+            lv_windows_keypad_driver_read_callback);
         lv_indev_set_disp(
             context->keyboard_device_object,
-            context->display_device_object);      
+            context->display_device_object);
 
         if (!SetPropW(
             hWnd,
@@ -888,16 +888,16 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             calculated_window_size.bottom,
             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
 
-        lv_win32_register_touch_window(hWnd, 0);
+        lv_windows_register_touch_window(hWnd, 0);
 
-        lv_win32_enable_child_window_dpi_message(hWnd);
+        lv_windows_enable_child_window_dpi_message(hWnd);
 
         break;
     }
     case WM_MOUSEMOVE:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             context->pointer.point.x = MulDiv(
@@ -935,8 +935,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     case WM_LBUTTONDOWN:
     case WM_LBUTTONUP:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             context->pointer.state = (
@@ -949,8 +949,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     }
     case WM_TOUCH:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             UINT cInputs = LOWORD(wParam);
@@ -959,7 +959,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
             PTOUCHINPUT pInputs = malloc(cInputs * sizeof(TOUCHINPUT));
             if (pInputs)
             {
-                if (lv_win32_get_touch_input_info(
+                if (lv_windows_get_touch_input_info(
                     hTouchInput,
                     cInputs,
                     pInputs,
@@ -997,7 +997,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                 free(pInputs);
             }
 
-            lv_win32_close_touch_input_handle(hTouchInput);
+            lv_windows_close_touch_input_handle(hTouchInput);
         }
 
         break;
@@ -1005,8 +1005,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     case WM_KEYDOWN:
     case WM_KEYUP:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             EnterCriticalSection(&context->keypad.mutex);
@@ -1060,7 +1060,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
             if (!skip_translation)
             {
-                lv_win32_push_key_to_keyboard_queue(
+                lv_windows_push_key_to_keyboard_queue(
                     context,
                     translated_key,
                     ((uMsg == WM_KEYUP)
@@ -1075,8 +1075,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     }
     case WM_CHAR:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             EnterCriticalSection(&context->keypad.mutex);
@@ -1114,11 +1114,11 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
                 uint32_t lvgl_code_point =
                     _lv_text_unicode_to_encoded(code_point);
 
-                lv_win32_push_key_to_keyboard_queue(
+                lv_windows_push_key_to_keyboard_queue(
                     context,
                     lvgl_code_point,
                     LV_INDEV_STATE_PRESSED);
-                lv_win32_push_key_to_keyboard_queue(
+                lv_windows_push_key_to_keyboard_queue(
                     context,
                     lvgl_code_point,
                     LV_INDEV_STATE_RELEASED);
@@ -1190,8 +1190,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     case WM_MBUTTONDOWN:
     case WM_MBUTTONUP:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             context->encoder.state = (
@@ -1204,8 +1204,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     }
     case WM_MOUSEWHEEL:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             context->encoder.enc_diff =
@@ -1218,8 +1218,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     {
         if (wParam != SIZE_MINIMIZED)
         {
-            lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-                lv_win32_get_window_context(hWnd));
+            lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+                lv_windows_get_window_context(hWnd));
             if (context)
             {
                 /*lv_display_set_resolution(
@@ -1233,8 +1233,8 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 #if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
     case WM_DPICHANGED:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             lv_display_set_dpi(context->display_device_object, HIWORD(wParam));
@@ -1276,11 +1276,11 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
 
         break;
     }
-#endif 
+#endif
     case WM_PAINT:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-            lv_win32_get_window_context(hWnd));
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
         if (context)
         {
             if (context->display_framebuffer_context_handle)
@@ -1319,7 +1319,7 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     }
     case WM_DESTROY:
     {
-        lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
             RemovePropW(hWnd, L"LVGL.SimulatorWindow.WindowContext"));
         if (context)
         {
@@ -1360,13 +1360,13 @@ static LRESULT CALLBACK lv_win32_window_message_callback(
     return 0;
 }
 
-static unsigned int __stdcall lv_win32_window_thread_entrypoint(
+static unsigned int __stdcall lv_windows_window_thread_entrypoint(
     void* raw_parameter)
 {
     PWINDOW_THREAD_PARAMETER parameter =
         (PWINDOW_THREAD_PARAMETER)raw_parameter;
 
-    g_window_handle = lv_win32_create_display_window(
+    g_window_handle = lv_windows_create_display_window(
         L"LVGL Simulator for Windows Desktop (Display 1)",
         parameter->hor_res,
         parameter->ver_res,
@@ -1387,7 +1387,7 @@ static unsigned int __stdcall lv_win32_window_thread_entrypoint(
         DispatchMessageW(&message);
     }
 
-    lv_win32_quit_signal = true;
+    lv_windows_quit_signal = true;
 
     return 0;
 }

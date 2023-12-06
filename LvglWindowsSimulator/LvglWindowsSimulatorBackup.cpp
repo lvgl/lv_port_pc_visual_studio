@@ -35,7 +35,7 @@
 
 bool single_display_mode_initialization()
 {
-    if (!lv_win32_init(
+    if (!lv_windows_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
         800,
@@ -45,7 +45,7 @@ bool single_display_mode_initialization()
         return false;
     }
 
-    lv_win32_add_all_input_devices_to_group(NULL);
+    lv_windows_add_all_input_devices_to_group(NULL);
 
     return true;
 }
@@ -58,7 +58,7 @@ bool g_initialization_status = false;
 #define LVGL_SIMULATOR_MAXIMUM_DISPLAYS 16
 HWND g_display_window_handles[LVGL_SIMULATOR_MAXIMUM_DISPLAYS];
 
-unsigned int __stdcall lv_win32_window_thread_entrypoint(
+unsigned int __stdcall lv_windows_window_thread_entrypoint(
     void* raw_parameter)
 {
     size_t display_id = *(size_t*)(raw_parameter);
@@ -77,7 +77,7 @@ unsigned int __stdcall lv_win32_window_thread_entrypoint(
         L"LVGL Simulator for Windows Desktop (Display %d)",
         display_id);
 
-    g_display_window_handles[display_id] = lv_win32_create_display_window(
+    g_display_window_handles[display_id] = lv_windows_create_display_window(
         window_title,
         hor_res,
         ver_res,
@@ -100,14 +100,14 @@ unsigned int __stdcall lv_win32_window_thread_entrypoint(
         DispatchMessageW(&message);
     }
 
-    lv_win32_quit_signal = true;
+    lv_windows_quit_signal = true;
 
     return 0;
 }
 
 bool multiple_display_mode_initialization()
 {
-    if (!lv_win32_init_window_class())
+    if (!lv_windows_init_window_class())
     {
         return false;
     }
@@ -121,7 +121,7 @@ bool multiple_display_mode_initialization()
         _beginthreadex(
             NULL,
             0,
-            lv_win32_window_thread_entrypoint,
+            lv_windows_window_thread_entrypoint,
             &i,
             0,
             NULL);
@@ -136,16 +136,16 @@ bool multiple_display_mode_initialization()
         }
     }
 
-    lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-        lv_win32_get_window_context(g_display_window_handles[0]));
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_window_context(g_display_window_handles[0]));
     if (context)
     {
-        lv_win32_pointer_device_object = context->mouse_device_object;
-        lv_win32_keypad_device_object = context->keyboard_device_object;
-        lv_win32_encoder_device_object = context->mousewheel_device_object;
+        lv_windows_pointer_device_object = context->mouse_device_object;
+        lv_windows_keypad_device_object = context->keyboard_device_object;
+        lv_windows_encoder_device_object = context->mousewheel_device_object;
     }
 
-    lv_win32_add_all_input_devices_to_group(NULL);
+    lv_windows_add_all_input_devices_to_group(NULL);
 
     return true;
 }
@@ -178,8 +178,8 @@ int main()
     {
         for (size_t i = 0; i < LVGL_SIMULATOR_MAXIMUM_DISPLAYS; ++i)
         {
-            lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-                lv_win32_get_window_context(g_display_window_handles[i]));
+            lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+                lv_windows_get_window_context(g_display_window_handles[i]));
             if (context)
             {
                 lv_disp_set_default(context->display_device_object);
@@ -240,8 +240,8 @@ int main()
         }
     }*/
 
-    //lv_win32_window_context_t* context = (lv_win32_window_context_t*)(
-    //    lv_win32_get_window_context(g_display_window_handles[1]));
+    //lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+    //    lv_windows_get_window_context(g_display_window_handles[1]));
     //if (context)
     //{
     //    lv_obj_t* scr = lv_disp_get_scr_act(context->display_device_object);
@@ -466,7 +466,7 @@ int main()
     // Task handler loop
     // ----------------------------------
 
-    while (!lv_win32_quit_signal)
+    while (!lv_windows_quit_signal)
     {
         lv_task_handler();
         Sleep(1);
