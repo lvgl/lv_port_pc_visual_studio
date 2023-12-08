@@ -739,6 +739,14 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             return -1;
         }
 
+        if (!SetPropW(
+            hWnd,
+            L"LVGL.SimulatorWindow.WindowContext",
+            (HANDLE)(context)))
+        {
+            return -1;
+        }
+
         RECT request_content_size;
         GetWindowRect(hWnd, &request_content_size);
         context->display_device_object = lv_display_create(
@@ -845,14 +853,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         lv_indev_set_disp(
             context->keyboard_device_object,
             context->display_device_object);
-        
-        if (!SetPropW(
-            hWnd,
-            L"LVGL.SimulatorWindow.WindowContext",
-            (HANDLE)(context)))
-        {
-            return -1;
-        }
 
         RECT calculated_window_size;
 
