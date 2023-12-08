@@ -799,8 +799,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         // when destroy the window automatically. We free the resource when
         // processing the WM_DESTROY message of this window.
 
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            malloc(sizeof(lv_windows_window_context_t)));
+        lv_windows_window_context_t* context =
+            (lv_windows_window_context_t*)(HeapAlloc(
+                GetProcessHeap(),
+                HEAP_ZERO_MEMORY,
+                sizeof(lv_windows_window_context_t)));
         if (!context)
         {
             return -1;
@@ -1404,7 +1407,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
             lv_timer_delete(context->display_timer_object);
 
-            free(context);
+            HeapFree(GetProcessHeap(), 0, context);
         }
 
         PostQuitMessage(0);
