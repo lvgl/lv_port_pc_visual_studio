@@ -436,13 +436,14 @@ static HDC lv_windows_create_frame_buffer(
 static BOOL lv_windows_enable_child_window_dpi_message(
     HWND WindowHandle)
 {
-    // This hack is only for Windows 10 TH1/TH2 only.
-    // We don't need this hack if the Per Monitor Aware V2 is existed.
+    // The private Per-Monitor DPI Awareness support extension is Windows 10
+    // only. We don't need the private Per-Monitor DPI Awareness support
+    // extension if the Per-Monitor (V2) DPI Awareness exists.
     OSVERSIONINFOEXW OSVersionInfoEx = { 0 };
     OSVersionInfoEx.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
     OSVersionInfoEx.dwMajorVersion = 10;
     OSVersionInfoEx.dwMinorVersion = 0;
-    OSVersionInfoEx.dwBuildNumber = 14393;
+    OSVersionInfoEx.dwBuildNumber = 14986;
     if (!VerifyVersionInfoW(
         &OSVersionInfoEx,
         VER_MAJORVERSION | VER_MINORVERSION | VER_BUILDNUMBER,
