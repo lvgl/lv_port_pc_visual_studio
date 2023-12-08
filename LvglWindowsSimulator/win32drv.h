@@ -81,6 +81,8 @@ typedef struct _lv_windows_encoder_device_context_t
 typedef struct _lv_windows_window_context_t
 {
     lv_disp_t* display_device_object;
+    lv_timer_t* display_timer_object;
+
     lv_indev_t* mouse_device_object;
     lv_indev_t* mousewheel_device_object;
     lv_indev_t* keyboard_device_object;

@@ -718,6 +718,18 @@ static lv_windows_window_context_t* lv_windows_get_display_context(
     return NULL;
 }
 
+static void lv_windows_display_timer_callback(lv_timer_t* timer)
+{
+    lv_windows_window_context_t* context =
+        (lv_windows_window_context_t*)(lv_timer_get_user_data(timer));
+    if (!context)
+    {
+        return;
+    }
+
+    LV_LOG_WARN("LVGL Main Thread");
+}
+
 static LRESULT CALLBACK lv_windows_window_message_callback(
     HWND   hWnd,
     UINT   uMsg,
@@ -746,6 +758,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         {
             return -1;
         }
+
+        context->display_timer_object = lv_timer_create(
+            lv_windows_display_timer_callback,
+            200,
+            context);
 
         RECT request_content_size;
         GetWindowRect(hWnd, &request_content_size);
@@ -1349,6 +1366,8 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_indev_delete(keyboard_device_object);
             _lv_ll_clear(&context->keypad.queue);
             DeleteCriticalSection(&context->keypad.mutex);
+
+            lv_timer_delete(context->display_timer_object);
 
             free(context);
         }
