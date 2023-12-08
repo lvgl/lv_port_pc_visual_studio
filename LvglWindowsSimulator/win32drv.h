@@ -90,8 +90,6 @@ typedef struct _lv_windows_window_context_t
     bool display_resolution_changed;
     lv_point_t requested_display_resolution;
 
-    void* display_draw_buffer_base;
-    size_t display_draw_buffer_size;
     volatile bool display_refreshing;
     HDC display_framebuffer_context_handle;
     uint32_t* display_framebuffer_base;

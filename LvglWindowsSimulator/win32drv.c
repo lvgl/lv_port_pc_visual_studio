@@ -630,10 +630,6 @@ static void lv_windows_display_driver_flush_callback(
     (LV_COLOR_DEPTH == 24) || \
     (LV_COLOR_DEPTH == 16)
         UNREFERENCED_PARAMETER(px_map);
-        memcpy(
-            context->display_framebuffer_base,
-            context->display_draw_buffer_base,
-            context->display_draw_buffer_size);
 #else
 #error [lv_windows] Unsupported LV_COLOR_DEPTH.
 #endif
@@ -743,15 +739,10 @@ static void lv_windows_display_timer_callback(lv_timer_t* timer)
             context->display_device_object);
         if (window_handle)
         {
-            if (context->display_draw_buffer_base)
-            {
-                context->display_draw_buffer_size = 0;
-                free(context->display_draw_buffer_base);
-                context->display_draw_buffer_base = NULL;         
-            }
-
             if (context->display_framebuffer_context_handle)
             {
+                context->display_framebuffer_base = NULL;
+                context->display_framebuffer_size = 0;
                 DeleteDC(context->display_framebuffer_context_handle);
                 context->display_framebuffer_context_handle = NULL;
             }
@@ -763,18 +754,13 @@ static void lv_windows_display_timer_callback(lv_timer_t* timer)
                     ver_res,
                     &context->display_framebuffer_base,
                     &context->display_framebuffer_size);
-            context->display_draw_buffer_size =
-                lv_color_format_get_size(LV_COLOR_FORMAT_NATIVE);
-            context->display_draw_buffer_size *= hor_res * ver_res;
-            context->display_draw_buffer_base =
-                malloc(context->display_draw_buffer_size);
-            if (context->display_draw_buffer_base)
+            if (context->display_framebuffer_context_handle)
             {
                 lv_display_set_draw_buffers(
                     context->display_device_object,
-                    context->display_draw_buffer_base,
+                    context->display_framebuffer_base,
                     NULL,
-                    context->display_draw_buffer_size,
+                    context->display_framebuffer_size,
                     LV_DISPLAY_RENDER_MODE_DIRECT);
             }
         }
@@ -1385,7 +1371,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_disp_t* display_device_object = context->display_device_object;
             context->display_device_object = NULL;
             lv_display_delete(display_device_object);
-            free(context->display_draw_buffer_base);
             DeleteDC(context->display_framebuffer_context_handle);
 
             lv_indev_t* mouse_device_object =
