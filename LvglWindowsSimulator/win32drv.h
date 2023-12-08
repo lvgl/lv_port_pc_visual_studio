@@ -87,6 +87,9 @@ typedef struct _lv_windows_window_context_t
     lv_indev_t* mousewheel_device_object;
     lv_indev_t* keyboard_device_object;
 
+    bool display_resolution_changed;
+    lv_point_t requested_display_resolution;
+
     void* display_draw_buffer_base;
     size_t display_draw_buffer_size;
     volatile bool display_refreshing;

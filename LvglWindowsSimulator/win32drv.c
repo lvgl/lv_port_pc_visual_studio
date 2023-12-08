@@ -727,7 +727,62 @@ static void lv_windows_display_timer_callback(lv_timer_t* timer)
         return;
     }
 
-    LV_LOG_WARN("LVGL Main Thread");
+    if (context->display_resolution_changed)
+    {
+        lv_display_set_resolution(
+            context->display_device_object,
+            context->requested_display_resolution.x,
+            context->requested_display_resolution.y);
+
+        int32_t hor_res = lv_display_get_horizontal_resolution(
+            context->display_device_object);
+        int32_t ver_res = lv_display_get_vertical_resolution(
+            context->display_device_object);
+
+        HWND window_handle = (HWND)lv_display_get_driver_data(
+            context->display_device_object);
+        if (window_handle)
+        {
+            if (context->display_draw_buffer_base)
+            {
+                context->display_draw_buffer_size = 0;
+                free(context->display_draw_buffer_base);
+                context->display_draw_buffer_base = NULL;         
+            }
+
+            if (context->display_framebuffer_context_handle)
+            {
+                DeleteDC(context->display_framebuffer_context_handle);
+                context->display_framebuffer_context_handle = NULL;
+            }
+            
+            context->display_framebuffer_context_handle =
+                lv_windows_create_frame_buffer(
+                    window_handle,
+                    hor_res,
+                    ver_res,
+                    &context->display_framebuffer_base,
+                    &context->display_framebuffer_size);
+            context->display_draw_buffer_size =
+                lv_color_format_get_size(LV_COLOR_FORMAT_NATIVE);
+            context->display_draw_buffer_size *= hor_res * ver_res;
+            context->display_draw_buffer_base =
+                malloc(context->display_draw_buffer_size);
+            if (context->display_draw_buffer_base)
+            {
+                lv_display_set_draw_buffers(
+                    context->display_device_object,
+                    context->display_draw_buffer_base,
+                    NULL,
+                    context->display_draw_buffer_size,
+                    LV_DISPLAY_RENDER_MODE_DIRECT);
+            }
+        }
+
+        context->display_resolution_changed = false;
+        context->requested_display_resolution.x = 0;
+        context->requested_display_resolution.y = 0;
+    }
 }
 
 static LRESULT CALLBACK lv_windows_window_message_callback(
@@ -761,18 +816,24 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         context->display_timer_object = lv_timer_create(
             lv_windows_display_timer_callback,
-            200,
+            LV_DEF_REFR_PERIOD,
             context);
 
-        RECT request_content_size;
-        GetWindowRect(hWnd, &request_content_size);
-        context->display_device_object = lv_display_create(
-            request_content_size.right - request_content_size.left,
-            request_content_size.bottom - request_content_size.top);
+        context->display_resolution_changed = false;
+        context->requested_display_resolution.x = 0;
+        context->requested_display_resolution.y = 0;
+      
+        context->display_device_object = lv_display_create(0, 0);
         if (!context->display_device_object)
         {
             return -1;
         }
+        RECT request_content_size;
+        GetWindowRect(hWnd, &request_content_size);
+        lv_display_set_resolution(
+            context->display_device_object,
+            request_content_size.right - request_content_size.left,
+            request_content_size.bottom - request_content_size.top);
         lv_display_set_flush_cb(
             context->display_device_object,
             lv_windows_display_driver_flush_callback);
@@ -785,35 +846,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_windows_get_dpi_for_window(hWnd));
 #endif
         context->display_refreshing = true;
-        context->display_framebuffer_context_handle =
-            lv_windows_create_frame_buffer(
-                hWnd,
-                lv_display_get_horizontal_resolution(
-                    context->display_device_object),
-                lv_display_get_vertical_resolution(
-                    context->display_device_object),
-                &context->display_framebuffer_base,
-                &context->display_framebuffer_size);
-        context->display_draw_buffer_size =
-            lv_color_format_get_size(LV_COLOR_FORMAT_NATIVE);
-        context->display_draw_buffer_size *=
-            lv_display_get_horizontal_resolution(
-                context->display_device_object);
-        context->display_draw_buffer_size *=
-            lv_display_get_vertical_resolution(
-                context->display_device_object);
-        context->display_draw_buffer_base =
-            malloc(context->display_draw_buffer_size);
-        if (!context->display_draw_buffer_base)
-        {
-            return -1;
-        }
-        lv_display_set_draw_buffers(
-            context->display_device_object,
-            context->display_draw_buffer_base,
-            NULL,
-            context->display_draw_buffer_size,
-            LV_DISPLAY_RENDER_MODE_DIRECT);
 
         context->pointer.state = LV_INDEV_STATE_RELEASED;
         context->pointer.point.x = 0;
@@ -1240,10 +1272,9 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 lv_windows_get_window_context(hWnd));
             if (context)
             {
-                /*lv_display_set_resolution(
-                    context->display_device_object,
-                    LOWORD(lParam),
-                    HIWORD(lParam));*/
+                context->display_resolution_changed = true;
+                context->requested_display_resolution.x = LOWORD(lParam);
+                context->requested_display_resolution.y = HIWORD(lParam);
             }
         }
         break;
@@ -1298,6 +1329,10 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         break;
     }
 #endif
+    case WM_ERASEBKGND:
+    {
+        return TRUE;
+    }
     case WM_PAINT:
     {
         lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
