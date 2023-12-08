@@ -845,7 +845,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         lv_indev_set_disp(
             context->keyboard_device_object,
             context->display_device_object);
-
+        
         if (!SetPropW(
             hWnd,
             L"LVGL.SimulatorWindow.WindowContext",
@@ -900,6 +900,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_windows_get_window_context(hWnd));
         if (context)
         {
+            int32_t hor_res = lv_display_get_horizontal_resolution(
+                context->display_device_object);
+            int32_t ver_res = lv_display_get_vertical_resolution(
+                context->display_device_object);
+
             context->pointer.point.x = MulDiv(
                 GET_X_LPARAM(lParam),
                 LV_WINDOWS_ZOOM_BASE_LEVEL,
@@ -912,21 +917,17 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             {
                 context->pointer.point.x = 0;
             }
-            if (context->pointer.point.x > lv_display_get_horizontal_resolution(
-                context->display_device_object) - 1)
+            if (context->pointer.point.x > hor_res - 1)
             {
-                context->pointer.point.x = lv_display_get_horizontal_resolution(
-                    context->display_device_object) - 1;
+                context->pointer.point.x = hor_res - 1;
             }
             if (context->pointer.point.y < 0)
             {
                 context->pointer.point.y = 0;
             }
-            if (context->pointer.point.y > lv_display_get_vertical_resolution(
-                context->display_device_object) - 1)
+            if (context->pointer.point.y > ver_res - 1)
             {
-                context->pointer.point.y = lv_display_get_vertical_resolution(
-                    context->display_device_object) - 1;
+                context->pointer.point.y = ver_res - 1;
             }
         }
 
@@ -1253,14 +1254,17 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             RECT ClientRect;
             GetClientRect(hWnd, &ClientRect);
 
+            int32_t hor_res = lv_display_get_horizontal_resolution(
+                context->display_device_object);
+            int32_t ver_res = lv_display_get_vertical_resolution(
+                context->display_device_object);
+
             int WindowWidth = MulDiv(
-                lv_display_get_horizontal_resolution(
-                    context->display_device_object),
+                hor_res,
                 LV_WINDOWS_ZOOM_LEVEL,
                 LV_WINDOWS_ZOOM_BASE_LEVEL);
             int WindowHeight = MulDiv(
-                lv_display_get_vertical_resolution(
-                    context->display_device_object),
+                ver_res,
                 LV_WINDOWS_ZOOM_LEVEL,
                 LV_WINDOWS_ZOOM_BASE_LEVEL);
 
