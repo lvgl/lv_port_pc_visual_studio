@@ -798,12 +798,426 @@ static void lv_windows_display_timer_callback(lv_timer_t* timer)
     }
 }
 
+static bool lv_windows_pointer_device_window_message_handler(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    LRESULT* plResult)
+{
+    switch (uMsg)
+    {
+    case WM_MOUSEMOVE:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            int32_t hor_res = lv_display_get_horizontal_resolution(
+                context->display_device_object);
+            int32_t ver_res = lv_display_get_vertical_resolution(
+                context->display_device_object);
+
+            context->pointer.point.x = MulDiv(
+                GET_X_LPARAM(lParam),
+                LV_WINDOWS_ZOOM_BASE_LEVEL,
+                LV_WINDOWS_ZOOM_LEVEL);
+            context->pointer.point.y = MulDiv(
+                GET_Y_LPARAM(lParam),
+                LV_WINDOWS_ZOOM_BASE_LEVEL,
+                LV_WINDOWS_ZOOM_LEVEL);
+            if (context->pointer.point.x < 0)
+            {
+                context->pointer.point.x = 0;
+            }
+            if (context->pointer.point.x > hor_res - 1)
+            {
+                context->pointer.point.x = hor_res - 1;
+            }
+            if (context->pointer.point.y < 0)
+            {
+                context->pointer.point.y = 0;
+            }
+            if (context->pointer.point.y > ver_res - 1)
+            {
+                context->pointer.point.y = ver_res - 1;
+            }
+        }
+
+        break;
+    }
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            context->pointer.state = (
+                uMsg == WM_LBUTTONDOWN
+                ? LV_INDEV_STATE_PRESSED
+                : LV_INDEV_STATE_RELEASED);
+        }
+
+        break;
+    }
+    case WM_TOUCH:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            UINT input_count = LOWORD(wParam);
+            HTOUCHINPUT touch_input_handle = (HTOUCHINPUT)(lParam);
+
+            PTOUCHINPUT inputs = malloc(input_count * sizeof(TOUCHINPUT));
+            if (inputs)
+            {
+                if (lv_windows_get_touch_input_info(
+                    touch_input_handle,
+                    input_count,
+                    inputs,
+                    sizeof(TOUCHINPUT)))
+                {
+                    for (UINT i = 0; i < input_count; ++i)
+                    {
+                        POINT Point;
+                        Point.x = TOUCH_COORD_TO_PIXEL(inputs[i].x);
+                        Point.y = TOUCH_COORD_TO_PIXEL(inputs[i].y);
+                        if (!ScreenToClient(hWnd, &Point))
+                        {
+                            continue;
+                        }
+
+                        context->pointer.point.x = MulDiv(
+                            Point.x,
+                            LV_WINDOWS_ZOOM_BASE_LEVEL,
+                            LV_WINDOWS_ZOOM_LEVEL);
+                        context->pointer.point.y = MulDiv(
+                            Point.y,
+                            LV_WINDOWS_ZOOM_BASE_LEVEL,
+                            LV_WINDOWS_ZOOM_LEVEL);
+
+                        DWORD MousePressedMask =
+                            TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
+
+                        context->pointer.state = (
+                            inputs[i].dwFlags & MousePressedMask
+                            ? LV_INDEV_STATE_PRESSED
+                            : LV_INDEV_STATE_RELEASED);
+                    }
+                }
+
+                free(inputs);
+            }
+
+            lv_windows_close_touch_input_handle(touch_input_handle);
+        }
+
+        break;
+    }
+    default:
+        // Not Handled
+        return false;
+    }
+
+    // Handled
+    *plResult = 0;
+    return true;
+}
+
+static bool lv_windows_keypad_device_window_message_handler(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    LRESULT* plResult)
+{
+    switch (uMsg)
+    {
+    case WM_KEYDOWN:
+    case WM_KEYUP:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            EnterCriticalSection(&context->keypad.mutex);
+
+            bool skip_translation = false;
+            uint32_t translated_key = 0;
+
+            switch (wParam)
+            {
+            case VK_UP:
+                translated_key = LV_KEY_UP;
+                break;
+            case VK_DOWN:
+                translated_key = LV_KEY_DOWN;
+                break;
+            case VK_LEFT:
+                translated_key = LV_KEY_LEFT;
+                break;
+            case VK_RIGHT:
+                translated_key = LV_KEY_RIGHT;
+                break;
+            case VK_ESCAPE:
+                translated_key = LV_KEY_ESC;
+                break;
+            case VK_DELETE:
+                translated_key = LV_KEY_DEL;
+                break;
+            case VK_BACK:
+                translated_key = LV_KEY_BACKSPACE;
+                break;
+            case VK_RETURN:
+                translated_key = LV_KEY_ENTER;
+                break;
+            case VK_TAB:
+            case VK_NEXT:
+                translated_key = LV_KEY_NEXT;
+                break;
+            case VK_PRIOR:
+                translated_key = LV_KEY_PREV;
+                break;
+            case VK_HOME:
+                translated_key = LV_KEY_HOME;
+                break;
+            case VK_END:
+                translated_key = LV_KEY_END;
+                break;
+            default:
+                skip_translation = true;
+                break;
+            }
+
+            if (!skip_translation)
+            {
+                lv_windows_push_key_to_keyboard_queue(
+                    context,
+                    translated_key,
+                    ((uMsg == WM_KEYUP)
+                        ? LV_INDEV_STATE_RELEASED
+                        : LV_INDEV_STATE_PRESSED));
+            }
+
+            LeaveCriticalSection(&context->keypad.mutex);
+        }
+
+        break;
+    }
+    case WM_CHAR:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            EnterCriticalSection(&context->keypad.mutex);
+
+            uint16_t raw_code_point = (uint16_t)(wParam);
+
+            if (raw_code_point >= 0x20 && raw_code_point != 0x7F)
+            {
+                if (IS_HIGH_SURROGATE(raw_code_point))
+                {
+                    context->keypad.utf16_high_surrogate = raw_code_point;
+                }
+                else if (IS_LOW_SURROGATE(raw_code_point))
+                {
+                    context->keypad.utf16_low_surrogate = raw_code_point;
+                }
+
+                uint32_t code_point = raw_code_point;
+
+                if (context->keypad.utf16_high_surrogate &&
+                    context->keypad.utf16_low_surrogate)
+                {
+                    uint16_t high_surrogate =
+                        context->keypad.utf16_high_surrogate;
+                    uint16_t low_surrogate =
+                        context->keypad.utf16_low_surrogate;
+
+                    code_point = (low_surrogate & 0x03FF);
+                    code_point += (((high_surrogate & 0x03FF) + 0x40) << 10);
+
+                    context->keypad.utf16_high_surrogate = 0;
+                    context->keypad.utf16_low_surrogate = 0;
+                }
+
+                uint32_t lvgl_code_point =
+                    _lv_text_unicode_to_encoded(code_point);
+
+                lv_windows_push_key_to_keyboard_queue(
+                    context,
+                    lvgl_code_point,
+                    LV_INDEV_STATE_PRESSED);
+                lv_windows_push_key_to_keyboard_queue(
+                    context,
+                    lvgl_code_point,
+                    LV_INDEV_STATE_RELEASED);
+            }
+
+            LeaveCriticalSection(&context->keypad.mutex);
+        }
+
+        break;
+    }
+    case WM_IME_SETCONTEXT:
+    {
+        if (wParam == TRUE)
+        {
+            HIMC input_method_context_handle = ImmGetContext(hWnd);
+            if (input_method_context_handle)
+            {
+                ImmAssociateContext(hWnd, input_method_context_handle);
+                ImmReleaseContext(hWnd, input_method_context_handle);
+            }
+        }
+
+        *plResult = DefWindowProcW(hWnd, uMsg, wParam, wParam);
+        break;
+    }
+    case WM_IME_STARTCOMPOSITION:
+    {
+        HIMC input_method_context_handle = ImmGetContext(hWnd);
+        if (input_method_context_handle)
+        {
+            lv_obj_t* textarea_object = NULL;
+            lv_obj_t* focused_object = lv_group_get_focused(
+                lv_group_get_default());
+            if (focused_object)
+            {
+                const lv_obj_class_t* object_class = lv_obj_get_class(
+                    focused_object);
+
+                if (object_class == &lv_textarea_class)
+                {
+                    textarea_object = focused_object;
+                }
+                else if (object_class == &lv_keyboard_class)
+                {
+                    textarea_object = lv_keyboard_get_textarea(focused_object);
+                }
+            }
+
+            COMPOSITIONFORM composition_form;
+            composition_form.dwStyle = CFS_POINT;
+            composition_form.ptCurrentPos.x = 0;
+            composition_form.ptCurrentPos.y = 0;
+
+            if (textarea_object)
+            {
+                lv_textarea_t* textarea = (lv_textarea_t*)(textarea_object);
+                lv_obj_t* label_object = lv_textarea_get_label(textarea_object);
+
+                composition_form.ptCurrentPos.x =
+                    label_object->coords.x1 + textarea->cursor.area.x1;
+                composition_form.ptCurrentPos.y =
+                    label_object->coords.y1 + textarea->cursor.area.y1;
+            }
+
+            ImmSetCompositionWindow(
+                input_method_context_handle,
+                &composition_form);
+            ImmReleaseContext(
+                hWnd,
+                input_method_context_handle);
+        }
+
+        *plResult = DefWindowProcW(hWnd, uMsg, wParam, wParam);
+        break;
+    }
+    default:
+        // Not Handled
+        return false;
+    }
+
+    // Handled
+    *plResult = 0;
+    return true;
+}
+
+static bool lv_windows_encoder_device_window_message_handler(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    LRESULT* plResult)
+{
+    switch (uMsg)
+    {
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            context->encoder.state = (
+                uMsg == WM_MBUTTONDOWN
+                ? LV_INDEV_STATE_PRESSED
+                : LV_INDEV_STATE_RELEASED);
+        }
+
+        break;
+    }
+    case WM_MOUSEWHEEL:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            context->encoder.enc_diff =
+                -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+        }
+
+        break;
+    }
+    default:
+        // Not Handled
+        return false;
+    }
+
+    // Handled
+    *plResult = 0;
+    return true;
+}
+
 static LRESULT CALLBACK lv_windows_window_message_callback(
-    HWND   hWnd,
-    UINT   uMsg,
+    HWND hWnd,
+    UINT uMsg,
     WPARAM wParam,
     LPARAM lParam)
 {
+    LRESULT lResult = 0;
+    if (lv_windows_pointer_device_window_message_handler(
+        hWnd,
+        uMsg,
+        wParam,
+        lParam,
+        &lResult))
+    {
+        return lResult;
+    }
+    else if (lv_windows_keypad_device_window_message_handler(
+        hWnd,
+        uMsg,
+        wParam,
+        lParam,
+        &lResult))
+    {
+        return lResult;
+    }
+    else if (lv_windows_encoder_device_window_message_handler(
+        hWnd,
+        uMsg,
+        wParam,
+        lParam,
+        &lResult))
+    {
+        return lResult;
+    }
+
     switch (uMsg)
     {
     case WM_CREATE:
@@ -955,332 +1369,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         lv_windows_register_touch_window(hWnd, 0);
 
         lv_windows_enable_child_window_dpi_message(hWnd);
-
-        break;
-    }
-    case WM_MOUSEMOVE:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            int32_t hor_res = lv_display_get_horizontal_resolution(
-                context->display_device_object);
-            int32_t ver_res = lv_display_get_vertical_resolution(
-                context->display_device_object);
-
-            context->pointer.point.x = MulDiv(
-                GET_X_LPARAM(lParam),
-                LV_WINDOWS_ZOOM_BASE_LEVEL,
-                LV_WINDOWS_ZOOM_LEVEL);
-            context->pointer.point.y = MulDiv(
-                GET_Y_LPARAM(lParam),
-                LV_WINDOWS_ZOOM_BASE_LEVEL,
-                LV_WINDOWS_ZOOM_LEVEL);
-            if (context->pointer.point.x < 0)
-            {
-                context->pointer.point.x = 0;
-            }
-            if (context->pointer.point.x > hor_res - 1)
-            {
-                context->pointer.point.x = hor_res - 1;
-            }
-            if (context->pointer.point.y < 0)
-            {
-                context->pointer.point.y = 0;
-            }
-            if (context->pointer.point.y > ver_res - 1)
-            {
-                context->pointer.point.y = ver_res - 1;
-            }
-        }
-
-        break;
-    }
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            context->pointer.state = (
-                uMsg == WM_LBUTTONDOWN
-                ? LV_INDEV_STATE_PRESSED
-                : LV_INDEV_STATE_RELEASED);
-        }
-
-        break;
-    }
-    case WM_TOUCH:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            UINT input_count = LOWORD(wParam);
-            HTOUCHINPUT touch_input_handle = (HTOUCHINPUT)(lParam);
-
-            PTOUCHINPUT inputs = malloc(input_count * sizeof(TOUCHINPUT));
-            if (inputs)
-            {
-                if (lv_windows_get_touch_input_info(
-                    touch_input_handle,
-                    input_count,
-                    inputs,
-                    sizeof(TOUCHINPUT)))
-                {
-                    for (UINT i = 0; i < input_count; ++i)
-                    {
-                        POINT Point;
-                        Point.x = TOUCH_COORD_TO_PIXEL(inputs[i].x);
-                        Point.y = TOUCH_COORD_TO_PIXEL(inputs[i].y);
-                        if (!ScreenToClient(hWnd, &Point))
-                        {
-                            continue;
-                        }
-
-                        context->pointer.point.x = MulDiv(
-                            Point.x,
-                            LV_WINDOWS_ZOOM_BASE_LEVEL,
-                            LV_WINDOWS_ZOOM_LEVEL);
-                        context->pointer.point.y = MulDiv(
-                            Point.y,
-                            LV_WINDOWS_ZOOM_BASE_LEVEL,
-                            LV_WINDOWS_ZOOM_LEVEL);
-
-                        DWORD MousePressedMask =
-                            TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
-
-                        context->pointer.state = (
-                            inputs[i].dwFlags & MousePressedMask
-                            ? LV_INDEV_STATE_PRESSED
-                            : LV_INDEV_STATE_RELEASED);
-                    }
-                }
-
-                free(inputs);
-            }
-
-            lv_windows_close_touch_input_handle(touch_input_handle);
-        }
-
-        break;
-    }
-    case WM_KEYDOWN:
-    case WM_KEYUP:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            EnterCriticalSection(&context->keypad.mutex);
-
-            bool skip_translation = false;
-            uint32_t translated_key = 0;
-
-            switch (wParam)
-            {
-            case VK_UP:
-                translated_key = LV_KEY_UP;
-                break;
-            case VK_DOWN:
-                translated_key = LV_KEY_DOWN;
-                break;
-            case VK_LEFT:
-                translated_key = LV_KEY_LEFT;
-                break;
-            case VK_RIGHT:
-                translated_key = LV_KEY_RIGHT;
-                break;
-            case VK_ESCAPE:
-                translated_key = LV_KEY_ESC;
-                break;
-            case VK_DELETE:
-                translated_key = LV_KEY_DEL;
-                break;
-            case VK_BACK:
-                translated_key = LV_KEY_BACKSPACE;
-                break;
-            case VK_RETURN:
-                translated_key = LV_KEY_ENTER;
-                break;
-            case VK_TAB:
-            case VK_NEXT:
-                translated_key = LV_KEY_NEXT;
-                break;
-            case VK_PRIOR:
-                translated_key = LV_KEY_PREV;
-                break;
-            case VK_HOME:
-                translated_key = LV_KEY_HOME;
-                break;
-            case VK_END:
-                translated_key = LV_KEY_END;
-                break;
-            default:
-                skip_translation = true;
-                break;
-            }
-
-            if (!skip_translation)
-            {
-                lv_windows_push_key_to_keyboard_queue(
-                    context,
-                    translated_key,
-                    ((uMsg == WM_KEYUP)
-                        ? LV_INDEV_STATE_RELEASED
-                        : LV_INDEV_STATE_PRESSED));
-            }
-
-            LeaveCriticalSection(&context->keypad.mutex);
-        }
-
-        break;
-    }
-    case WM_CHAR:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            EnterCriticalSection(&context->keypad.mutex);
-
-            uint16_t raw_code_point = (uint16_t)(wParam);
-
-            if (raw_code_point >= 0x20 && raw_code_point != 0x7F)
-            {
-                if (IS_HIGH_SURROGATE(raw_code_point))
-                {
-                    context->keypad.utf16_high_surrogate = raw_code_point;
-                }
-                else if (IS_LOW_SURROGATE(raw_code_point))
-                {
-                    context->keypad.utf16_low_surrogate = raw_code_point;
-                }
-
-                uint32_t code_point = raw_code_point;
-
-                if (context->keypad.utf16_high_surrogate &&
-                    context->keypad.utf16_low_surrogate)
-                {
-                    uint16_t high_surrogate =
-                        context->keypad.utf16_high_surrogate;
-                    uint16_t low_surrogate =
-                        context->keypad.utf16_low_surrogate;
-
-                    code_point = (low_surrogate & 0x03FF);
-                    code_point += (((high_surrogate & 0x03FF) + 0x40) << 10);
-
-                    context->keypad.utf16_high_surrogate = 0;
-                    context->keypad.utf16_low_surrogate = 0;
-                }
-
-                uint32_t lvgl_code_point =
-                    _lv_text_unicode_to_encoded(code_point);
-
-                lv_windows_push_key_to_keyboard_queue(
-                    context,
-                    lvgl_code_point,
-                    LV_INDEV_STATE_PRESSED);
-                lv_windows_push_key_to_keyboard_queue(
-                    context,
-                    lvgl_code_point,
-                    LV_INDEV_STATE_RELEASED);
-            }
-
-            LeaveCriticalSection(&context->keypad.mutex);
-        }
-
-        break;
-    }
-    case WM_IME_SETCONTEXT:
-    {
-        if (wParam == TRUE)
-        {
-            HIMC input_method_context_handle = ImmGetContext(hWnd);
-            if (input_method_context_handle)
-            {
-                ImmAssociateContext(hWnd, input_method_context_handle);
-                ImmReleaseContext(hWnd, input_method_context_handle);
-            }
-        }
-
-        return DefWindowProcW(hWnd, uMsg, wParam, wParam);
-    }
-    case WM_IME_STARTCOMPOSITION:
-    {
-        HIMC input_method_context_handle = ImmGetContext(hWnd);
-        if (input_method_context_handle)
-        {
-            lv_obj_t* textarea_object = NULL;
-            lv_obj_t* focused_object = lv_group_get_focused(
-                lv_group_get_default());
-            if (focused_object)
-            {
-                const lv_obj_class_t* object_class = lv_obj_get_class(
-                    focused_object);
-
-                if (object_class == &lv_textarea_class)
-                {
-                    textarea_object = focused_object;
-                }
-                else if (object_class == &lv_keyboard_class)
-                {
-                    textarea_object = lv_keyboard_get_textarea(focused_object);
-                }
-            }
-
-            COMPOSITIONFORM composition_form;
-            composition_form.dwStyle = CFS_POINT;
-            composition_form.ptCurrentPos.x = 0;
-            composition_form.ptCurrentPos.y = 0;
-
-            if (textarea_object)
-            {
-                lv_textarea_t* textarea = (lv_textarea_t*)(textarea_object);
-                lv_obj_t* label_object = lv_textarea_get_label(textarea_object);
-
-                composition_form.ptCurrentPos.x =
-                    label_object->coords.x1 + textarea->cursor.area.x1;
-                composition_form.ptCurrentPos.y =
-                    label_object->coords.y1 + textarea->cursor.area.y1;
-            }
-
-            ImmSetCompositionWindow(
-                input_method_context_handle,
-                &composition_form);
-            ImmReleaseContext(
-                hWnd,
-                input_method_context_handle);
-        }
-
-        return DefWindowProcW(hWnd, uMsg, wParam, wParam);
-    }
-    case WM_MBUTTONDOWN:
-    case WM_MBUTTONUP:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            context->encoder.state = (
-                uMsg == WM_MBUTTONDOWN
-                ? LV_INDEV_STATE_PRESSED
-                : LV_INDEV_STATE_RELEASED);
-        }
-
-        break;
-    }
-    case WM_MOUSEWHEEL:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            context->encoder.enc_diff =
-                -(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
-        }
 
         break;
     }
