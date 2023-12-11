@@ -1018,23 +1018,23 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_windows_get_window_context(hWnd));
         if (context)
         {
-            UINT cInputs = LOWORD(wParam);
-            HTOUCHINPUT hTouchInput = (HTOUCHINPUT)(lParam);
+            UINT input_count = LOWORD(wParam);
+            HTOUCHINPUT touch_input_handle = (HTOUCHINPUT)(lParam);
 
-            PTOUCHINPUT pInputs = malloc(cInputs * sizeof(TOUCHINPUT));
-            if (pInputs)
+            PTOUCHINPUT inputs = malloc(input_count * sizeof(TOUCHINPUT));
+            if (inputs)
             {
                 if (lv_windows_get_touch_input_info(
-                    hTouchInput,
-                    cInputs,
-                    pInputs,
+                    touch_input_handle,
+                    input_count,
+                    inputs,
                     sizeof(TOUCHINPUT)))
                 {
-                    for (UINT i = 0; i < cInputs; ++i)
+                    for (UINT i = 0; i < input_count; ++i)
                     {
                         POINT Point;
-                        Point.x = TOUCH_COORD_TO_PIXEL(pInputs[i].x);
-                        Point.y = TOUCH_COORD_TO_PIXEL(pInputs[i].y);
+                        Point.x = TOUCH_COORD_TO_PIXEL(inputs[i].x);
+                        Point.y = TOUCH_COORD_TO_PIXEL(inputs[i].y);
                         if (!ScreenToClient(hWnd, &Point))
                         {
                             continue;
@@ -1053,16 +1053,16 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                             TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
 
                         context->pointer.state = (
-                            pInputs[i].dwFlags & MousePressedMask
+                            inputs[i].dwFlags & MousePressedMask
                             ? LV_INDEV_STATE_PRESSED
                             : LV_INDEV_STATE_RELEASED);
                     }
                 }
 
-                free(pInputs);
+                free(inputs);
             }
 
-            lv_windows_close_touch_input_handle(hTouchInput);
+            lv_windows_close_touch_input_handle(touch_input_handle);
         }
 
         break;
@@ -1198,11 +1198,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     {
         if (wParam == TRUE)
         {
-            HIMC hInputMethodContext = ImmGetContext(hWnd);
-            if (hInputMethodContext)
+            HIMC input_method_context_handle = ImmGetContext(hWnd);
+            if (input_method_context_handle)
             {
-                ImmAssociateContext(hWnd, hInputMethodContext);
-                ImmReleaseContext(hWnd, hInputMethodContext);
+                ImmAssociateContext(hWnd, input_method_context_handle);
+                ImmReleaseContext(hWnd, input_method_context_handle);
             }
         }
 
@@ -1210,44 +1210,49 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     }
     case WM_IME_STARTCOMPOSITION:
     {
-        HIMC hInputMethodContext = ImmGetContext(hWnd);
-        if (hInputMethodContext)
+        HIMC input_method_context_handle = ImmGetContext(hWnd);
+        if (input_method_context_handle)
         {
-            lv_obj_t* TextareaObject = NULL;
-            lv_obj_t* FocusedObject = lv_group_get_focused(lv_group_get_default());
-            if (FocusedObject)
+            lv_obj_t* textarea_object = NULL;
+            lv_obj_t* focused_object = lv_group_get_focused(
+                lv_group_get_default());
+            if (focused_object)
             {
-                const lv_obj_class_t* ObjectClass = lv_obj_get_class(
-                    FocusedObject);
+                const lv_obj_class_t* object_class = lv_obj_get_class(
+                    focused_object);
 
-                if (ObjectClass == &lv_textarea_class)
+                if (object_class == &lv_textarea_class)
                 {
-                    TextareaObject = FocusedObject;
+                    textarea_object = focused_object;
                 }
-                else if (ObjectClass == &lv_keyboard_class)
+                else if (object_class == &lv_keyboard_class)
                 {
-                    TextareaObject = lv_keyboard_get_textarea(FocusedObject);
+                    textarea_object = lv_keyboard_get_textarea(focused_object);
                 }
             }
 
-            COMPOSITIONFORM CompositionForm;
-            CompositionForm.dwStyle = CFS_POINT;
-            CompositionForm.ptCurrentPos.x = 0;
-            CompositionForm.ptCurrentPos.y = 0;
+            COMPOSITIONFORM composition_form;
+            composition_form.dwStyle = CFS_POINT;
+            composition_form.ptCurrentPos.x = 0;
+            composition_form.ptCurrentPos.y = 0;
 
-            if (TextareaObject)
+            if (textarea_object)
             {
-                lv_textarea_t* Textarea = (lv_textarea_t*)(TextareaObject);
-                lv_obj_t* Label = lv_textarea_get_label(TextareaObject);
+                lv_textarea_t* textarea = (lv_textarea_t*)(textarea_object);
+                lv_obj_t* label_object = lv_textarea_get_label(textarea_object);
 
-                CompositionForm.ptCurrentPos.x =
-                    Label->coords.x1 + Textarea->cursor.area.x1;
-                CompositionForm.ptCurrentPos.y =
-                    Label->coords.y1 + Textarea->cursor.area.y1;
+                composition_form.ptCurrentPos.x =
+                    label_object->coords.x1 + textarea->cursor.area.x1;
+                composition_form.ptCurrentPos.y =
+                    label_object->coords.y1 + textarea->cursor.area.y1;
             }
 
-            ImmSetCompositionWindow(hInputMethodContext, &CompositionForm);
-            ImmReleaseContext(hWnd, hInputMethodContext);
+            ImmSetCompositionWindow(
+                input_method_context_handle,
+                &composition_form);
+            ImmReleaseContext(
+                hWnd,
+                input_method_context_handle);
         }
 
         return DefWindowProcW(hWnd, uMsg, wParam, wParam);
@@ -1303,30 +1308,30 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         {
             lv_display_set_dpi(context->display_device_object, HIWORD(wParam));
 
-            LPRECT SuggestedRect = (LPRECT)lParam;
+            LPRECT suggested_rect = (LPRECT)lParam;
 
             SetWindowPos(
                 hWnd,
                 NULL,
-                SuggestedRect->left,
-                SuggestedRect->top,
-                SuggestedRect->right,
-                SuggestedRect->bottom,
+                suggested_rect->left,
+                suggested_rect->top,
+                suggested_rect->right,
+                suggested_rect->bottom,
                 SWP_NOZORDER | SWP_NOACTIVATE);
 
-            RECT ClientRect;
-            GetClientRect(hWnd, &ClientRect);
+            RECT client_rect;
+            GetClientRect(hWnd, &client_rect);
 
             int32_t hor_res = lv_display_get_horizontal_resolution(
                 context->display_device_object);
             int32_t ver_res = lv_display_get_vertical_resolution(
                 context->display_device_object);
 
-            int WindowWidth = MulDiv(
+            int window_width = MulDiv(
                 hor_res,
                 LV_WINDOWS_ZOOM_LEVEL,
                 LV_WINDOWS_ZOOM_BASE_LEVEL);
-            int WindowHeight = MulDiv(
+            int window_height = MulDiv(
                 ver_res,
                 LV_WINDOWS_ZOOM_LEVEL,
                 LV_WINDOWS_ZOOM_BASE_LEVEL);
@@ -1334,10 +1339,10 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             SetWindowPos(
                 hWnd,
                 NULL,
-                SuggestedRect->left,
-                SuggestedRect->top,
-                SuggestedRect->right + (WindowWidth - ClientRect.right),
-                SuggestedRect->bottom + (WindowHeight - ClientRect.bottom),
+                suggested_rect->left,
+                suggested_rect->top,
+                suggested_rect->right + (window_width - client_rect.right),
+                suggested_rect->bottom + (window_height - client_rect.bottom),
                 SWP_NOZORDER | SWP_NOACTIVATE);
         }
 
