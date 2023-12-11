@@ -620,6 +620,28 @@ static UINT lv_windows_get_dpi_for_window(
     return Result;
 }
 
+static int32_t lv_windows_pixel_to_logical(
+    int32_t physical,
+    int32_t zoom_level,
+    int32_t dpi)
+{
+    return MulDiv(
+        MulDiv(physical, LV_WINDOWS_ZOOM_BASE_LEVEL, zoom_level),
+        USER_DEFAULT_SCREEN_DPI,
+        dpi);
+}
+
+static int32_t lv_windows_pixel_to_physical(
+    int32_t logical,
+    int32_t zoom_level,
+    int32_t dpi)
+{
+    return MulDiv(
+        MulDiv(logical, zoom_level, LV_WINDOWS_ZOOM_BASE_LEVEL),
+        dpi,
+        USER_DEFAULT_SCREEN_DPI);
+}
+
 static void lv_windows_display_driver_flush_callback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
