@@ -858,14 +858,20 @@ static bool lv_windows_pointer_device_window_message_handler(
             int32_t ver_res = lv_display_get_vertical_resolution(
                 context->display_device_object);
 
-            context->pointer.point.x = MulDiv(
+            context->pointer.point.x = lv_windows_zoom_to_logical(
                 GET_X_LPARAM(lParam),
-                LV_WINDOWS_ZOOM_BASE_LEVEL,
                 LV_WINDOWS_ZOOM_LEVEL);
-            context->pointer.point.y = MulDiv(
+            context->pointer.point.y = lv_windows_zoom_to_logical(
                 GET_Y_LPARAM(lParam),
-                LV_WINDOWS_ZOOM_BASE_LEVEL,
                 LV_WINDOWS_ZOOM_LEVEL);
+#if LV_WINDOWS_SIMULATOR_MODE
+            context->pointer.point.x = lv_windows_dpi_to_logical(
+                context->pointer.point.x,
+                context->window_dpi);
+            context->pointer.point.y = lv_windows_dpi_to_logical(
+                context->pointer.point.y,
+                context->window_dpi);
+#endif
             if (context->pointer.point.x < 0)
             {
                 context->pointer.point.x = 0;
@@ -929,14 +935,20 @@ static bool lv_windows_pointer_device_window_message_handler(
                             continue;
                         }
 
-                        context->pointer.point.x = MulDiv(
+                        context->pointer.point.x = lv_windows_zoom_to_logical(
                             Point.x,
-                            LV_WINDOWS_ZOOM_BASE_LEVEL,
                             LV_WINDOWS_ZOOM_LEVEL);
-                        context->pointer.point.y = MulDiv(
+                        context->pointer.point.y = lv_windows_zoom_to_logical(
                             Point.y,
-                            LV_WINDOWS_ZOOM_BASE_LEVEL,
                             LV_WINDOWS_ZOOM_LEVEL);
+#if LV_WINDOWS_SIMULATOR_MODE
+                        context->pointer.point.x = lv_windows_dpi_to_logical(
+                            context->pointer.point.x,
+                            context->window_dpi);
+                        context->pointer.point.y = lv_windows_dpi_to_logical(
+                            context->pointer.point.y,
+                            context->window_dpi);
+#endif
 
                         DWORD MousePressedMask =
                             TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
@@ -1387,17 +1399,19 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         RECT calculated_window_size;
         calculated_window_size.left = 0;
-        calculated_window_size.right = MulDiv(
-            lv_display_get_horizontal_resolution(
-                context->display_device_object),
-            LV_WINDOWS_ZOOM_LEVEL * dpi,
-            LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
+        calculated_window_size.right = lv_windows_dpi_to_physical(
+            lv_windows_zoom_to_physical(
+                lv_display_get_horizontal_resolution(
+                    context->display_device_object),
+                LV_WINDOWS_ZOOM_LEVEL),
+            context->window_dpi);
         calculated_window_size.top = 0;
-        calculated_window_size.bottom = MulDiv(
-            lv_display_get_vertical_resolution(
-                context->display_device_object),
-            LV_WINDOWS_ZOOM_LEVEL * dpi,
-            LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
+        calculated_window_size.bottom = lv_windows_dpi_to_physical(
+            lv_windows_zoom_to_physical(
+                lv_display_get_vertical_resolution(
+                    context->display_device_object),
+                LV_WINDOWS_ZOOM_LEVEL),
+            context->window_dpi);
 
         AdjustWindowRectEx(
             &calculated_window_size,
@@ -1467,23 +1481,22 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 suggested_rect->bottom,
                 SWP_NOZORDER | SWP_NOACTIVATE);
 
-#if LV_WINDOWS_SIMULATOR_MODE
+#if LV_WINDOWS_SIMULATOR_MODE 
+            int32_t window_width = lv_windows_dpi_to_physical(
+                lv_windows_zoom_to_physical(
+                    lv_display_get_horizontal_resolution(
+                        context->display_device_object),
+                    LV_WINDOWS_ZOOM_LEVEL),
+                context->window_dpi);
+            int32_t window_height = lv_windows_dpi_to_physical(
+                lv_windows_zoom_to_physical(
+                    lv_display_get_vertical_resolution(
+                        context->display_device_object),
+                    LV_WINDOWS_ZOOM_LEVEL),
+                context->window_dpi);
+
             RECT client_rect;
             GetClientRect(hWnd, &client_rect);
-
-            int32_t hor_res = lv_display_get_horizontal_resolution(
-                context->display_device_object);
-            int32_t ver_res = lv_display_get_vertical_resolution(
-                context->display_device_object);
-
-            int window_width = MulDiv(
-                hor_res,
-                LV_WINDOWS_ZOOM_LEVEL * context->window_dpi,
-                LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
-            int window_height = MulDiv(
-                ver_res,
-                LV_WINDOWS_ZOOM_LEVEL * context->window_dpi,
-                LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
 
             SetWindowPos(
                 hWnd,
