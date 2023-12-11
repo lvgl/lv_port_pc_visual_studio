@@ -620,14 +620,33 @@ static UINT lv_windows_get_dpi_for_window(
     return Result;
 }
 
+static int32_t lv_windows_zoom_to_logical(int32_t physical, int32_t zoom_level)
+{
+    return MulDiv(physical, LV_WINDOWS_ZOOM_BASE_LEVEL, zoom_level);
+}
+
+static int32_t lv_windows_zoom_to_physical(int32_t logical, int32_t zoom_level)
+{
+    return MulDiv(logical, zoom_level, LV_WINDOWS_ZOOM_BASE_LEVEL);
+}
+
+static int32_t lv_windows_dpi_to_logical(int32_t physical, int32_t dpi)
+{
+    return MulDiv(physical, USER_DEFAULT_SCREEN_DPI, dpi);
+}
+
+static int32_t lv_windows_dpi_to_physical(int32_t logical, int32_t dpi)
+{
+    return MulDiv(logical, dpi, USER_DEFAULT_SCREEN_DPI);
+}
+
 static int32_t lv_windows_pixel_to_logical(
     int32_t physical,
     int32_t zoom_level,
     int32_t dpi)
 {
-    return MulDiv(
-        MulDiv(physical, LV_WINDOWS_ZOOM_BASE_LEVEL, zoom_level),
-        USER_DEFAULT_SCREEN_DPI,
+    return lv_windows_dpi_to_logical(
+        lv_windows_zoom_to_logical(physical, zoom_level),
         dpi);
 }
 
@@ -636,10 +655,9 @@ static int32_t lv_windows_pixel_to_physical(
     int32_t zoom_level,
     int32_t dpi)
 {
-    return MulDiv(
-        MulDiv(logical, zoom_level, LV_WINDOWS_ZOOM_BASE_LEVEL),
-        dpi,
-        USER_DEFAULT_SCREEN_DPI);
+    return lv_windows_dpi_to_physical(
+        lv_windows_zoom_to_physical(logical, zoom_level),
+        dpi);
 }
 
 static void lv_windows_display_driver_flush_callback(
