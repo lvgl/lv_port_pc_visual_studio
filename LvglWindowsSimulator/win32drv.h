@@ -87,6 +87,7 @@ typedef struct _lv_windows_window_context_t
     lv_indev_t* mousewheel_device_object;
     lv_indev_t* keyboard_device_object;
 
+    int32_t window_dpi;
     bool display_resolution_changed;
     lv_point_t requested_display_resolution;
 
