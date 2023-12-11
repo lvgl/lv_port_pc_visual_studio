@@ -23,6 +23,8 @@
 
 #define LV_WINDOWS_ZOOM_LEVEL 100
 
+#define LV_WINDOWS_SIMULATOR_MODE 0
+
 #define LV_WINDOWS_ALLOW_DPI_OVERRIDE 0
 
 #define WINDOW_EX_STYLE \
@@ -1332,20 +1334,22 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             context->keyboard_device_object,
             context->display_device_object);
 
-        RECT calculated_window_size;
+#if LV_WINDOWS_SIMULATOR_MODE
+        int32_t dpi = lv_display_get_dpi(context->display_device_object);
 
+        RECT calculated_window_size;
         calculated_window_size.left = 0;
         calculated_window_size.right = MulDiv(
             lv_display_get_horizontal_resolution(
                 context->display_device_object),
-            LV_WINDOWS_ZOOM_LEVEL,
-            LV_WINDOWS_ZOOM_BASE_LEVEL);
+            LV_WINDOWS_ZOOM_LEVEL * dpi,
+            LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
         calculated_window_size.top = 0;
         calculated_window_size.bottom = MulDiv(
             lv_display_get_vertical_resolution(
                 context->display_device_object),
-            LV_WINDOWS_ZOOM_LEVEL,
-            LV_WINDOWS_ZOOM_BASE_LEVEL);
+            LV_WINDOWS_ZOOM_LEVEL * dpi,
+            LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
 
         AdjustWindowRectEx(
             &calculated_window_size,
@@ -1365,6 +1369,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             calculated_window_size.right,
             calculated_window_size.bottom,
             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
+#endif
 
         lv_windows_register_touch_window(hWnd, 0);
 
@@ -1407,6 +1412,9 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 suggested_rect->bottom,
                 SWP_NOZORDER | SWP_NOACTIVATE);
 
+#if LV_WINDOWS_SIMULATOR_MODE
+            int32_t dpi = lv_display_get_dpi(context->display_device_object);
+
             RECT client_rect;
             GetClientRect(hWnd, &client_rect);
 
@@ -1417,12 +1425,12 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
             int window_width = MulDiv(
                 hor_res,
-                LV_WINDOWS_ZOOM_LEVEL,
-                LV_WINDOWS_ZOOM_BASE_LEVEL);
+                LV_WINDOWS_ZOOM_LEVEL * dpi,
+                LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
             int window_height = MulDiv(
                 ver_res,
-                LV_WINDOWS_ZOOM_LEVEL,
-                LV_WINDOWS_ZOOM_BASE_LEVEL);
+                LV_WINDOWS_ZOOM_LEVEL * dpi,
+                LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
 
             SetWindowPos(
                 hWnd,
@@ -1432,6 +1440,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 suggested_rect->right + (window_width - client_rect.right),
                 suggested_rect->bottom + (window_height - client_rect.bottom),
                 SWP_NOZORDER | SWP_NOACTIVATE);
+#endif 
         }
 
         break;
