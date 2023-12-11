@@ -640,26 +640,6 @@ static int32_t lv_windows_dpi_to_physical(int32_t logical, int32_t dpi)
     return MulDiv(logical, dpi, USER_DEFAULT_SCREEN_DPI);
 }
 
-static int32_t lv_windows_pixel_to_logical(
-    int32_t physical,
-    int32_t zoom_level,
-    int32_t dpi)
-{
-    return lv_windows_dpi_to_logical(
-        lv_windows_zoom_to_logical(physical, zoom_level),
-        dpi);
-}
-
-static int32_t lv_windows_pixel_to_physical(
-    int32_t logical,
-    int32_t zoom_level,
-    int32_t dpi)
-{
-    return lv_windows_dpi_to_physical(
-        lv_windows_zoom_to_physical(logical, zoom_level),
-        dpi);
-}
-
 static void lv_windows_display_driver_flush_callback(
     lv_disp_t* disp_drv,
     const lv_area_t* area,
@@ -698,6 +678,17 @@ static void lv_windows_display_driver_flush_callback(
             RECT client_rect;
             GetClientRect(window_handle, &client_rect);
 
+            int32_t width = lv_windows_zoom_to_logical(
+                client_rect.right - client_rect.left,
+                LV_WINDOWS_ZOOM_LEVEL);
+            int32_t height = lv_windows_zoom_to_logical(
+                client_rect.bottom - client_rect.top,
+                LV_WINDOWS_ZOOM_LEVEL);
+#if LV_WINDOWS_SIMULATOR_MODE
+            width = lv_windows_dpi_to_logical(width, context->window_dpi);
+            height = lv_windows_dpi_to_logical(height, context->window_dpi);
+#endif
+
             StretchBlt(
                 hdc,
                 client_rect.left,
@@ -707,25 +698,8 @@ static void lv_windows_display_driver_flush_callback(
                 context->display_framebuffer_context_handle,
                 0,
                 0,
-#if LV_WINDOWS_SIMULATOR_MODE
-                lv_windows_pixel_to_logical(
-                    client_rect.right - client_rect.left,
-                    LV_WINDOWS_ZOOM_LEVEL,
-                    context->window_dpi),
-                lv_windows_pixel_to_logical(
-                    client_rect.bottom - client_rect.top,
-                    LV_WINDOWS_ZOOM_LEVEL,
-                    context->window_dpi),
-#else
-                lv_windows_pixel_to_logical(
-                    client_rect.right - client_rect.left,
-                    LV_WINDOWS_ZOOM_LEVEL,
-                    USER_DEFAULT_SCREEN_DPI),
-                lv_windows_pixel_to_logical(
-                    client_rect.bottom - client_rect.top,
-                    LV_WINDOWS_ZOOM_LEVEL,
-                    USER_DEFAULT_SCREEN_DPI),
-#endif
+                width,
+                height,
                 SRCCOPY);
 
             ReleaseDC(window_handle, hdc);
