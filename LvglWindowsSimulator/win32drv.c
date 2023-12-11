@@ -625,7 +625,7 @@ static void lv_windows_display_driver_flush_callback(
         return;
     }
 
-    if (lv_display_flush_is_last(disp_drv) && !context->display_refreshing)
+    if (lv_display_flush_is_last(disp_drv))
     {
 #if (LV_COLOR_DEPTH == 32) || \
     (LV_COLOR_DEPTH == 24) || \
@@ -635,9 +635,35 @@ static void lv_windows_display_driver_flush_callback(
 #error [lv_windows] Unsupported LV_COLOR_DEPTH.
 #endif
 
-        context->display_refreshing = true;
+        HDC hdc = GetDC(window_handle);
+        if (hdc)
+        {
+            SetStretchBltMode(hdc, HALFTONE);
 
-        InvalidateRect(window_handle, NULL, FALSE);
+            RECT client_rect;
+            GetClientRect(window_handle, &client_rect);
+
+            StretchBlt(
+                hdc,
+                client_rect.left,
+                client_rect.top,
+                client_rect.right - client_rect.left,
+                client_rect.bottom - client_rect.top,
+                context->display_framebuffer_context_handle,
+                0,
+                0,
+                MulDiv(
+                    client_rect.right - client_rect.left,
+                    LV_WINDOWS_ZOOM_BASE_LEVEL,
+                    LV_WINDOWS_ZOOM_LEVEL),
+                MulDiv(
+                    client_rect.bottom - client_rect.top,
+                    LV_WINDOWS_ZOOM_BASE_LEVEL,
+                    LV_WINDOWS_ZOOM_LEVEL),
+                SRCCOPY);
+
+            ReleaseDC(window_handle, hdc);
+        }
     }
 
     lv_display_flush_ready(disp_drv);
@@ -835,7 +861,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             context->display_device_object,
             lv_windows_get_dpi_for_window(hWnd));
 #endif
-        context->display_refreshing = true;
 
         context->pointer.state = LV_INDEV_STATE_RELEASED;
         context->pointer.point.x = 0;
@@ -1322,46 +1347,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     case WM_ERASEBKGND:
     {
         return TRUE;
-    }
-    case WM_PAINT:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            if (context->display_framebuffer_context_handle)
-            {
-                PAINTSTRUCT ps;
-                HDC hdc = BeginPaint(hWnd, &ps);
-
-                SetStretchBltMode(hdc, HALFTONE);
-
-                StretchBlt(
-                    hdc,
-                    ps.rcPaint.left,
-                    ps.rcPaint.top,
-                    ps.rcPaint.right - ps.rcPaint.left,
-                    ps.rcPaint.bottom - ps.rcPaint.top,
-                    context->display_framebuffer_context_handle,
-                    0,
-                    0,
-                    MulDiv(
-                        ps.rcPaint.right - ps.rcPaint.left,
-                        LV_WINDOWS_ZOOM_BASE_LEVEL,
-                        LV_WINDOWS_ZOOM_LEVEL),
-                    MulDiv(
-                        ps.rcPaint.bottom - ps.rcPaint.top,
-                        LV_WINDOWS_ZOOM_BASE_LEVEL,
-                        LV_WINDOWS_ZOOM_LEVEL),
-                    SRCCOPY);
-
-                EndPaint(hWnd, &ps);
-            }
-
-            context->display_refreshing = false;
-        }
-
-        break;
     }
     case WM_DESTROY:
     {
