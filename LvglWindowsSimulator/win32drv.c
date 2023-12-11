@@ -689,14 +689,25 @@ static void lv_windows_display_driver_flush_callback(
                 context->display_framebuffer_context_handle,
                 0,
                 0,
-                MulDiv(
+#if LV_WINDOWS_SIMULATOR_MODE
+                lv_windows_pixel_to_logical(
                     client_rect.right - client_rect.left,
-                    LV_WINDOWS_ZOOM_BASE_LEVEL,
-                    LV_WINDOWS_ZOOM_LEVEL),
-                MulDiv(
+                    LV_WINDOWS_ZOOM_LEVEL,
+                    context->window_dpi),
+                lv_windows_pixel_to_logical(
                     client_rect.bottom - client_rect.top,
-                    LV_WINDOWS_ZOOM_BASE_LEVEL,
-                    LV_WINDOWS_ZOOM_LEVEL),
+                    LV_WINDOWS_ZOOM_LEVEL,
+                    context->window_dpi),
+#else
+                lv_windows_pixel_to_logical(
+                    client_rect.right - client_rect.left,
+                    LV_WINDOWS_ZOOM_LEVEL,
+                    USER_DEFAULT_SCREEN_DPI),
+                lv_windows_pixel_to_logical(
+                    client_rect.bottom - client_rect.top,
+                    LV_WINDOWS_ZOOM_LEVEL,
+                    USER_DEFAULT_SCREEN_DPI),
+#endif
                 SRCCOPY);
 
             ReleaseDC(window_handle, hdc);
@@ -1372,6 +1383,14 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             context->display_device_object);
 
 #if LV_WINDOWS_SIMULATOR_MODE
+        context->display_resolution_changed = true;
+        context->requested_display_resolution.x =
+            lv_display_get_horizontal_resolution(
+                context->display_device_object);
+        context->requested_display_resolution.y =
+            lv_display_get_vertical_resolution(
+                context->display_device_object);
+
         int32_t dpi = lv_display_get_dpi(context->display_device_object);
 
         RECT calculated_window_size;
@@ -1414,6 +1433,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         break;
     }
+#if !LV_WINDOWS_SIMULATOR_MODE
     case WM_SIZE:
     {
         if (wParam != SIZE_MINIMIZED)
@@ -1429,7 +1449,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         }
         break;
     }
-#if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
+#endif
     case WM_DPICHANGED:
     {
         lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
@@ -1438,9 +1458,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         {
             context->window_dpi = HIWORD(wParam);
 
+#if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
             lv_display_set_dpi(
                 context->display_device_object,
                 context->window_dpi);
+#endif
 
             LPRECT suggested_rect = (LPRECT)lParam;
 
@@ -1454,8 +1476,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 SWP_NOZORDER | SWP_NOACTIVATE);
 
 #if LV_WINDOWS_SIMULATOR_MODE
-            int32_t dpi = lv_display_get_dpi(context->display_device_object);
-
             RECT client_rect;
             GetClientRect(hWnd, &client_rect);
 
@@ -1466,11 +1486,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
             int window_width = MulDiv(
                 hor_res,
-                LV_WINDOWS_ZOOM_LEVEL * dpi,
+                LV_WINDOWS_ZOOM_LEVEL * context->window_dpi,
                 LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
             int window_height = MulDiv(
                 ver_res,
-                LV_WINDOWS_ZOOM_LEVEL * dpi,
+                LV_WINDOWS_ZOOM_LEVEL * context->window_dpi,
                 LV_WINDOWS_ZOOM_BASE_LEVEL * USER_DEFAULT_SCREEN_DPI);
 
             SetWindowPos(
@@ -1486,7 +1506,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         break;
     }
-#endif
     case WM_ERASEBKGND:
     {
         return TRUE;
