@@ -254,7 +254,7 @@ static void lv_windows_check_display_existence_timer_callback(lv_timer_t* timer)
     {
         // Don't use lv_deinit() due to it will cause exception when parallel
         // rendering is enabled.
-        ExitProcess(0);
+        exit(0);
     }
 }
 
