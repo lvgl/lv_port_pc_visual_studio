@@ -104,8 +104,6 @@ typedef struct _lv_windows_window_context_t
  * GLOBAL PROTOTYPES
  **********************/
 
-EXTERN_C bool lv_windows_quit_signal;
-
 EXTERN_C lv_indev_t* lv_windows_pointer_device_object;
 EXTERN_C lv_indev_t* lv_windows_keypad_device_object;
 EXTERN_C lv_indev_t* lv_windows_encoder_device_object;

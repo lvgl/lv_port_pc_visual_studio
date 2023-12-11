@@ -193,8 +193,6 @@ static void lv_windows_push_key_to_keyboard_queue(
  *  GLOBAL VARIABLES
  **********************/
 
-EXTERN_C bool lv_windows_quit_signal = false;
-
 EXTERN_C lv_indev_t* lv_windows_pointer_device_object = NULL;
 EXTERN_C lv_indev_t* lv_windows_keypad_device_object = NULL;
 EXTERN_C lv_indev_t* lv_windows_encoder_device_object = NULL;
@@ -250,8 +248,23 @@ EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
         GetPropW(window_handle, L"LVGL.SimulatorWindow.WindowContext"));
 }
 
+static void lv_windows_check_display_existence_timer_callback(lv_timer_t* timer)
+{
+    if (!lv_display_get_next(NULL))
+    {
+        // Don't use lv_deinit() due to it will cause exception when parallel
+        // rendering is enabled.
+        ExitProcess(0);
+    }
+}
+
 EXTERN_C bool lv_windows_init_window_class()
 {
+    lv_timer_create(
+        lv_windows_check_display_existence_timer_callback,
+        200,
+        NULL);
+
     WNDCLASSEXW window_class;
     window_class.cbSize = sizeof(WNDCLASSEXW);
     window_class.style = 0;
@@ -1520,8 +1533,6 @@ static unsigned int __stdcall lv_windows_window_thread_entrypoint(
         TranslateMessage(&message);
         DispatchMessageW(&message);
     }
-
-    lv_windows_quit_signal = true;
 
     return 0;
 }

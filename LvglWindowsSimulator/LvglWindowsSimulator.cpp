@@ -68,7 +68,7 @@ int main()
     lv_demo_widgets();
     //lv_demo_benchmark();
 
-    while (!lv_windows_quit_signal)
+    while (1)
     {
         uint32_t time_till_next = lv_timer_handler();
         Sleep(time_till_next);
