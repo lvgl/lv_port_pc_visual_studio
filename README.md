@@ -56,16 +56,15 @@ Instructions for cloning, building and running the application are found below.
 - [x] Support Windows keyboard and mouse wheel event in the HAL level.
 - [x] Support Windows touch input in the HAL level.
 - [x] Support Windows IME input in the HAL level.
+- [x] Support resizing the Window in the HAL level.
+- [x] Support Per-monitor DPI Aware in the HAL level.
 
 ### Specific for Simulator Mode
 
-- [x] Support Per-monitor DPI Aware.
 - [x] FreeType integration.
 
 ### Specific for Application Mode
 
-- [x] Support resizing the Window in the HAL level.
-- [x] Support Per-monitor DPI Aware in the HAL level.
 - [x] Provide the easy way to reference lvgl, lv_examples project for Visual
   Studio.
 - [x] Provide Windows GDI font engine support.
