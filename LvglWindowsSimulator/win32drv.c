@@ -1298,6 +1298,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         context->window_dpi = lv_windows_get_dpi_for_window(hWnd);
         context->zoom_level = LV_WINDOWS_ZOOM_LEVEL;
+        context->allow_dpi_override = LV_WINDOWS_ALLOW_DPI_OVERRIDE;
 
         context->display_timer_object = lv_timer_create(
             lv_windows_display_timer_callback,
@@ -1325,11 +1326,12 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         lv_display_set_driver_data(
             context->display_device_object,
             hWnd);
-#if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
-        lv_display_set_dpi(
-            context->display_device_object,
-            context->window_dpi);
-#endif
+        if (!context->allow_dpi_override)
+        {
+            lv_display_set_dpi(
+                context->display_device_object,
+                context->window_dpi);
+        }
 
         context->pointer.state = LV_INDEV_STATE_RELEASED;
         context->pointer.point.x = 0;
@@ -1465,11 +1467,12 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         {
             context->window_dpi = HIWORD(wParam);
 
-#if !LV_WINDOWS_ALLOW_DPI_OVERRIDE
-            lv_display_set_dpi(
-                context->display_device_object,
-                context->window_dpi);
-#endif
+            if (!context->allow_dpi_override)
+            {
+                lv_display_set_dpi(
+                    context->display_device_object,
+                    context->window_dpi);
+            }
 
             LPRECT suggested_rect = (LPRECT)lParam;
 
