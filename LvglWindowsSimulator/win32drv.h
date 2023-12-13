@@ -90,6 +90,7 @@ typedef struct _lv_windows_window_context_t
     int32_t window_dpi;
     int32_t zoom_level;
     bool allow_dpi_override;
+    bool simulator_mode;
     bool display_resolution_changed;
     lv_point_t requested_display_resolution;
 

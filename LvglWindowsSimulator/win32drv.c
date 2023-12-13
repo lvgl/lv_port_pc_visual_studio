@@ -684,10 +684,11 @@ static void lv_windows_display_driver_flush_callback(
             int32_t height = lv_windows_zoom_to_logical(
                 client_rect.bottom - client_rect.top,
                 context->zoom_level);
-#if LV_WINDOWS_SIMULATOR_MODE
-            width = lv_windows_dpi_to_logical(width, context->window_dpi);
-            height = lv_windows_dpi_to_logical(height, context->window_dpi);
-#endif
+            if (context->simulator_mode)
+            {
+                width = lv_windows_dpi_to_logical(width, context->window_dpi);
+                height = lv_windows_dpi_to_logical(height, context->window_dpi);
+            }
 
             StretchBlt(
                 hdc,
@@ -864,14 +865,15 @@ static bool lv_windows_pointer_device_window_message_handler(
             context->pointer.point.y = lv_windows_zoom_to_logical(
                 GET_Y_LPARAM(lParam),
                 context->zoom_level);
-#if LV_WINDOWS_SIMULATOR_MODE
-            context->pointer.point.x = lv_windows_dpi_to_logical(
-                context->pointer.point.x,
-                context->window_dpi);
-            context->pointer.point.y = lv_windows_dpi_to_logical(
-                context->pointer.point.y,
-                context->window_dpi);
-#endif
+            if (context->simulator_mode)
+            {
+                context->pointer.point.x = lv_windows_dpi_to_logical(
+                    context->pointer.point.x,
+                    context->window_dpi);
+                context->pointer.point.y = lv_windows_dpi_to_logical(
+                    context->pointer.point.y,
+                    context->window_dpi);
+            }
             if (context->pointer.point.x < 0)
             {
                 context->pointer.point.x = 0;
@@ -941,14 +943,15 @@ static bool lv_windows_pointer_device_window_message_handler(
                         context->pointer.point.y = lv_windows_zoom_to_logical(
                             Point.y,
                             context->zoom_level);
-#if LV_WINDOWS_SIMULATOR_MODE
-                        context->pointer.point.x = lv_windows_dpi_to_logical(
-                            context->pointer.point.x,
-                            context->window_dpi);
-                        context->pointer.point.y = lv_windows_dpi_to_logical(
-                            context->pointer.point.y,
-                            context->window_dpi);
-#endif
+                        if (context->simulator_mode)
+                        {
+                            context->pointer.point.x = lv_windows_dpi_to_logical(
+                                context->pointer.point.x,
+                                context->window_dpi);
+                            context->pointer.point.y = lv_windows_dpi_to_logical(
+                                context->pointer.point.y,
+                                context->window_dpi);
+                        }
 
                         DWORD MousePressedMask =
                             TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
@@ -1299,6 +1302,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         context->window_dpi = lv_windows_get_dpi_for_window(hWnd);
         context->zoom_level = LV_WINDOWS_ZOOM_LEVEL;
         context->allow_dpi_override = LV_WINDOWS_ALLOW_DPI_OVERRIDE;
+        context->simulator_mode = LV_WINDOWS_SIMULATOR_MODE;
 
         context->display_timer_object = lv_timer_create(
             lv_windows_display_timer_callback,
@@ -1389,52 +1393,53 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             context->keyboard_device_object,
             context->display_device_object);
 
-#if LV_WINDOWS_SIMULATOR_MODE
-        context->display_resolution_changed = true;
-        context->requested_display_resolution.x =
-            lv_display_get_horizontal_resolution(
-                context->display_device_object);
-        context->requested_display_resolution.y =
-            lv_display_get_vertical_resolution(
-                context->display_device_object);
-
-        int32_t dpi = lv_display_get_dpi(context->display_device_object);
-
-        RECT calculated_window_size;
-        calculated_window_size.left = 0;
-        calculated_window_size.right = lv_windows_dpi_to_physical(
-            lv_windows_zoom_to_physical(
+        if (context->simulator_mode)
+        {
+            context->display_resolution_changed = true;
+            context->requested_display_resolution.x =
                 lv_display_get_horizontal_resolution(
-                    context->display_device_object),
-                context->zoom_level),
-            context->window_dpi);
-        calculated_window_size.top = 0;
-        calculated_window_size.bottom = lv_windows_dpi_to_physical(
-            lv_windows_zoom_to_physical(
+                    context->display_device_object);
+            context->requested_display_resolution.y =
                 lv_display_get_vertical_resolution(
-                    context->display_device_object),
-                context->zoom_level),
-            context->window_dpi);
+                    context->display_device_object);
 
-        AdjustWindowRectEx(
-            &calculated_window_size,
-            WINDOW_STYLE,
-            FALSE,
-            WINDOW_EX_STYLE);
-        OffsetRect(
-            &calculated_window_size,
-            -calculated_window_size.left,
-            -calculated_window_size.top);
+            int32_t dpi = lv_display_get_dpi(context->display_device_object);
 
-        SetWindowPos(
-            hWnd,
-            NULL,
-            0,
-            0,
-            calculated_window_size.right,
-            calculated_window_size.bottom,
-            SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
-#endif
+            RECT calculated_window_size;
+            calculated_window_size.left = 0;
+            calculated_window_size.right = lv_windows_dpi_to_physical(
+                lv_windows_zoom_to_physical(
+                    lv_display_get_horizontal_resolution(
+                        context->display_device_object),
+                    context->zoom_level),
+                context->window_dpi);
+            calculated_window_size.top = 0;
+            calculated_window_size.bottom = lv_windows_dpi_to_physical(
+                lv_windows_zoom_to_physical(
+                    lv_display_get_vertical_resolution(
+                        context->display_device_object),
+                    context->zoom_level),
+                context->window_dpi);
+
+            AdjustWindowRectEx(
+                &calculated_window_size,
+                WINDOW_STYLE,
+                FALSE,
+                WINDOW_EX_STYLE);
+            OffsetRect(
+                &calculated_window_size,
+                -calculated_window_size.left,
+                -calculated_window_size.top);
+
+            SetWindowPos(
+                hWnd,
+                NULL,
+                0,
+                0,
+                calculated_window_size.right,
+                calculated_window_size.bottom,
+                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
+        }
 
         lv_windows_register_touch_window(hWnd, 0);
 
@@ -1442,7 +1447,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         break;
     }
-#if !LV_WINDOWS_SIMULATOR_MODE
     case WM_SIZE:
     {
         if (wParam != SIZE_MINIMIZED)
@@ -1451,14 +1455,16 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 lv_windows_get_window_context(hWnd));
             if (context)
             {
-                context->display_resolution_changed = true;
-                context->requested_display_resolution.x = LOWORD(lParam);
-                context->requested_display_resolution.y = HIWORD(lParam);
+                if (!context->simulator_mode)
+                {
+                    context->display_resolution_changed = true;
+                    context->requested_display_resolution.x = LOWORD(lParam);
+                    context->requested_display_resolution.y = HIWORD(lParam);
+                }
             }
         }
         break;
     }
-#endif
     case WM_DPICHANGED:
     {
         lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
@@ -1485,32 +1491,33 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 suggested_rect->bottom,
                 SWP_NOZORDER | SWP_NOACTIVATE);
 
-#if LV_WINDOWS_SIMULATOR_MODE 
-            int32_t window_width = lv_windows_dpi_to_physical(
-                lv_windows_zoom_to_physical(
-                    lv_display_get_horizontal_resolution(
-                        context->display_device_object),
-                    context->zoom_level),
-                context->window_dpi);
-            int32_t window_height = lv_windows_dpi_to_physical(
-                lv_windows_zoom_to_physical(
-                    lv_display_get_vertical_resolution(
-                        context->display_device_object),
-                    context->zoom_level),
-                context->window_dpi);
+            if (context->simulator_mode)
+            {
+                int32_t window_width = lv_windows_dpi_to_physical(
+                    lv_windows_zoom_to_physical(
+                        lv_display_get_horizontal_resolution(
+                            context->display_device_object),
+                        context->zoom_level),
+                    context->window_dpi);
+                int32_t window_height = lv_windows_dpi_to_physical(
+                    lv_windows_zoom_to_physical(
+                        lv_display_get_vertical_resolution(
+                            context->display_device_object),
+                        context->zoom_level),
+                    context->window_dpi);
 
-            RECT client_rect;
-            GetClientRect(hWnd, &client_rect);
+                RECT client_rect;
+                GetClientRect(hWnd, &client_rect);
 
-            SetWindowPos(
-                hWnd,
-                NULL,
-                suggested_rect->left,
-                suggested_rect->top,
-                suggested_rect->right + (window_width - client_rect.right),
-                suggested_rect->bottom + (window_height - client_rect.bottom),
-                SWP_NOZORDER | SWP_NOACTIVATE);
-#endif 
+                SetWindowPos(
+                    hWnd,
+                    NULL,
+                    suggested_rect->left,
+                    suggested_rect->top,
+                    suggested_rect->right + (window_width - client_rect.right),
+                    suggested_rect->bottom + (window_height - client_rect.bottom),
+                    SWP_NOZORDER | SWP_NOACTIVATE);
+            }
         }
 
         break;
