@@ -360,11 +360,91 @@ EXTERN_C bool lv_windows_init(
         return false;
     }
 
-    lv_windows_pointer_device_object = context->mouse_device_object;
+    lv_windows_pointer_device_object = context->pointer.indev;
     lv_windows_keypad_device_object = context->keyboard_device_object;
     lv_windows_encoder_device_object = context->mousewheel_device_object;
 
     return true;
+}
+
+static void lv_windows_release_pointer_device_event_callback(lv_event_t* e)
+{
+    lv_indev_t* indev = (lv_indev_t*)lv_event_get_user_data(e);
+    if (!indev)
+    {
+        return;
+    }
+
+    lv_display_t* display = lv_indev_get_disp(indev);
+    if (!display)
+    {
+        return;
+    }
+
+    HWND window_handle = (HWND)lv_display_get_driver_data(display);
+    if (!window_handle)
+    {
+        return;
+    }
+
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_window_context(
+            window_handle));
+    if (!context)
+    {
+        return;
+    }
+
+    context->pointer.state = LV_INDEV_STATE_RELEASED;
+    context->pointer.point.x = 0;
+    context->pointer.point.y = 0;
+    context->pointer.indev = NULL;
+}
+
+EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
+    lv_display_t* display)
+{
+    HWND window_handle = (HWND)lv_display_get_driver_data(display);
+    if (!window_handle)
+    {
+        return NULL;
+    }
+
+    lv_windows_window_context_t* context =
+        (lv_windows_window_context_t*)(lv_windows_get_window_context(
+            window_handle));
+    if (!context)
+    {
+        return NULL;
+    }
+
+    if (!context->pointer.indev)
+    {      
+        context->pointer.state = LV_INDEV_STATE_RELEASED;
+        context->pointer.point.x = 0;
+        context->pointer.point.y = 0;
+
+        context->pointer.indev = lv_indev_create();
+        if (context->pointer.indev)
+        {
+            lv_indev_set_type(
+                context->pointer.indev,
+                LV_INDEV_TYPE_POINTER);
+            lv_indev_set_read_cb(
+                context->pointer.indev,
+                lv_windows_pointer_driver_read_callback);
+            lv_indev_set_disp(
+                context->pointer.indev,
+                context->display_device_object);
+            lv_indev_add_event_cb(
+                context->pointer.indev,
+                lv_windows_release_pointer_device_event_callback,
+                LV_EVENT_DELETE,
+                context->pointer.indev);
+        }
+    }
+
+    return context->pointer.indev;
 }
 
 /**********************
@@ -1337,23 +1417,10 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 context->window_dpi);
         }
 
-        context->pointer.state = LV_INDEV_STATE_RELEASED;
-        context->pointer.point.x = 0;
-        context->pointer.point.y = 0;
-        context->mouse_device_object = lv_indev_create();
-        if (!context->mouse_device_object)
+        if (!lv_windows_acquire_pointer_device(context->display_device_object))
         {
             return -1;
         }
-        lv_indev_set_type(
-            context->mouse_device_object,
-            LV_INDEV_TYPE_POINTER);
-        lv_indev_set_read_cb(
-            context->mouse_device_object,
-            lv_windows_pointer_driver_read_callback);
-        lv_indev_set_disp(
-            context->mouse_device_object,
-            context->display_device_object);
 
         context->encoder.state = LV_INDEV_STATE_RELEASED;
         context->encoder.enc_diff = 0;
@@ -1537,10 +1604,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_display_delete(display_device_object);
             DeleteDC(context->display_framebuffer_context_handle);
 
-            lv_indev_t* mouse_device_object =
-                context->mouse_device_object;
-            context->mouse_device_object = NULL;
-            lv_indev_delete(mouse_device_object);
+            lv_indev_delete(context->pointer.indev);
 
             lv_indev_t* mousewheel_device_object =
                 context->mousewheel_device_object;

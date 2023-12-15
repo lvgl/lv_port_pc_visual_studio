@@ -56,6 +56,7 @@ typedef struct _lv_windows_pointer_device_context_t
 {
     lv_indev_state_t state;
     lv_point_t point;
+    lv_indev_t* indev;
 } lv_windows_pointer_device_context_t;
 
 typedef struct _lv_windows_keypad_queue_item_t
@@ -83,7 +84,6 @@ typedef struct _lv_windows_window_context_t
     lv_disp_t* display_device_object;
     lv_timer_t* display_timer_object;
 
-    lv_indev_t* mouse_device_object;
     lv_indev_t* mousewheel_device_object;
     lv_indev_t* keyboard_device_object;
 
@@ -134,6 +134,9 @@ EXTERN_C bool lv_windows_init(
     int32_t hor_res,
     int32_t ver_res,
     HICON icon_handle);
+
+EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
+    lv_display_t* display);
 
 /**********************
  *      MACROS
