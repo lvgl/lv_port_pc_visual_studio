@@ -193,10 +193,6 @@ static void lv_windows_push_key_to_keyboard_queue(
  *  GLOBAL VARIABLES
  **********************/
 
-EXTERN_C lv_indev_t* lv_windows_pointer_device_object = NULL;
-EXTERN_C lv_indev_t* lv_windows_keypad_device_object = NULL;
-EXTERN_C lv_indev_t* lv_windows_encoder_device_object = NULL;
-
 /**********************
  *  STATIC VARIABLES
  **********************/
@@ -210,36 +206,6 @@ static HWND g_window_handle = NULL;
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-
-EXTERN_C void lv_windows_add_all_input_devices_to_group(
-    lv_group_t* group)
-{
-    if (!group)
-    {
-        LV_LOG_WARN(
-            "The group object is NULL. Get the default group object instead.");
-
-        group = lv_group_get_default();
-        if (!group)
-        {
-            LV_LOG_WARN(
-                "The default group object is NULL. Create a new group object "
-                "and set it to default instead.");
-
-            group = lv_group_create();
-            if (group)
-            {
-                lv_group_set_default(group);
-            }
-        }
-    }
-
-    LV_ASSERT_MSG(group, "Cannot obtain an available group object.");
-
-    lv_indev_set_group(lv_windows_pointer_device_object, group);
-    lv_indev_set_group(lv_windows_keypad_device_object, group);
-    lv_indev_set_group(lv_windows_encoder_device_object, group);
-}
 
 EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
     HWND window_handle)
@@ -264,6 +230,19 @@ EXTERN_C bool lv_windows_init_window_class()
         lv_windows_check_display_existence_timer_callback,
         200,
         NULL);
+
+    // Try to ensure the default group exists.
+    {
+        lv_group_t* default_group = lv_group_get_default();
+        if (!default_group)
+        {
+            default_group = lv_group_create();
+            if (default_group)
+            {
+                lv_group_set_default(default_group);
+            }
+        }
+    }
 
     WNDCLASSEXW window_class;
     window_class.cbSize = sizeof(WNDCLASSEXW);
@@ -360,10 +339,6 @@ EXTERN_C bool lv_windows_init(
         return false;
     }
 
-    lv_windows_pointer_device_object = context->pointer.indev;
-    lv_windows_keypad_device_object = context->keypad.indev;
-    lv_windows_encoder_device_object = context->encoder.indev;
-
     return true;
 }
 
@@ -442,6 +417,9 @@ EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
                 lv_windows_release_pointer_device_event_callback,
                 LV_EVENT_DELETE,
                 context->pointer.indev);
+            lv_indev_set_group(
+                context->pointer.indev,
+                lv_group_get_default());
         }
     }
 
@@ -527,6 +505,9 @@ EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
                 lv_windows_release_keypad_device_event_callback,
                 LV_EVENT_DELETE,
                 context->keypad.indev);
+            lv_indev_set_group(
+                context->keypad.indev,
+                lv_group_get_default());
         }
     }
 
@@ -606,6 +587,9 @@ EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
                 lv_windows_release_encoder_device_event_callback,
                 LV_EVENT_DELETE,
                 context->encoder.indev);
+            lv_indev_set_group(
+                context->encoder.indev,
+                lv_group_get_default());
         }
     }
 

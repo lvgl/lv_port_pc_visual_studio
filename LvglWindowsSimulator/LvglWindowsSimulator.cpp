@@ -44,8 +44,6 @@ bool single_display_mode_initialization()
         return false;
     }
 
-    lv_windows_add_all_input_devices_to_group(NULL);
-
     return true;
 }
 

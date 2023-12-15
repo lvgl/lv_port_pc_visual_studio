@@ -107,13 +107,6 @@ typedef struct _lv_windows_window_context_t
  * GLOBAL PROTOTYPES
  **********************/
 
-EXTERN_C lv_indev_t* lv_windows_pointer_device_object;
-EXTERN_C lv_indev_t* lv_windows_keypad_device_object;
-EXTERN_C lv_indev_t* lv_windows_encoder_device_object;
-
-EXTERN_C void lv_windows_add_all_input_devices_to_group(
-    lv_group_t* group);
-
 EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
     HWND window_handle);
 
