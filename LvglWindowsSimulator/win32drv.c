@@ -211,7 +211,7 @@ EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
     HWND window_handle)
 {
     return (lv_windows_window_context_t*)(
-        GetPropW(window_handle, L"LVGL.SimulatorWindow.WindowContext"));
+        GetPropW(window_handle, L"LVGL.Window.Context"));
 }
 
 static void lv_windows_check_display_existence_timer_callback(lv_timer_t* timer)
@@ -1491,10 +1491,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             return -1;
         }
 
-        if (!SetPropW(
-            hWnd,
-            L"LVGL.SimulatorWindow.WindowContext",
-            (HANDLE)(context)))
+        if (!SetPropW(hWnd, L"LVGL.Window.Context", (HANDLE)(context)))
         {
             return -1;
         }
@@ -1668,7 +1665,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     case WM_DESTROY:
     {
         lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            RemovePropW(hWnd, L"LVGL.SimulatorWindow.WindowContext"));
+            RemovePropW(hWnd, L"LVGL.Window.Context"));
         if (context)
         {
             lv_disp_t* display_device_object = context->display_device_object;
