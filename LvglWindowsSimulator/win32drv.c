@@ -398,6 +398,7 @@ static void lv_windows_release_pointer_device_event_callback(lv_event_t* e)
     context->pointer.state = LV_INDEV_STATE_RELEASED;
     context->pointer.point.x = 0;
     context->pointer.point.y = 0;
+
     context->pointer.indev = NULL;
 }
 
@@ -479,6 +480,7 @@ static void lv_windows_release_keypad_device_event_callback(lv_event_t* e)
     _lv_ll_clear(&context->keypad.queue); 
     context->keypad.utf16_high_surrogate = 0;
     context->keypad.utf16_low_surrogate = 0;
+
     context->keypad.indev = NULL;
 }
 
@@ -561,6 +563,7 @@ static void lv_windows_release_encoder_device_event_callback(lv_event_t* e)
 
     context->encoder.state = LV_INDEV_STATE_RELEASED;
     context->encoder.enc_diff = 0;
+
     context->encoder.indev = NULL;
 }
 
@@ -1486,35 +1489,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     WPARAM wParam,
     LPARAM lParam)
 {
-    LRESULT lResult = 0;
-    if (lv_windows_pointer_device_window_message_handler(
-        hWnd,
-        uMsg,
-        wParam,
-        lParam,
-        &lResult))
-    {
-        return lResult;
-    }
-    else if (lv_windows_keypad_device_window_message_handler(
-        hWnd,
-        uMsg,
-        wParam,
-        lParam,
-        &lResult))
-    {
-        return lResult;
-    }
-    else if (lv_windows_encoder_device_window_message_handler(
-        hWnd,
-        uMsg,
-        wParam,
-        lParam,
-        &lResult))
-    {
-        return lResult;
-    }
-
     switch (uMsg)
     {
     case WM_CREATE:
@@ -1752,7 +1726,46 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         break;
     }
     default:
+    {
+        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+            lv_windows_get_window_context(hWnd));
+        if (context)
+        {
+            LRESULT lResult = 0;
+            if (context->pointer.indev &&
+                lv_windows_pointer_device_window_message_handler(
+                hWnd,
+                uMsg,
+                wParam,
+                lParam,
+                &lResult))
+            {
+                return lResult;
+            }
+            else if (context->keypad.indev &&
+                lv_windows_keypad_device_window_message_handler(
+                hWnd,
+                uMsg,
+                wParam,
+                lParam,
+                &lResult))
+            {
+                return lResult;
+            }
+            else if (context->encoder.indev &&
+                lv_windows_encoder_device_window_message_handler(
+                hWnd,
+                uMsg,
+                wParam,
+                lParam,
+                &lResult))
+            {
+                return lResult;
+            }
+        }
+
         return DefWindowProcW(hWnd, uMsg, wParam, lParam);
+    }
     }
 
     return 0;
