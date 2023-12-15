@@ -1561,43 +1561,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             context->requested_display_resolution.y =
                 lv_display_get_vertical_resolution(
                     context->display_device_object);
-
-            int32_t dpi = lv_display_get_dpi(context->display_device_object);
-
-            RECT calculated_window_size;
-            calculated_window_size.left = 0;
-            calculated_window_size.right = lv_windows_dpi_to_physical(
-                lv_windows_zoom_to_physical(
-                    lv_display_get_horizontal_resolution(
-                        context->display_device_object),
-                    context->zoom_level),
-                context->window_dpi);
-            calculated_window_size.top = 0;
-            calculated_window_size.bottom = lv_windows_dpi_to_physical(
-                lv_windows_zoom_to_physical(
-                    lv_display_get_vertical_resolution(
-                        context->display_device_object),
-                    context->zoom_level),
-                context->window_dpi);
-
-            AdjustWindowRectEx(
-                &calculated_window_size,
-                WINDOW_STYLE,
-                FALSE,
-                WINDOW_EX_STYLE);
-            OffsetRect(
-                &calculated_window_size,
-                -calculated_window_size.left,
-                -calculated_window_size.top);
-
-            SetWindowPos(
-                hWnd,
-                NULL,
-                0,
-                0,
-                calculated_window_size.right,
-                calculated_window_size.bottom,
-                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
         }
 
         lv_windows_register_touch_window(hWnd, 0);
@@ -1619,6 +1582,51 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                     context->display_resolution_changed = true;
                     context->requested_display_resolution.x = LOWORD(lParam);
                     context->requested_display_resolution.y = HIWORD(lParam);
+                }
+                else
+                {
+                    int32_t window_width = lv_windows_dpi_to_physical(
+                        lv_windows_zoom_to_physical(
+                            lv_display_get_horizontal_resolution(
+                                context->display_device_object),
+                            context->zoom_level),
+                        context->window_dpi);
+                    int32_t window_height = lv_windows_dpi_to_physical(
+                        lv_windows_zoom_to_physical(
+                            lv_display_get_vertical_resolution(
+                                context->display_device_object),
+                            context->zoom_level),
+                        context->window_dpi);
+
+                    RECT window_rect;
+                    GetWindowRect(hWnd, &window_rect);
+
+                    RECT client_rect;
+                    GetClientRect(hWnd, &client_rect);
+
+                    int32_t original_window_width =
+                        window_rect.right - window_rect.left;
+                    int32_t original_window_height =
+                        window_rect.bottom - window_rect.top;
+
+                    int32_t original_client_width =
+                        client_rect.right - client_rect.left;
+                    int32_t original_client_height =
+                        client_rect.bottom - client_rect.top;
+
+                    int32_t reserved_width =
+                        original_window_width - original_client_width;
+                    int32_t reserved_height =
+                        original_window_height - original_client_height;
+
+                    SetWindowPos(
+                        hWnd,
+                        NULL,
+                        0,
+                        0,
+                        reserved_width + window_width,
+                        reserved_height + window_height,
+                        SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
                 }
             }
         }
@@ -1649,34 +1657,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
                 suggested_rect->right,
                 suggested_rect->bottom,
                 SWP_NOZORDER | SWP_NOACTIVATE);
-
-            if (context->simulator_mode)
-            {
-                int32_t window_width = lv_windows_dpi_to_physical(
-                    lv_windows_zoom_to_physical(
-                        lv_display_get_horizontal_resolution(
-                            context->display_device_object),
-                        context->zoom_level),
-                    context->window_dpi);
-                int32_t window_height = lv_windows_dpi_to_physical(
-                    lv_windows_zoom_to_physical(
-                        lv_display_get_vertical_resolution(
-                            context->display_device_object),
-                        context->zoom_level),
-                    context->window_dpi);
-
-                RECT client_rect;
-                GetClientRect(hWnd, &client_rect);
-
-                SetWindowPos(
-                    hWnd,
-                    NULL,
-                    suggested_rect->left,
-                    suggested_rect->top,
-                    suggested_rect->right + (window_width - client_rect.right),
-                    suggested_rect->bottom + (window_height - client_rect.bottom),
-                    SWP_NOZORDER | SWP_NOACTIVATE);
-            }
         }
 
         break;
