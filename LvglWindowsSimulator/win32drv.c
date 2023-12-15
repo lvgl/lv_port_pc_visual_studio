@@ -361,7 +361,7 @@ EXTERN_C bool lv_windows_init(
     }
 
     lv_windows_pointer_device_object = context->pointer.indev;
-    lv_windows_keypad_device_object = context->keyboard_device_object;
+    lv_windows_keypad_device_object = context->keypad.indev;
     lv_windows_encoder_device_object = context->mousewheel_device_object;
 
     return true;
@@ -445,6 +445,90 @@ EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
     }
 
     return context->pointer.indev;
+}
+
+static void lv_windows_release_keypad_device_event_callback(lv_event_t* e)
+{
+    lv_indev_t* indev = (lv_indev_t*)lv_event_get_user_data(e);
+    if (!indev)
+    {
+        return;
+    }
+
+    lv_display_t* display = lv_indev_get_disp(indev);
+    if (!display)
+    {
+        return;
+    }
+
+    HWND window_handle = (HWND)lv_display_get_driver_data(display);
+    if (!window_handle)
+    {
+        return;
+    }
+
+    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
+        lv_windows_get_window_context(
+            window_handle));
+    if (!context)
+    {
+        return;
+    }
+
+    DeleteCriticalSection(&context->keypad.mutex);
+    _lv_ll_clear(&context->keypad.queue); 
+    context->keypad.utf16_high_surrogate = 0;
+    context->keypad.utf16_low_surrogate = 0;
+    context->keypad.indev = NULL;
+}
+
+EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
+    lv_display_t* display)
+{
+    HWND window_handle = (HWND)lv_display_get_driver_data(display);
+    if (!window_handle)
+    {
+        return NULL;
+    }
+
+    lv_windows_window_context_t* context =
+        (lv_windows_window_context_t*)(lv_windows_get_window_context(
+            window_handle));
+    if (!context)
+    {
+        return NULL;
+    }
+
+    if (!context->keypad.indev)
+    {
+        InitializeCriticalSection(&context->keypad.mutex);
+        _lv_ll_init(
+            &context->keypad.queue,
+            sizeof(lv_windows_keypad_queue_item_t));      
+        context->keypad.utf16_high_surrogate = 0;
+        context->keypad.utf16_low_surrogate = 0;
+
+        context->keypad.indev = lv_indev_create();
+        if (context->keypad.indev)
+        {
+            lv_indev_set_type(
+                context->keypad.indev,
+                LV_INDEV_TYPE_KEYPAD);
+            lv_indev_set_read_cb(
+                context->keypad.indev,
+                lv_windows_keypad_driver_read_callback);
+            lv_indev_set_disp(
+                context->keypad.indev,
+                context->display_device_object);
+            lv_indev_add_event_cb(
+                context->keypad.indev,
+                lv_windows_release_keypad_device_event_callback,
+                LV_EVENT_DELETE,
+                context->keypad.indev);
+        }
+    }
+
+    return context->keypad.indev;
 }
 
 /**********************
@@ -1422,6 +1506,11 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             return -1;
         }
 
+        if (!lv_windows_acquire_keypad_device(context->display_device_object))
+        {
+            return -1;
+        }
+
         context->encoder.state = LV_INDEV_STATE_RELEASED;
         context->encoder.enc_diff = 0;
         context->mousewheel_device_object = lv_indev_create();
@@ -1437,27 +1526,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_windows_encoder_driver_read_callback);
         lv_indev_set_disp(
             context->mousewheel_device_object,
-            context->display_device_object);
-
-        InitializeCriticalSection(&context->keypad.mutex);
-        _lv_ll_init(
-            &context->keypad.queue,
-            sizeof(lv_windows_keypad_queue_item_t));
-        context->keypad.utf16_high_surrogate = 0;
-        context->keypad.utf16_low_surrogate = 0;
-        context->keyboard_device_object = lv_indev_create();
-        if (!context->keyboard_device_object)
-        {
-            return -1;
-        }
-        lv_indev_set_type(
-            context->keyboard_device_object,
-            LV_INDEV_TYPE_KEYPAD);
-        lv_indev_set_read_cb(
-            context->keyboard_device_object,
-            lv_windows_keypad_driver_read_callback);
-        lv_indev_set_disp(
-            context->keyboard_device_object,
             context->display_device_object);
 
         if (context->simulator_mode)
@@ -1605,18 +1673,12 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             DeleteDC(context->display_framebuffer_context_handle);
 
             lv_indev_delete(context->pointer.indev);
+            lv_indev_delete(context->keypad.indev);
 
             lv_indev_t* mousewheel_device_object =
                 context->mousewheel_device_object;
             context->mousewheel_device_object = NULL;
             lv_indev_delete(mousewheel_device_object);
-
-            lv_indev_t* keyboard_device_object =
-                context->keyboard_device_object;
-            context->keyboard_device_object = NULL;
-            lv_indev_delete(keyboard_device_object);
-            _lv_ll_clear(&context->keypad.queue);
-            DeleteCriticalSection(&context->keypad.mutex);
 
             lv_timer_delete(context->display_timer_object);
 

@@ -71,6 +71,7 @@ typedef struct _lv_windows_keypad_device_context_t
     lv_ll_t queue;
     uint16_t utf16_high_surrogate;
     uint16_t utf16_low_surrogate;
+    lv_indev_t* indev;
 } lv_windows_keypad_device_context_t;
 
 typedef struct _lv_windows_encoder_device_context_t
@@ -85,7 +86,6 @@ typedef struct _lv_windows_window_context_t
     lv_timer_t* display_timer_object;
 
     lv_indev_t* mousewheel_device_object;
-    lv_indev_t* keyboard_device_object;
 
     int32_t window_dpi;
     int32_t zoom_level;
@@ -136,6 +136,9 @@ EXTERN_C bool lv_windows_init(
     HICON icon_handle);
 
 EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
+    lv_display_t* display);
+
+EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
     lv_display_t* display);
 
 /**********************
