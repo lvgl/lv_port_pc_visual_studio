@@ -78,14 +78,13 @@ typedef struct _lv_windows_encoder_device_context_t
 {
     lv_indev_state_t state;
     int16_t enc_diff;
+    lv_indev_t* indev;
 } lv_windows_encoder_device_context_t;
 
 typedef struct _lv_windows_window_context_t
 {
     lv_disp_t* display_device_object;
     lv_timer_t* display_timer_object;
-
-    lv_indev_t* mousewheel_device_object;
 
     int32_t window_dpi;
     int32_t zoom_level;
@@ -139,6 +138,9 @@ EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
     lv_display_t* display);
 
 EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
+    lv_display_t* display);
+
+EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
     lv_display_t* display);
 
 /**********************
