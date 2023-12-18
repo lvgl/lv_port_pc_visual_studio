@@ -850,6 +850,7 @@ void LvglTaskSchedulerLoop()
         if (g_WindowResizingSignal)
         {
             lv_disp_t* CurrentDisplay = ::lv_display_get_default();
+            g_WindowResizingSignal = false;
             if (CurrentDisplay)
             {
                 ::LvglCreateDisplayDriver(
@@ -860,11 +861,10 @@ void LvglTaskSchedulerLoop()
                     CurrentDisplay,
                     static_cast<std::int32_t>(g_WindowWidth),
                     static_cast<std::int32_t>(g_WindowHeight));
-
-                ::lv_refr_now(CurrentDisplay);
+                continue;
+                //::lv_refr_now(CurrentDisplay);
             }
 
-            g_WindowResizingSignal = false;
         }
 
         ::lv_timer_handler();
