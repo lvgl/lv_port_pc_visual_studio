@@ -136,6 +136,9 @@ EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
 EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
     lv_display_t* display);
 
+EXTERN_C HWND lv_windows_get_display_window_handle(
+    lv_display_t* display);
+
 /**********************
  *      MACROS
  **********************/
