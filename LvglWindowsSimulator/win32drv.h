@@ -81,7 +81,7 @@ typedef struct _lv_windows_encoder_context_t
     lv_indev_t* indev;
 } lv_windows_encoder_context_t;
 
-typedef struct _lv_windows_window_context_t
+typedef struct _lv_windows_display_context_t
 {
     lv_disp_t* display_device_object;
     lv_timer_t* display_timer_object;
@@ -101,13 +101,13 @@ typedef struct _lv_windows_window_context_t
     lv_windows_keypad_context_t keypad;
     lv_windows_encoder_context_t encoder;
 
-} lv_windows_window_context_t;
+} lv_windows_display_context_t;
 
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
 
-EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
+EXTERN_C lv_windows_display_context_t* lv_windows_get_window_context(
     HWND window_handle);
 
 EXTERN_C bool lv_windows_init_window_class();
@@ -139,7 +139,7 @@ EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
 EXTERN_C HWND lv_windows_get_display_window_handle(
     lv_display_t* display);
 
-EXTERN_C lv_windows_window_context_t* lv_windows_get_display_window_context(
+EXTERN_C lv_windows_display_context_t* lv_windows_get_display_window_context(
     lv_display_t* display);
 
 /**********************
