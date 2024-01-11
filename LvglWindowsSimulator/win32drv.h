@@ -65,14 +65,14 @@ typedef struct _lv_windows_keypad_queue_item_t
     lv_indev_state_t state;
 } lv_windows_keypad_queue_item_t;
 
-typedef struct _lv_windows_keypad_device_context_t
+typedef struct _lv_windows_keypad_context_t
 {
     CRITICAL_SECTION mutex;
     lv_ll_t queue;
     uint16_t utf16_high_surrogate;
     uint16_t utf16_low_surrogate;
     lv_indev_t* indev;
-} lv_windows_keypad_device_context_t;
+} lv_windows_keypad_context_t;
 
 typedef struct _lv_windows_encoder_device_context_t
 {
@@ -98,7 +98,7 @@ typedef struct _lv_windows_window_context_t
     size_t display_framebuffer_size;
 
     lv_windows_pointer_context_t pointer;
-    lv_windows_keypad_device_context_t keypad;
+    lv_windows_keypad_context_t keypad;
     lv_windows_encoder_device_context_t encoder;
 
 } lv_windows_window_context_t;
