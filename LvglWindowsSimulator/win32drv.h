@@ -139,6 +139,9 @@ EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
 EXTERN_C HWND lv_windows_get_display_window_handle(
     lv_display_t* display);
 
+EXTERN_C lv_windows_window_context_t* lv_windows_get_display_window_context(
+    lv_display_t* display);
+
 /**********************
  *      MACROS
  **********************/
