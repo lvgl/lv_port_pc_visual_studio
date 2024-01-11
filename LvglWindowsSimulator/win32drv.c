@@ -329,8 +329,8 @@ EXTERN_C bool lv_windows_init(
 
     WaitForSingleObjectEx(parameter->window_mutex, INFINITE, FALSE);
 
-    lv_windows_window_context_t* context =
-        lv_windows_get_window_context(g_window_handle);
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        g_window_handle);
     if (!context)
     {
         return false;
@@ -347,14 +347,14 @@ static void lv_windows_release_pointer_device_event_callback(lv_event_t* e)
         return;
     }
 
-    lv_display_t* display = lv_indev_get_disp(indev);
-    if (!display)
+    HWND window_handle = lv_windows_get_indev_window_handle(indev);
+    if (!window_handle)
     {
         return;
     }
 
-    lv_windows_window_context_t* context =
-        lv_windows_get_display_window_context(display);
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         return;
@@ -370,8 +370,14 @@ static void lv_windows_release_pointer_device_event_callback(lv_event_t* e)
 EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
     lv_display_t* display)
 {
-    lv_windows_window_context_t* context =
-        lv_windows_get_display_window_context(display);
+    HWND window_handle = lv_windows_get_display_window_handle(display);
+    if (!window_handle)
+    {
+        return NULL;
+    }
+
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         return NULL;
@@ -417,14 +423,14 @@ static void lv_windows_release_keypad_device_event_callback(lv_event_t* e)
         return;
     }
 
-    lv_display_t* display = lv_indev_get_disp(indev);
-    if (!display)
+    HWND window_handle = lv_windows_get_indev_window_handle(indev);
+    if (!window_handle)
     {
         return;
     }
 
-    lv_windows_window_context_t* context =
-        lv_windows_get_display_window_context(display);
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         return;
@@ -441,8 +447,14 @@ static void lv_windows_release_keypad_device_event_callback(lv_event_t* e)
 EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
     lv_display_t* display)
 {
-    lv_windows_window_context_t* context =
-        lv_windows_get_display_window_context(display);
+    HWND window_handle = lv_windows_get_display_window_handle(display);
+    if (!window_handle)
+    {
+        return NULL;
+    }
+
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         return NULL;
@@ -491,14 +503,14 @@ static void lv_windows_release_encoder_device_event_callback(lv_event_t* e)
         return;
     }
 
-    lv_display_t* display = lv_indev_get_disp(indev);
-    if (!display)
+    HWND window_handle = lv_windows_get_indev_window_handle(indev);
+    if (!window_handle)
     {
         return;
     }
 
-    lv_windows_window_context_t* context =
-        lv_windows_get_display_window_context(display);
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         return;
@@ -513,8 +525,14 @@ static void lv_windows_release_encoder_device_event_callback(lv_event_t* e)
 EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
     lv_display_t* display)
 {
-    lv_windows_window_context_t* context =
-        lv_windows_get_display_window_context(display);
+    HWND window_handle = lv_windows_get_display_window_handle(display);
+    if (!window_handle)
+    {
+        return NULL;
+    }
+
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         return NULL;
@@ -561,18 +579,6 @@ EXTERN_C HWND lv_windows_get_indev_window_handle(
     lv_indev_t* indev)
 {
     return lv_windows_get_display_window_handle(lv_indev_get_disp(indev));
-}
-
-EXTERN_C lv_windows_window_context_t* lv_windows_get_display_window_context(
-    lv_display_t* display)
-{
-    HWND window_handle = lv_windows_get_display_window_handle(display);
-    if (!window_handle)
-    {
-        return NULL;
-    }
-
-    return lv_windows_get_window_context(window_handle);
 }
 
 /**********************
@@ -860,8 +866,8 @@ static void lv_windows_display_driver_flush_callback(
         return;
     }
 
-    lv_windows_window_context_t* context =
-        lv_windows_get_window_context(window_handle);
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
     if (!context)
     {
         lv_display_flush_ready(disp_drv);
@@ -922,8 +928,8 @@ static void lv_windows_pointer_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
 {
-    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-        lv_windows_get_display_window_context(lv_indev_get_disp(indev)));
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        lv_windows_get_indev_window_handle(indev));
     if (!context)
     {
         return;
@@ -937,8 +943,8 @@ static void lv_windows_keypad_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
 {
-    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-        lv_windows_get_display_window_context(lv_indev_get_disp(indev)));
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        lv_windows_get_indev_window_handle(indev));
     if (!context)
     {
         return;
@@ -966,8 +972,8 @@ static void lv_windows_encoder_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
 {
-    lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-        lv_windows_get_display_window_context(lv_indev_get_disp(indev)));
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        lv_windows_get_indev_window_handle(indev));
     if (!context)
     {
         return;
