@@ -557,6 +557,12 @@ EXTERN_C HWND lv_windows_get_display_window_handle(
     return (HWND)lv_display_get_driver_data(display);
 }
 
+EXTERN_C HWND lv_windows_get_indev_window_handle(
+    lv_indev_t* indev)
+{
+    return lv_windows_get_display_window_handle(lv_indev_get_disp(indev));
+}
+
 EXTERN_C lv_windows_display_context_t* lv_windows_get_display_window_context(
     lv_display_t* display)
 {
