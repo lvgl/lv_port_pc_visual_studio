@@ -21,12 +21,6 @@
  *      DEFINES
  *********************/
 
-#define LV_WINDOWS_ZOOM_LEVEL 100
-
-#define LV_WINDOWS_SIMULATOR_MODE 0
-
-#define LV_WINDOWS_ALLOW_DPI_OVERRIDE 0
-
 #define WINDOW_EX_STYLE \
     WS_EX_CLIENTEDGE
 
@@ -34,10 +28,6 @@
     WS_OVERLAPPEDWINDOW //(WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME))
 
 #define LV_WINDOWS_ZOOM_BASE_LEVEL 100
-
-#ifndef LV_WINDOWS_ZOOM_LEVEL
-#define LV_WINDOWS_ZOOM_LEVEL LV_WINDOWS_ZOOM_BASE_LEVEL
-#endif
 
 #ifndef USER_DEFAULT_SCREEN_DPI
 #define USER_DEFAULT_SCREEN_DPI 96
@@ -56,6 +46,18 @@ typedef struct _WINDOW_THREAD_PARAMETER
     int32_t ver_res;
     int show_window_mode;
 } WINDOW_THREAD_PARAMETER, * PWINDOW_THREAD_PARAMETER;
+
+typedef struct _lv_windows_create_display_data_t
+{
+    const wchar_t* title;
+    int32_t hor_res;
+    int32_t ver_res;
+    int32_t zoom_level;
+    bool allow_dpi_override;
+    bool simulator_mode;
+    HANDLE mutex;
+    lv_disp_t* display;
+} lv_windows_create_display_data_t;
 
 /**********************
  *  STATIC PROTOTYPES
@@ -337,6 +339,124 @@ EXTERN_C bool lv_windows_init(
     }
 
     return true;
+}
+
+static unsigned int __stdcall lv_windows_display_thread_entrypoint(
+    void* parameter)
+{
+    lv_windows_create_display_data_t* data =
+        (lv_windows_create_display_data_t*)(parameter);
+    if (!data)
+    {
+        return 0;
+    }
+
+    DWORD window_style = WS_OVERLAPPEDWINDOW;
+    if (data->simulator_mode)
+    {
+        window_style &= ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME);
+    }
+
+    HWND window_handle = CreateWindowExW(
+        WINDOW_EX_STYLE,
+        LVGL_SIMULATOR_WINDOW_CLASS,
+        data->title,
+        window_style,
+        CW_USEDEFAULT,
+        0,
+        data->hor_res,
+        data->ver_res,
+        NULL,
+        NULL,
+        NULL,
+        data);
+    if (!window_handle)
+    {
+        return 0;
+    }
+
+    lv_windows_window_context_t* context = lv_windows_get_window_context(
+        window_handle);
+    if (!context)
+    {
+        return 0;
+    }
+
+    data->display = context->display_device_object;
+
+    ShowWindow(window_handle, SW_SHOW);
+    UpdateWindow(window_handle);
+
+    SetEvent(data->mutex);
+
+    data = NULL;
+
+    MSG message;
+    while (GetMessageW(&message, NULL, 0, 0))
+    {
+        TranslateMessage(&message);
+        DispatchMessageW(&message);
+    }
+
+    return 0;
+}
+
+EXTERN_C lv_display_t* lv_windows_create_display(
+    const wchar_t* title,
+    int32_t hor_res,
+    int32_t ver_res,
+    int32_t zoom_level,
+    bool allow_dpi_override,
+    bool simulator_mode)
+{
+    lv_windows_create_display_data_t* data = NULL;
+    lv_display_t* display = NULL;
+
+    do
+    {
+        data = (lv_windows_create_display_data_t*)(malloc(
+            sizeof(lv_windows_create_display_data_t)));
+        if (!data)
+        {
+            break;
+        }
+
+        data->title = title;
+        data->hor_res = hor_res;
+        data->ver_res = ver_res;
+        data->zoom_level = zoom_level;
+        data->allow_dpi_override = allow_dpi_override;
+        data->simulator_mode = simulator_mode;
+        data->mutex = CreateEventExW(NULL, NULL, 0, EVENT_ALL_ACCESS);
+        data->display = NULL;
+        if (!data->mutex)
+        {
+            break;
+        }
+
+        _beginthreadex(
+            NULL,
+            0,
+            lv_windows_display_thread_entrypoint,
+            data,
+            0,
+            NULL);
+
+        WaitForSingleObjectEx(data->mutex, INFINITE, FALSE);
+
+    } while (false);
+
+    if (data)
+    {
+        display = data->display;
+        if (data->mutex)
+        {
+            CloseHandle(data->mutex);
+        }
+        free(data);
+    }
+    
+    return display;
 }
 
 static void lv_windows_release_pointer_device_event_callback(lv_event_t* e)
@@ -1452,7 +1572,15 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     {
         // Note: Return -1 directly because WM_DESTROY message will be sent
         // when destroy the window automatically. We free the resource when
-        // processing the WM_DESTROY message of this window.
+        // processing the WM_DESTROY message of this window. 
+
+        lv_windows_create_display_data_t* data =
+            (lv_windows_create_display_data_t*)(
+                ((LPCREATESTRUCTW)(lParam))->lpCreateParams);
+        if (!data)
+        {
+            return -1;
+        }
 
         lv_windows_window_context_t* context =
             (lv_windows_window_context_t*)(HeapAlloc(
@@ -1470,9 +1598,9 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         }
 
         context->window_dpi = lv_windows_get_dpi_for_window(hWnd);
-        context->zoom_level = LV_WINDOWS_ZOOM_LEVEL;
-        context->allow_dpi_override = LV_WINDOWS_ALLOW_DPI_OVERRIDE;
-        context->simulator_mode = LV_WINDOWS_SIMULATOR_MODE;
+        context->zoom_level = data->zoom_level;
+        context->allow_dpi_override = data->allow_dpi_override;
+        context->simulator_mode = data->simulator_mode;
 
         context->display_timer_object = lv_timer_create(
             lv_windows_display_timer_callback,
@@ -1505,21 +1633,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
             lv_display_set_dpi(
                 context->display_device_object,
                 context->window_dpi);
-        }
-
-        if (!lv_windows_acquire_pointer_device(context->display_device_object))
-        {
-            return -1;
-        }
-
-        if (!lv_windows_acquire_keypad_device(context->display_device_object))
-        {
-            return -1;
-        }
-
-        if (!lv_windows_acquire_encoder_device(context->display_device_object))
-        {
-            return -1;
         }
 
         if (context->simulator_mode)

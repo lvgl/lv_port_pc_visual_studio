@@ -127,6 +127,14 @@ EXTERN_C bool lv_windows_init(
     int32_t ver_res,
     HICON icon_handle);
 
+EXTERN_C lv_display_t* lv_windows_create_display(
+    const wchar_t* title,
+    int32_t hor_res,
+    int32_t ver_res,
+    int32_t zoom_level,
+    bool allow_dpi_override,
+    bool simulator_mode);
+
 EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
     lv_display_t* display);
 

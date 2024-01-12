@@ -32,21 +32,6 @@
 #pragma warning(pop)
 #endif
 
-bool single_display_mode_initialization()
-{
-    if (!lv_windows_init(
-        GetModuleHandleW(NULL),
-        SW_SHOW,
-        800,
-        480,
-        LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL_WINDOWS))))
-    {
-        return false;
-    }
-
-    return true;
-}
-
 uint32_t tick_count_callback()
 {
     return GetTickCount();
@@ -58,7 +43,63 @@ int main()
 
     lv_tick_set_cb(tick_count_callback);
 
-    if (!single_display_mode_initialization())
+    if (!lv_windows_init_window_class())
+    {
+        return -1;
+    }
+
+    int32_t zoom_level = 100;
+    bool allow_dpi_override = false;
+    bool simulator_mode = false;
+    lv_display_t* display = lv_windows_create_display(
+        L"LVGL Simulator for Windows Desktop (Display 1)",
+        800,
+        480,
+        zoom_level,
+        allow_dpi_override,
+        simulator_mode);
+    if (!display)
+    {
+        return -1;
+    }
+
+    HWND window_handle = lv_windows_get_display_window_handle(display);
+    if (!window_handle)
+    {
+        return -1;
+    }
+
+    HICON icon_handle = LoadIconW(
+        GetModuleHandleW(NULL),
+        MAKEINTRESOURCE(IDI_LVGL_WINDOWS));
+    if (icon_handle)
+    {
+        SendMessageW(
+            window_handle,
+            WM_SETICON,
+            TRUE,
+            (LPARAM)icon_handle);
+        SendMessageW(
+            window_handle,
+            WM_SETICON,
+            FALSE,
+            (LPARAM)icon_handle);
+    }
+
+    lv_indev_t* pointer_device = lv_windows_acquire_pointer_device(display);
+    if (!pointer_device)
+    {
+        return -1;
+    }
+
+    lv_indev_t* keypad_device = lv_windows_acquire_keypad_device(display);
+    if (!keypad_device)
+    {
+        return -1;
+    }
+
+    lv_indev_t* encoder_device = lv_windows_acquire_encoder_device(display);
+    if (!encoder_device)
     {
         return -1;
     }
