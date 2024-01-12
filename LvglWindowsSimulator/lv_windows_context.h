@@ -87,12 +87,6 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 
-    HWND lv_windows_get_display_window_handle(
-        lv_display_t* display);
-
-    HWND lv_windows_get_indev_window_handle(
-        lv_indev_t* indev);
-
     /**
      * @brief Get the window context from specific LVGL display window.
      * @param window_handle The window handle of specific LVGL display window.

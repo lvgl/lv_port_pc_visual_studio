@@ -9,6 +9,8 @@
 
 #include "win32drv.h"
 
+#include "lv_windows_context.h"
+
 #include <windowsx.h>
 #include <malloc.h>
 #include <process.h>
@@ -21,25 +23,9 @@
  *      DEFINES
  *********************/
 
-#define LV_WINDOWS_ZOOM_BASE_LEVEL 100
-
-#ifndef USER_DEFAULT_SCREEN_DPI
-#define USER_DEFAULT_SCREEN_DPI 96
-#endif
-
 /**********************
  *      TYPEDEFS
  **********************/
-
-typedef struct _WINDOW_THREAD_PARAMETER
-{
-    HANDLE window_mutex;
-    HINSTANCE instance_handle;
-    HICON icon_handle;
-    int32_t hor_res;
-    int32_t ver_res;
-    int show_window_mode;
-} WINDOW_THREAD_PARAMETER, * PWINDOW_THREAD_PARAMETER;
 
 typedef struct _lv_windows_create_display_data_t
 {
@@ -842,26 +828,6 @@ static UINT lv_windows_get_dpi_for_window(
     }
 
     return Result;
-}
-
-static int32_t lv_windows_zoom_to_logical(int32_t physical, int32_t zoom_level)
-{
-    return MulDiv(physical, LV_WINDOWS_ZOOM_BASE_LEVEL, zoom_level);
-}
-
-static int32_t lv_windows_zoom_to_physical(int32_t logical, int32_t zoom_level)
-{
-    return MulDiv(logical, zoom_level, LV_WINDOWS_ZOOM_BASE_LEVEL);
-}
-
-static int32_t lv_windows_dpi_to_logical(int32_t physical, int32_t dpi)
-{
-    return MulDiv(physical, USER_DEFAULT_SCREEN_DPI, dpi);
-}
-
-static int32_t lv_windows_dpi_to_physical(int32_t logical, int32_t dpi)
-{
-    return MulDiv(logical, dpi, USER_DEFAULT_SCREEN_DPI);
 }
 
 static void lv_windows_display_driver_flush_callback(

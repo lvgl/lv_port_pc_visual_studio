@@ -892,6 +892,7 @@
     <ClInclude Include="lv_conf.h" />
     <ClInclude Include="win32drv.h" />
     <ClInclude Include="lv_windows_context.h" />
+    <ClInclude Include="lv_windows_interop.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsSimulator.manifest" />
@@ -2745,6 +2746,7 @@
     <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="win32drv.c" />
     <ClCompile Include="lv_windows_context.c" />
+    <ClCompile Include="lv_windows_interop.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\freetype\.clang-format">

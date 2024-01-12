@@ -12,7 +12,7 @@
 
 #include "lvgl/lvgl.h"
 
-#include "lv_windows_context.h"
+#include "lv_windows_interop.h"
 
 #include <windows.h>
 
