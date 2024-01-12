@@ -21,12 +21,6 @@
  *      DEFINES
  *********************/
 
-#define WINDOW_EX_STYLE \
-    WS_EX_CLIENTEDGE
-
-#define WINDOW_STYLE \
-    WS_OVERLAPPEDWINDOW //(WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME))
-
 #define LV_WINDOWS_ZOOM_BASE_LEVEL 100
 
 #ifndef USER_DEFAULT_SCREEN_DPI
@@ -256,47 +250,6 @@ EXTERN_C bool lv_windows_init_window_class()
     return RegisterClassExW(&window_class);
 }
 
-EXTERN_C HWND lv_windows_create_display_window(
-    const wchar_t* window_title,
-    int32_t hor_res,
-    int32_t ver_res,
-    HINSTANCE instance_handle,
-    HICON icon_handle,
-    int show_window_mode)
-{
-    HWND display_window_handle = CreateWindowExW(
-        WINDOW_EX_STYLE,
-        LVGL_SIMULATOR_WINDOW_CLASS,
-        window_title,
-        WINDOW_STYLE,
-        CW_USEDEFAULT,
-        0,
-        hor_res,
-        ver_res,
-        NULL,
-        NULL,
-        instance_handle,
-        NULL);
-    if (display_window_handle)
-    {
-        SendMessageW(
-            display_window_handle,
-            WM_SETICON,
-            TRUE,
-            (LPARAM)icon_handle);
-        SendMessageW(
-            display_window_handle,
-            WM_SETICON,
-            FALSE,
-            (LPARAM)icon_handle);
-
-        ShowWindow(display_window_handle, show_window_mode);
-        UpdateWindow(display_window_handle);
-    }
-
-    return display_window_handle;
-}
-
 static unsigned int __stdcall lv_windows_display_thread_entrypoint(
     void* parameter)
 {
@@ -314,7 +267,7 @@ static unsigned int __stdcall lv_windows_display_thread_entrypoint(
     }
 
     HWND window_handle = CreateWindowExW(
-        WINDOW_EX_STYLE,
+        WS_EX_CLIENTEDGE,
         LVGL_SIMULATOR_WINDOW_CLASS,
         data->title,
         window_style,
@@ -411,7 +364,7 @@ EXTERN_C lv_display_t* lv_windows_create_display(
         }
         free(data);
     }
-    
+
     return display;
 }
 
@@ -460,7 +413,7 @@ EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
     }
 
     if (!context->pointer.indev)
-    {      
+    {
         context->pointer.state = LV_INDEV_STATE_RELEASED;
         context->pointer.point.x = 0;
         context->pointer.point.y = 0;
@@ -513,7 +466,7 @@ static void lv_windows_release_keypad_device_event_callback(lv_event_t* e)
     }
 
     DeleteCriticalSection(&context->keypad.mutex);
-    _lv_ll_clear(&context->keypad.queue); 
+    _lv_ll_clear(&context->keypad.queue);
     context->keypad.utf16_high_surrogate = 0;
     context->keypad.utf16_low_surrogate = 0;
 
@@ -541,7 +494,7 @@ EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
         InitializeCriticalSection(&context->keypad.mutex);
         _lv_ll_init(
             &context->keypad.queue,
-            sizeof(lv_windows_keypad_queue_item_t));      
+            sizeof(lv_windows_keypad_queue_item_t));
         context->keypad.utf16_high_surrogate = 0;
         context->keypad.utf16_low_surrogate = 0;
 
@@ -1092,7 +1045,7 @@ static void lv_windows_display_timer_callback(lv_timer_t* timer)
                 DeleteDC(context->display_framebuffer_context_handle);
                 context->display_framebuffer_context_handle = NULL;
             }
-            
+
             context->display_framebuffer_context_handle =
                 lv_windows_create_frame_buffer(
                     window_handle,
@@ -1528,7 +1481,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     {
         // Note: Return -1 directly because WM_DESTROY message will be sent
         // when destroy the window automatically. We free the resource when
-        // processing the WM_DESTROY message of this window. 
+        // processing the WM_DESTROY message of this window.
 
         lv_windows_create_display_data_t* data =
             (lv_windows_create_display_data_t*)(
@@ -1566,7 +1519,7 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
         context->display_resolution_changed = false;
         context->requested_display_resolution.x = 0;
         context->requested_display_resolution.y = 0;
-      
+
         context->display_device_object = lv_display_create(0, 0);
         if (!context->display_device_object)
         {

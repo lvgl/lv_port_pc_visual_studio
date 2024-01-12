@@ -112,14 +112,6 @@ EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
 
 EXTERN_C bool lv_windows_init_window_class();
 
-EXTERN_C HWND lv_windows_create_display_window(
-    const wchar_t* window_title,
-    int32_t hor_res,
-    int32_t ver_res,
-    HINSTANCE instance_handle,
-    HICON icon_handle,
-    int show_window_mode);
-
 EXTERN_C lv_display_t* lv_windows_create_display(
     const wchar_t* title,
     int32_t hor_res,
