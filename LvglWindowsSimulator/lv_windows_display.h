@@ -42,6 +42,18 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 
+    /**
+     * @brief Create a LVGL display object.
+     * @param title The window title of LVGL display.
+     * @param hor_res The horizontal resolution value of LVGL display.
+     * @param ver_res The vertical resolution value of LVGL display.
+     * @param zoom_level The zoom level value. Base value is 100 a.k.a 100%.
+     * @param allow_dpi_override Allow DPI override if true, or follow the
+     *                           Windows DPI scaling setting dynamically.
+     * @param simulator_mode Create simulator mode display if true, or create
+     *                       application mode display.
+     * @return The created LVGL display object.
+    */
     lv_display_t* lv_windows_create_display(
         const wchar_t* title,
         int32_t hor_res,
