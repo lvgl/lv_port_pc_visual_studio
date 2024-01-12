@@ -171,9 +171,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
     WPARAM wParam,
     LPARAM lParam);
 
-static unsigned int __stdcall lv_windows_window_thread_entrypoint(
-    void* raw_parameter);
-
 static void lv_windows_push_key_to_keyboard_queue(
     lv_windows_window_context_t* context,
     uint32_t key,
@@ -298,47 +295,6 @@ EXTERN_C HWND lv_windows_create_display_window(
     }
 
     return display_window_handle;
-}
-
-EXTERN_C bool lv_windows_init(
-    HINSTANCE instance_handle,
-    int show_window_mode,
-    int32_t hor_res,
-    int32_t ver_res,
-    HICON icon_handle)
-{
-    if (!lv_windows_init_window_class())
-    {
-        return false;
-    }
-
-    PWINDOW_THREAD_PARAMETER parameter =
-        (PWINDOW_THREAD_PARAMETER)malloc(sizeof(WINDOW_THREAD_PARAMETER));
-    parameter->window_mutex = CreateEventExW(NULL, NULL, 0, EVENT_ALL_ACCESS);
-    parameter->instance_handle = instance_handle;
-    parameter->icon_handle = icon_handle;
-    parameter->hor_res = hor_res;
-    parameter->ver_res = ver_res;
-    parameter->show_window_mode = show_window_mode;
-
-    _beginthreadex(
-        NULL,
-        0,
-        lv_windows_window_thread_entrypoint,
-        parameter,
-        0,
-        NULL);
-
-    WaitForSingleObjectEx(parameter->window_mutex, INFINITE, FALSE);
-
-    lv_windows_window_context_t* context = lv_windows_get_window_context(
-        g_window_handle);
-    if (!context)
-    {
-        return false;
-    }
-
-    return true;
 }
 
 static unsigned int __stdcall lv_windows_display_thread_entrypoint(
@@ -1813,36 +1769,6 @@ static LRESULT CALLBACK lv_windows_window_message_callback(
 
         return DefWindowProcW(hWnd, uMsg, wParam, lParam);
     }
-    }
-
-    return 0;
-}
-
-static unsigned int __stdcall lv_windows_window_thread_entrypoint(
-    void* raw_parameter)
-{
-    PWINDOW_THREAD_PARAMETER parameter =
-        (PWINDOW_THREAD_PARAMETER)raw_parameter;
-
-    g_window_handle = lv_windows_create_display_window(
-        L"LVGL Simulator for Windows Desktop (Display 1)",
-        parameter->hor_res,
-        parameter->ver_res,
-        parameter->instance_handle,
-        parameter->icon_handle,
-        parameter->show_window_mode);
-    if (!g_window_handle)
-    {
-        return 0;
-    }
-
-    SetEvent(parameter->window_mutex);
-
-    MSG message;
-    while (GetMessageW(&message, NULL, 0, 0))
-    {
-        TranslateMessage(&message);
-        DispatchMessageW(&message);
     }
 
     return 0;

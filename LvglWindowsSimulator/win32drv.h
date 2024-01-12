@@ -120,13 +120,6 @@ EXTERN_C HWND lv_windows_create_display_window(
     HICON icon_handle,
     int show_window_mode);
 
-EXTERN_C bool lv_windows_init(
-    HINSTANCE instance_handle,
-    int show_window_mode,
-    int32_t hor_res,
-    int32_t ver_res,
-    HICON icon_handle);
-
 EXTERN_C lv_display_t* lv_windows_create_display(
     const wchar_t* title,
     int32_t hor_res,
