@@ -197,13 +197,6 @@ static HWND g_window_handle = NULL;
  *   GLOBAL FUNCTIONS
  **********************/
 
-EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
-    HWND window_handle)
-{
-    return (lv_windows_window_context_t*)(
-        GetPropW(window_handle, L"LVGL.Window.Context"));
-}
-
 static void lv_windows_check_display_existence_timer_callback(lv_timer_t* timer)
 {
     if (!lv_display_get_next(NULL))
@@ -596,18 +589,6 @@ EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
     }
 
     return context->encoder.indev;
-}
-
-EXTERN_C HWND lv_windows_get_display_window_handle(
-    lv_display_t* display)
-{
-    return (HWND)lv_display_get_driver_data(display);
-}
-
-EXTERN_C HWND lv_windows_get_indev_window_handle(
-    lv_indev_t* indev)
-{
-    return lv_windows_get_display_window_handle(lv_indev_get_display(indev));
 }
 
 /**********************

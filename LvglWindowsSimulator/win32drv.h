@@ -12,6 +12,8 @@
 
 #include "lvgl/lvgl.h"
 
+#include "lv_windows_context.h"
+
 #include <windows.h>
 
 #if _MSC_VER >= 1200
@@ -52,63 +54,9 @@
  *      TYPEDEFS
  **********************/
 
-typedef struct _lv_windows_pointer_context_t
-{
-    lv_indev_state_t state;
-    lv_point_t point;
-    lv_indev_t* indev;
-} lv_windows_pointer_context_t;
-
-typedef struct _lv_windows_keypad_queue_item_t
-{
-    uint32_t key;
-    lv_indev_state_t state;
-} lv_windows_keypad_queue_item_t;
-
-typedef struct _lv_windows_keypad_context_t
-{
-    CRITICAL_SECTION mutex;
-    lv_ll_t queue;
-    uint16_t utf16_high_surrogate;
-    uint16_t utf16_low_surrogate;
-    lv_indev_t* indev;
-} lv_windows_keypad_context_t;
-
-typedef struct _lv_windows_encoder_context_t
-{
-    lv_indev_state_t state;
-    int16_t enc_diff;
-    lv_indev_t* indev;
-} lv_windows_encoder_context_t;
-
-typedef struct _lv_windows_window_context_t
-{
-    lv_disp_t* display_device_object;
-    lv_timer_t* display_timer_object;
-
-    int32_t window_dpi;
-    int32_t zoom_level;
-    bool allow_dpi_override;
-    bool simulator_mode;
-    bool display_resolution_changed;
-    lv_point_t requested_display_resolution;
-
-    HDC display_framebuffer_context_handle;
-    uint32_t* display_framebuffer_base;
-    size_t display_framebuffer_size;
-
-    lv_windows_pointer_context_t pointer;
-    lv_windows_keypad_context_t keypad;
-    lv_windows_encoder_context_t encoder;
-
-} lv_windows_window_context_t;
-
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
-
-EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
-    HWND window_handle);
 
 EXTERN_C bool lv_windows_platform_init();
 
@@ -128,12 +76,6 @@ EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
 
 EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
     lv_display_t* display);
-
-EXTERN_C HWND lv_windows_get_display_window_handle(
-    lv_display_t* display);
-
-EXTERN_C HWND lv_windows_get_indev_window_handle(
-    lv_indev_t* indev);
 
 /**********************
  *      MACROS
