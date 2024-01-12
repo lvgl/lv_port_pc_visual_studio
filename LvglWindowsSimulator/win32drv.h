@@ -13,8 +13,7 @@
 #include "lvgl/lvgl.h"
 
 #include "lv_windows_interop.h"
-#include "lv_windows_pointer_device.h"
-#include "lv_windows_keypad_device.h"
+#include "lv_windows_input.h"
 
 #include <windows.h>
 

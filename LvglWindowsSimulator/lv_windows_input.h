@@ -1,10 +1,10 @@
 ﻿/**
- * @file lv_windows_pointer_device.h
+ * @file lv_windows_input.h
  *
  */
 
-#ifndef LV_WINDOWS_POINTER_DEVICE_H
-#define LV_WINDOWS_POINTER_DEVICE_H
+#ifndef LV_WINDOWS_INPUT_H
+#define LV_WINDOWS_INPUT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,6 +44,16 @@ extern "C" {
     */
     lv_indev_t* lv_windows_acquire_pointer_device(lv_display_t* display);
 
+    /**
+     * @brief Open a LVGL keypad input device object for the specific LVGL
+     *        display object, or create it if the LVGL keypad input device
+     *        object is not created or removed before.
+     * @param display The specific LVGL display object.
+     * @return The LVGL keypad input device object for the specific LVGL
+     *         display object.
+    */
+    lv_indev_t* lv_windows_acquire_keypad_device(lv_display_t* display);
+
 /**********************
  *      MACROS
  **********************/
@@ -54,4 +64,4 @@ extern "C" {
 } /*extern "C"*/
 #endif
 
-#endif /*LV_WINDOWS_POINTER_DEVICE_H*/
+#endif /*LV_WINDOWS_INPUT_H*/

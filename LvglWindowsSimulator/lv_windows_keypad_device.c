@@ -7,7 +7,7 @@
  *      INCLUDES
  *********************/
 
-#include "lv_windows_pointer_device.h"
+#include "lv_windows_input.h"
 #ifdef LV_USE_WINDOWS
 
 #include "lv_windows_context.h"
