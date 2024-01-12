@@ -2748,9 +2748,7 @@
     <ClCompile Include="win32drv.c" />
     <ClCompile Include="lv_windows_context.c" />
     <ClCompile Include="lv_windows_interop.c" />
-    <ClCompile Include="lv_windows_pointer_device.c" />
-    <ClCompile Include="lv_windows_keypad_device.c" />
-    <ClCompile Include="lv_windows_encoder_device.c" />
+    <ClCompile Include="lv_windows_input.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\freetype\.clang-format">

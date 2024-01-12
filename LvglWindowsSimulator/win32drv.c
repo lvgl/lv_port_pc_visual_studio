@@ -16,8 +16,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#pragma comment(lib, "Imm32.lib")
-
 /*********************
  *      DEFINES
  *********************/
