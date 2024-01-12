@@ -42,8 +42,7 @@ extern "C" {
      * @return The LVGL pointer input device object for the specific LVGL
      *         display object.
     */
-    lv_indev_t* lv_windows_acquire_pointer_device(
-        lv_display_t* display);
+    lv_indev_t* lv_windows_acquire_pointer_device(lv_display_t* display);
 
 /**********************
  *      MACROS

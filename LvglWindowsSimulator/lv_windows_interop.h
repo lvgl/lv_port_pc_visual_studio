@@ -47,16 +47,14 @@ extern "C" {
      * @param display The specific LVGL display object.
      * @return The window handle from specific LVGL display object.
     */
-    HWND lv_windows_get_display_window_handle(
-        lv_display_t* display);
+    HWND lv_windows_get_display_window_handle(lv_display_t* display);
 
     /**
      * @brief Get the window handle from specific LVGL input device object.
      * @param indev The specific LVGL input device object.
      * @return The window handle from specific LVGL input device object.
     */
-    HWND lv_windows_get_indev_window_handle(
-        lv_indev_t* indev);
+    HWND lv_windows_get_indev_window_handle(lv_indev_t* indev);
 
     /**
      * @brief Get logical pixel value from physical pixel value taken account

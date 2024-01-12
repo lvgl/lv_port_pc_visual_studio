@@ -45,8 +45,7 @@ static void lv_windows_release_pointer_device_event_callback(lv_event_t* e);
  *   GLOBAL FUNCTIONS
  **********************/
 
-lv_indev_t* lv_windows_acquire_pointer_device(
-    lv_display_t* display)
+lv_indev_t* lv_windows_acquire_pointer_device(lv_display_t* display)
 {
     HWND window_handle = lv_windows_get_display_window_handle(display);
     if (!window_handle)
