@@ -26,7 +26,6 @@
 #include "lvgl/demos/lv_demos.h"
 
 #include "lv_windows_context.h"
-#include "lv_windows_interop.h"
 #include "lv_windows_input.h"
 #include "lv_windows_display.h"
 

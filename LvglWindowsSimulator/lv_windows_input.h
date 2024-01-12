@@ -22,6 +22,8 @@ extern "C" {
 
 #ifdef LV_USE_WINDOWS
 
+#include <windows.h>
+
 /*********************
  *      DEFINES
  *********************/
@@ -33,6 +35,13 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
+
+    /**
+     * @brief Get the window handle from specific LVGL input device object.
+     * @param indev The specific LVGL input device object.
+     * @return The window handle from specific LVGL input device object.
+    */
+    HWND lv_windows_get_indev_window_handle(lv_indev_t* indev);
 
     /**
      * @brief Open a LVGL pointer input device object for the specific LVGL

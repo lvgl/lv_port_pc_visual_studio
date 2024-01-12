@@ -11,7 +11,7 @@
 #ifdef LV_USE_WINDOWS
 
 #include "lv_windows_context.h"
-#include "lv_windows_interop.h"
+#include "lv_windows_display.h"
 
 #include <windowsx.h>
 
@@ -60,6 +60,11 @@ static void lv_windows_release_encoder_device_event_callback(lv_event_t* e);
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
+
+HWND lv_windows_get_indev_window_handle(lv_indev_t* indev)
+{
+    return lv_windows_get_display_window_handle(lv_indev_get_display(indev));
+}
 
 lv_indev_t* lv_windows_acquire_pointer_device(lv_display_t* display)
 {

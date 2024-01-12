@@ -10,7 +10,7 @@
 #include "lv_windows_context.h"
 #ifdef LV_USE_WINDOWS
 
-#include "lv_windows_interop.h"
+#include "lv_windows_display.h"
 
 /*********************
  *      DEFINES
