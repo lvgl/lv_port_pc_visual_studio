@@ -25,7 +25,10 @@
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
 
-#include "win32drv.h"
+#include "lv_windows_context.h"
+#include "lv_windows_interop.h"
+#include "lv_windows_input.h"
+#include "lv_windows_display.h"
 
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
@@ -43,10 +46,7 @@ int main()
 
     lv_tick_set_cb(tick_count_callback);
 
-    if (!lv_windows_platform_init())
-    {
-        return -1;
-    }
+    lv_windows_platform_init();
 
     int32_t zoom_level = 100;
     bool allow_dpi_override = false;

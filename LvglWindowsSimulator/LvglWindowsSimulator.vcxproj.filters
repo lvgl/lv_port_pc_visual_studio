@@ -890,7 +890,6 @@
       <Filter>lvgl\src\widgets\win</Filter>
     </ClInclude>
     <ClInclude Include="lv_conf.h" />
-    <ClInclude Include="win32drv.h" />
     <ClInclude Include="lv_windows_context.h" />
     <ClInclude Include="lv_windows_interop.h" />
     <ClInclude Include="lv_windows_input.h" />
@@ -2746,7 +2745,6 @@
       <Filter>lvgl\src\widgets\win</Filter>
     </ClCompile>
     <ClCompile Include="LvglWindowsSimulator.cpp" />
-    <ClCompile Include="win32drv.c" />
     <ClCompile Include="lv_windows_context.c" />
     <ClCompile Include="lv_windows_interop.c" />
     <ClCompile Include="lv_windows_input.c" />

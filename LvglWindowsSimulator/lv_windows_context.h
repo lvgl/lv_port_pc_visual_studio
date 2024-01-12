@@ -100,6 +100,14 @@ extern "C" {
  **********************/
 
     /**
+     * @brief Initialize the LVGL Windows backend.
+     * @remark This is a private API which is used for LVGL Windows backend
+     *         implementation. LVGL users shouldn't use that because the
+     *         LVGL has already used it in lv_init. 
+    */
+    void lv_windows_platform_init();
+
+    /**
      * @brief Get the window context from specific LVGL display window.
      * @param window_handle The window handle of specific LVGL display window.
      * @return The window context from specific LVGL display window.
