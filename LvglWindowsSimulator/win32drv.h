@@ -14,6 +14,7 @@
 
 #include "lv_windows_interop.h"
 #include "lv_windows_pointer_device.h"
+#include "lv_windows_keypad_device.h"
 
 #include <windows.h>
 
@@ -68,9 +69,6 @@ EXTERN_C lv_display_t* lv_windows_create_display(
     int32_t zoom_level,
     bool allow_dpi_override,
     bool simulator_mode);
-
-EXTERN_C lv_indev_t* lv_windows_acquire_keypad_device(
-    lv_display_t* display);
 
 EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
     lv_display_t* display);
