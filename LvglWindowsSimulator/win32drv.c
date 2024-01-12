@@ -214,7 +214,7 @@ static void lv_windows_check_display_existence_timer_callback(lv_timer_t* timer)
     }
 }
 
-EXTERN_C bool lv_windows_init_window_class()
+EXTERN_C bool lv_windows_platform_init()
 {
     lv_timer_create(
         lv_windows_check_display_existence_timer_callback,

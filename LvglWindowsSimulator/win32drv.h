@@ -110,7 +110,7 @@ typedef struct _lv_windows_window_context_t
 EXTERN_C lv_windows_window_context_t* lv_windows_get_window_context(
     HWND window_handle);
 
-EXTERN_C bool lv_windows_init_window_class();
+EXTERN_C bool lv_windows_platform_init();
 
 EXTERN_C lv_display_t* lv_windows_create_display(
     const wchar_t* title,

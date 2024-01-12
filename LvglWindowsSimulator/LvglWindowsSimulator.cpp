@@ -43,7 +43,7 @@ int main()
 
     lv_tick_set_cb(tick_count_callback);
 
-    if (!lv_windows_init_window_class())
+    if (!lv_windows_platform_init())
     {
         return -1;
     }
