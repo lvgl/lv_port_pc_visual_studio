@@ -54,6 +54,16 @@ extern "C" {
     */
     lv_indev_t* lv_windows_acquire_keypad_device(lv_display_t* display);
 
+    /**
+     * @brief Open a LVGL encoder input device object for the specific LVGL
+     *        display object, or create it if the LVGL encoder input device
+     *        object is not created or removed before.
+     * @param display The specific LVGL display object.
+     * @return The LVGL encoder input device object for the specific LVGL
+     *         display object.
+    */
+    lv_indev_t* lv_windows_acquire_encoder_device(lv_display_t* display);
+
 /**********************
  *      MACROS
  **********************/

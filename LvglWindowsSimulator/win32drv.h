@@ -69,9 +69,6 @@ EXTERN_C lv_display_t* lv_windows_create_display(
     bool allow_dpi_override,
     bool simulator_mode);
 
-EXTERN_C lv_indev_t* lv_windows_acquire_encoder_device(
-    lv_display_t* display);
-
 /**********************
  *      MACROS
  **********************/
