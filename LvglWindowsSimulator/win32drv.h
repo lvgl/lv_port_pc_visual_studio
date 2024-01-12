@@ -14,6 +14,7 @@
 
 #include "lv_windows_interop.h"
 #include "lv_windows_input.h"
+#include "lv_windows_display.h"
 
 #include <windows.h>
 
@@ -49,8 +50,6 @@
  *      DEFINES
  *********************/
 
-#define LV_WINDOWS_WINDOW_CLASS L"LVGL.Window"
-
 /**********************
  *      TYPEDEFS
  **********************/
@@ -60,14 +59,6 @@
  **********************/
 
 EXTERN_C bool lv_windows_platform_init();
-
-EXTERN_C lv_display_t* lv_windows_create_display(
-    const wchar_t* title,
-    int32_t hor_res,
-    int32_t ver_res,
-    int32_t zoom_level,
-    bool allow_dpi_override,
-    bool simulator_mode);
 
 /**********************
  *      MACROS

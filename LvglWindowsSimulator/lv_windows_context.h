@@ -83,6 +83,18 @@ extern "C" {
 
     } lv_windows_window_context_t;
 
+    typedef struct _lv_windows_create_display_data_t
+    {
+        const wchar_t* title;
+        int32_t hor_res;
+        int32_t ver_res;
+        int32_t zoom_level;
+        bool allow_dpi_override;
+        bool simulator_mode;
+        HANDLE mutex;
+        lv_disp_t* display;
+    } lv_windows_create_display_data_t;
+
 /**********************
  * GLOBAL PROTOTYPES
  **********************/

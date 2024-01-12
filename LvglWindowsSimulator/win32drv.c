@@ -12,7 +12,6 @@
 #include "lv_windows_context.h"
 
 #include <malloc.h>
-#include <process.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -23,18 +22,6 @@
 /**********************
  *      TYPEDEFS
  **********************/
-
-typedef struct _lv_windows_create_display_data_t
-{
-    const wchar_t* title;
-    int32_t hor_res;
-    int32_t ver_res;
-    int32_t zoom_level;
-    bool allow_dpi_override;
-    bool simulator_mode;
-    HANDLE mutex;
-    lv_disp_t* display;
-} lv_windows_create_display_data_t;
 
 /**********************
  *  STATIC PROTOTYPES
@@ -184,127 +171,9 @@ EXTERN_C bool lv_windows_platform_init()
     window_class.hCursor = LoadCursorW(NULL, IDC_ARROW);
     window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     window_class.lpszMenuName = NULL;
-    window_class.lpszClassName = LV_WINDOWS_WINDOW_CLASS;
+    window_class.lpszClassName = L"LVGL.Window";
     window_class.hIconSm = NULL;
     return RegisterClassExW(&window_class);
-}
-
-static unsigned int __stdcall lv_windows_display_thread_entrypoint(
-    void* parameter)
-{
-    lv_windows_create_display_data_t* data =
-        (lv_windows_create_display_data_t*)(parameter);
-    if (!data)
-    {
-        return 0;
-    }
-
-    DWORD window_style = WS_OVERLAPPEDWINDOW;
-    if (data->simulator_mode)
-    {
-        window_style &= ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME);
-    }
-
-    HWND window_handle = CreateWindowExW(
-        WS_EX_CLIENTEDGE,
-        LV_WINDOWS_WINDOW_CLASS,
-        data->title,
-        window_style,
-        CW_USEDEFAULT,
-        0,
-        data->hor_res,
-        data->ver_res,
-        NULL,
-        NULL,
-        NULL,
-        data);
-    if (!window_handle)
-    {
-        return 0;
-    }
-
-    lv_windows_window_context_t* context = lv_windows_get_window_context(
-        window_handle);
-    if (!context)
-    {
-        return 0;
-    }
-
-    data->display = context->display_device_object;
-
-    ShowWindow(window_handle, SW_SHOW);
-    UpdateWindow(window_handle);
-
-    SetEvent(data->mutex);
-
-    data = NULL;
-
-    MSG message;
-    while (GetMessageW(&message, NULL, 0, 0))
-    {
-        TranslateMessage(&message);
-        DispatchMessageW(&message);
-    }
-
-    return 0;
-}
-
-EXTERN_C lv_display_t* lv_windows_create_display(
-    const wchar_t* title,
-    int32_t hor_res,
-    int32_t ver_res,
-    int32_t zoom_level,
-    bool allow_dpi_override,
-    bool simulator_mode)
-{
-    lv_windows_create_display_data_t* data = NULL;
-    lv_display_t* display = NULL;
-
-    do
-    {
-        data = (lv_windows_create_display_data_t*)(malloc(
-            sizeof(lv_windows_create_display_data_t)));
-        if (!data)
-        {
-            break;
-        }
-
-        data->title = title;
-        data->hor_res = hor_res;
-        data->ver_res = ver_res;
-        data->zoom_level = zoom_level;
-        data->allow_dpi_override = allow_dpi_override;
-        data->simulator_mode = simulator_mode;
-        data->mutex = CreateEventExW(NULL, NULL, 0, EVENT_ALL_ACCESS);
-        data->display = NULL;
-        if (!data->mutex)
-        {
-            break;
-        }
-
-        _beginthreadex(
-            NULL,
-            0,
-            lv_windows_display_thread_entrypoint,
-            data,
-            0,
-            NULL);
-
-        WaitForSingleObjectEx(data->mutex, INFINITE, FALSE);
-
-    } while (false);
-
-    if (data)
-    {
-        display = data->display;
-        if (data->mutex)
-        {
-            CloseHandle(data->mutex);
-        }
-        free(data);
-    }
-
-    return display;
 }
 
 /**********************

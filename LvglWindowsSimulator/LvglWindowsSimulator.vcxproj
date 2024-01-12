@@ -337,6 +337,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.h" />
     <ClInclude Include="lv_conf.h" />
     <ClInclude Include="lv_windows_context.h" />
+    <ClInclude Include="lv_windows_display.h" />
     <ClInclude Include="lv_windows_input.h" />
     <ClInclude Include="lv_windows_interop.h" />
     <ClInclude Include="win32drv.h" />
@@ -962,6 +963,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c" />
     <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="lv_windows_context.c" />
+    <ClCompile Include="lv_windows_display.c" />
     <ClCompile Include="lv_windows_interop.c" />
     <ClCompile Include="lv_windows_input.c" />
     <ClCompile Include="win32drv.c" />
