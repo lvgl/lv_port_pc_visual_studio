@@ -245,7 +245,7 @@ EXTERN_C bool lv_windows_init_window_class()
     window_class.hCursor = LoadCursorW(NULL, IDC_ARROW);
     window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     window_class.lpszMenuName = NULL;
-    window_class.lpszClassName = LVGL_SIMULATOR_WINDOW_CLASS;
+    window_class.lpszClassName = LV_WINDOWS_WINDOW_CLASS;
     window_class.hIconSm = NULL;
     return RegisterClassExW(&window_class);
 }
@@ -268,7 +268,7 @@ static unsigned int __stdcall lv_windows_display_thread_entrypoint(
 
     HWND window_handle = CreateWindowExW(
         WS_EX_CLIENTEDGE,
-        LVGL_SIMULATOR_WINDOW_CLASS,
+        LV_WINDOWS_WINDOW_CLASS,
         data->title,
         window_style,
         CW_USEDEFAULT,

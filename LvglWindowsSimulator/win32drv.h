@@ -46,7 +46,7 @@
  *      DEFINES
  *********************/
 
-#define LVGL_SIMULATOR_WINDOW_CLASS L"LVGL.SimulatorWindow"
+#define LV_WINDOWS_WINDOW_CLASS L"LVGL.Window"
 
 /**********************
  *      TYPEDEFS
