@@ -11,7 +11,6 @@
 
 #include "lv_windows_context.h"
 
-#include <windowsx.h>
 #include <malloc.h>
 #include <process.h>
 #include <stdbool.h>
@@ -89,38 +88,6 @@ static BOOL lv_windows_register_touch_window(
     ULONG ulFlags);
 
 /**
- * @brief Retrieves detailed information about touch inputs associated with a
- *        particular touch input handle.
- * @param hTouchInput The touch input handle received in the LPARAM of a touch
- *                    message.
- * @param cInputs The number of structures in the pInputs array.
- * @param pInputs A pointer to an array of TOUCHINPUT structures to receive
- *                information about the touch points associated with the
- *                specified touch input handle.
- * @param cbSize The size, in bytes, of a single TOUCHINPUT structure.
- * @return If the function succeeds, the return value is nonzero. If the
- *         function fails, the return value is zero.
- * @remark For more information, see GetTouchInputInfo.
-*/
-static BOOL lv_windows_get_touch_input_info(
-    HTOUCHINPUT hTouchInput,
-    UINT cInputs,
-    PTOUCHINPUT pInputs,
-    int cbSize);
-
-/**
- * @brief Closes a touch input handle, frees process memory associated with it,
-          and invalidates the handle.
- * @param hTouchInput The touch input handle received in the LPARAM of a touch
- *                    message.
- * @return If the function succeeds, the return value is nonzero. If the
- *         function fails, the return value is zero.
- * @remark For more information, see CloseTouchInputHandle.
-*/
-static BOOL lv_windows_close_touch_input_handle(
-    HTOUCHINPUT hTouchInput);
-
-/**
  * @brief Returns the dots per inch (dpi) value for the associated window.
  * @param WindowHandle The window you want to get information about.
  * @return The DPI for the window.
@@ -132,10 +99,6 @@ static void lv_windows_display_driver_flush_callback(
     lv_disp_t* display,
     const lv_area_t* area,
     uint8_t* px_map);
-
-static void lv_windows_pointer_driver_read_callback(
-    lv_indev_t* indev,
-    lv_indev_data_t* data);
 
 static void lv_windows_keypad_driver_read_callback(
     lv_indev_t* indev,
@@ -164,6 +127,13 @@ static void lv_windows_push_key_to_keyboard_queue(
         current->state = state;
     }
 }
+
+bool lv_windows_pointer_device_window_message_handler(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    LRESULT* plResult);
 
 /**********************
  *  GLOBAL VARIABLES
@@ -345,82 +315,6 @@ EXTERN_C lv_display_t* lv_windows_create_display(
     }
 
     return display;
-}
-
-static void lv_windows_release_pointer_device_event_callback(lv_event_t* e)
-{
-    lv_indev_t* indev = (lv_indev_t*)lv_event_get_user_data(e);
-    if (!indev)
-    {
-        return;
-    }
-
-    HWND window_handle = lv_windows_get_indev_window_handle(indev);
-    if (!window_handle)
-    {
-        return;
-    }
-
-    lv_windows_window_context_t* context = lv_windows_get_window_context(
-        window_handle);
-    if (!context)
-    {
-        return;
-    }
-
-    context->pointer.state = LV_INDEV_STATE_RELEASED;
-    context->pointer.point.x = 0;
-    context->pointer.point.y = 0;
-
-    context->pointer.indev = NULL;
-}
-
-EXTERN_C lv_indev_t* lv_windows_acquire_pointer_device(
-    lv_display_t* display)
-{
-    HWND window_handle = lv_windows_get_display_window_handle(display);
-    if (!window_handle)
-    {
-        return NULL;
-    }
-
-    lv_windows_window_context_t* context = lv_windows_get_window_context(
-        window_handle);
-    if (!context)
-    {
-        return NULL;
-    }
-
-    if (!context->pointer.indev)
-    {
-        context->pointer.state = LV_INDEV_STATE_RELEASED;
-        context->pointer.point.x = 0;
-        context->pointer.point.y = 0;
-
-        context->pointer.indev = lv_indev_create();
-        if (context->pointer.indev)
-        {
-            lv_indev_set_type(
-                context->pointer.indev,
-                LV_INDEV_TYPE_POINTER);
-            lv_indev_set_read_cb(
-                context->pointer.indev,
-                lv_windows_pointer_driver_read_callback);
-            lv_indev_set_display(
-                context->pointer.indev,
-                context->display_device_object);
-            lv_indev_add_event_cb(
-                context->pointer.indev,
-                lv_windows_release_pointer_device_event_callback,
-                LV_EVENT_DELETE,
-                context->pointer.indev);
-            lv_indev_set_group(
-                context->pointer.indev,
-                lv_group_get_default());
-        }
-    }
-
-    return context->pointer.indev;
 }
 
 static void lv_windows_release_keypad_device_event_callback(lv_event_t* e)
@@ -726,51 +620,6 @@ static BOOL lv_windows_register_touch_window(
     return pFunction(hWnd, ulFlags);
 }
 
-static BOOL lv_windows_get_touch_input_info(
-    HTOUCHINPUT hTouchInput,
-    UINT cInputs,
-    PTOUCHINPUT pInputs,
-    int cbSize)
-{
-    HMODULE ModuleHandle = GetModuleHandleW(L"user32.dll");
-    if (!ModuleHandle)
-    {
-        return FALSE;
-    }
-
-    typedef BOOL(WINAPI* FunctionType)(HTOUCHINPUT, UINT, PTOUCHINPUT, int);
-
-    FunctionType pFunction = (FunctionType)(
-        GetProcAddress(ModuleHandle, "GetTouchInputInfo"));
-    if (!pFunction)
-    {
-        return FALSE;
-    }
-
-    return pFunction(hTouchInput, cInputs, pInputs, cbSize);
-}
-
-static BOOL lv_windows_close_touch_input_handle(
-    HTOUCHINPUT hTouchInput)
-{
-    HMODULE ModuleHandle = GetModuleHandleW(L"user32.dll");
-    if (!ModuleHandle)
-    {
-        return FALSE;
-    }
-
-    typedef BOOL(WINAPI* FunctionType)(HTOUCHINPUT);
-
-    FunctionType pFunction = (FunctionType)(
-        GetProcAddress(ModuleHandle, "CloseTouchInputHandle"));
-    if (!pFunction)
-    {
-        return FALSE;
-    }
-
-    return pFunction(hTouchInput);
-}
-
 static UINT lv_windows_get_dpi_for_window(
     _In_ HWND WindowHandle)
 {
@@ -900,21 +749,6 @@ static void lv_windows_display_driver_flush_callback(
     lv_display_flush_ready(display);
 }
 
-static void lv_windows_pointer_driver_read_callback(
-    lv_indev_t* indev,
-    lv_indev_data_t* data)
-{
-    lv_windows_window_context_t* context = lv_windows_get_window_context(
-        lv_windows_get_indev_window_handle(indev));
-    if (!context)
-    {
-        return;
-    }
-
-    data->state = context->pointer.state;
-    data->point = context->pointer.point;
-}
-
 static void lv_windows_keypad_driver_read_callback(
     lv_indev_t* indev,
     lv_indev_data_t* data)
@@ -1015,148 +849,6 @@ static void lv_windows_display_timer_callback(lv_timer_t* timer)
         context->requested_display_resolution.x = 0;
         context->requested_display_resolution.y = 0;
     }
-}
-
-static bool lv_windows_pointer_device_window_message_handler(
-    HWND hWnd,
-    UINT uMsg,
-    WPARAM wParam,
-    LPARAM lParam,
-    LRESULT* plResult)
-{
-    switch (uMsg)
-    {
-    case WM_MOUSEMOVE:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            int32_t hor_res = lv_display_get_horizontal_resolution(
-                context->display_device_object);
-            int32_t ver_res = lv_display_get_vertical_resolution(
-                context->display_device_object);
-
-            context->pointer.point.x = lv_windows_zoom_to_logical(
-                GET_X_LPARAM(lParam),
-                context->zoom_level);
-            context->pointer.point.y = lv_windows_zoom_to_logical(
-                GET_Y_LPARAM(lParam),
-                context->zoom_level);
-            if (context->simulator_mode)
-            {
-                context->pointer.point.x = lv_windows_dpi_to_logical(
-                    context->pointer.point.x,
-                    context->window_dpi);
-                context->pointer.point.y = lv_windows_dpi_to_logical(
-                    context->pointer.point.y,
-                    context->window_dpi);
-            }
-            if (context->pointer.point.x < 0)
-            {
-                context->pointer.point.x = 0;
-            }
-            if (context->pointer.point.x > hor_res - 1)
-            {
-                context->pointer.point.x = hor_res - 1;
-            }
-            if (context->pointer.point.y < 0)
-            {
-                context->pointer.point.y = 0;
-            }
-            if (context->pointer.point.y > ver_res - 1)
-            {
-                context->pointer.point.y = ver_res - 1;
-            }
-        }
-
-        break;
-    }
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            context->pointer.state = (
-                uMsg == WM_LBUTTONDOWN
-                ? LV_INDEV_STATE_PRESSED
-                : LV_INDEV_STATE_RELEASED);
-        }
-
-        break;
-    }
-    case WM_TOUCH:
-    {
-        lv_windows_window_context_t* context = (lv_windows_window_context_t*)(
-            lv_windows_get_window_context(hWnd));
-        if (context)
-        {
-            UINT input_count = LOWORD(wParam);
-            HTOUCHINPUT touch_input_handle = (HTOUCHINPUT)(lParam);
-
-            PTOUCHINPUT inputs = malloc(input_count * sizeof(TOUCHINPUT));
-            if (inputs)
-            {
-                if (lv_windows_get_touch_input_info(
-                    touch_input_handle,
-                    input_count,
-                    inputs,
-                    sizeof(TOUCHINPUT)))
-                {
-                    for (UINT i = 0; i < input_count; ++i)
-                    {
-                        POINT Point;
-                        Point.x = TOUCH_COORD_TO_PIXEL(inputs[i].x);
-                        Point.y = TOUCH_COORD_TO_PIXEL(inputs[i].y);
-                        if (!ScreenToClient(hWnd, &Point))
-                        {
-                            continue;
-                        }
-
-                        context->pointer.point.x = lv_windows_zoom_to_logical(
-                            Point.x,
-                            context->zoom_level);
-                        context->pointer.point.y = lv_windows_zoom_to_logical(
-                            Point.y,
-                            context->zoom_level);
-                        if (context->simulator_mode)
-                        {
-                            context->pointer.point.x = lv_windows_dpi_to_logical(
-                                context->pointer.point.x,
-                                context->window_dpi);
-                            context->pointer.point.y = lv_windows_dpi_to_logical(
-                                context->pointer.point.y,
-                                context->window_dpi);
-                        }
-
-                        DWORD MousePressedMask =
-                            TOUCHEVENTF_MOVE | TOUCHEVENTF_DOWN;
-
-                        context->pointer.state = (
-                            inputs[i].dwFlags & MousePressedMask
-                            ? LV_INDEV_STATE_PRESSED
-                            : LV_INDEV_STATE_RELEASED);
-                    }
-                }
-
-                free(inputs);
-            }
-
-            lv_windows_close_touch_input_handle(touch_input_handle);
-        }
-
-        break;
-    }
-    default:
-        // Not Handled
-        return false;
-    }
-
-    // Handled
-    *plResult = 0;
-    return true;
 }
 
 static bool lv_windows_keypad_device_window_message_handler(

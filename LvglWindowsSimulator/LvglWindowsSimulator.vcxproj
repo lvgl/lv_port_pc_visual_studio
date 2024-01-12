@@ -338,6 +338,7 @@
     <ClInclude Include="lv_conf.h" />
     <ClInclude Include="lv_windows_context.h" />
     <ClInclude Include="lv_windows_interop.h" />
+    <ClInclude Include="lv_windows_pointer_device.h" />
     <ClInclude Include="win32drv.h" />
   </ItemGroup>
   <ItemGroup>
@@ -962,6 +963,7 @@
     <ClCompile Include="LvglWindowsSimulator.cpp" />
     <ClCompile Include="lv_windows_context.c" />
     <ClCompile Include="lv_windows_interop.c" />
+    <ClCompile Include="lv_windows_pointer_device.c" />
     <ClCompile Include="win32drv.c" />
   </ItemGroup>
   <ItemGroup>
