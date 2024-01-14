@@ -12,46 +12,19 @@
 
 #include <LvglWindowsIconResource.h>
 
-#if _MSC_VER >= 1200
- // Disable compilation warnings.
-#pragma warning(push)
-// nonstandard extension used : bit field types other than int
-#pragma warning(disable:4214)
-// 'conversion' conversion from 'type1' to 'type2', possible loss of data
-#pragma warning(disable:4244)
-#endif
-
 #include "lvgl/lvgl.h"
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
-
-#include "lv_windows_context.h"
-#include "lv_windows_input.h"
-#include "lv_windows_display.h"
-
-#if _MSC_VER >= 1200
-// Restore compilation warnings.
-#pragma warning(pop)
-#endif
-
-uint32_t tick_count_callback()
-{
-    return GetTickCount();
-}
 
 int main()
 {
     lv_init();
 
-    lv_tick_set_cb(tick_count_callback);
-
-    lv_windows_platform_init();
-
     int32_t zoom_level = 100;
     bool allow_dpi_override = false;
-    bool simulator_mode = false;
+    bool simulator_mode = true;
     lv_display_t* display = lv_windows_create_display(
-        L"LVGL Simulator for Windows Desktop (Display 1)",
+        L"LVGL Windows Simulator Display 1",
         800,
         480,
         zoom_level,
@@ -85,20 +58,20 @@ int main()
             (LPARAM)icon_handle);
     }
 
-    lv_indev_t* pointer_device = lv_windows_acquire_pointer_device(display);
-    if (!pointer_device)
+    lv_indev_t* pointer_indev = lv_windows_acquire_pointer_indev(display);
+    if (!pointer_indev)
     {
         return -1;
     }
 
-    lv_indev_t* keypad_device = lv_windows_acquire_keypad_device(display);
-    if (!keypad_device)
+    lv_indev_t* keypad_indev = lv_windows_acquire_keypad_indev(display);
+    if (!keypad_indev)
     {
         return -1;
     }
 
-    lv_indev_t* encoder_device = lv_windows_acquire_encoder_device(display);
-    if (!encoder_device)
+    lv_indev_t* encoder_indev = lv_windows_acquire_encoder_indev(display);
+    if (!encoder_indev)
     {
         return -1;
     }
