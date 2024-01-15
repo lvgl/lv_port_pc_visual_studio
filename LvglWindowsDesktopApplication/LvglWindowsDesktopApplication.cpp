@@ -1,14 +1,4 @@
-﻿/*
- * PROJECT:   LVGL Windows Desktop Application Demo
- * FILE:      LvglWindowsDesktopApplication.cpp
- * PURPOSE:   Implementation for LVGL Windows Desktop Application Demo
- *
- * LICENSE:   The MIT License
- *
- * DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
- */
-
-#include <Windows.h>
+﻿#include <Windows.h>
 
 #include <LvglWindowsIconResource.h>
 

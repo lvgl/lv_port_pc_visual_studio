@@ -1,14 +1,4 @@
-﻿/*
- * PROJECT:   LVGL Windows Simulator
- * FILE:      LvglWindowsSimulator.cpp
- * PURPOSE:   Implementation for LVGL Windows Simulator
- *
- * LICENSE:   The MIT License
- *
- * DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
- */
-
-#include <Windows.h>
+﻿#include <Windows.h>
 
 #include <LvglWindowsIconResource.h>
 
