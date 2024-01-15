@@ -4,18 +4,7 @@
 master branch. The last stable version is available in the release/v8.3
 branch.**
 
-**WARNING The compilation for the master branch will be failed in the
-recent days because the maintainer, or Kenji Mouri are making a new
-Win32 support for the 
-[new LVGL driver architecture](https://github.com/lvgl/lvgl/issues/4011).**
-
 ![Screenshot](Screenshot.png)
-
-In order to better maintain LVGL for Windows Visual Studio port, I have planned
-to do a big refactoring for this repository. I think it may be the biggest
-refactoring since I become the maintainer of this repository. For more 
-information, please read
-https://github.com/lvgl/lv_port_win_visual_studio/issues/53.
 
 ## Introduction
 
@@ -23,16 +12,12 @@ This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The
 project only depend on Win32 API, C Runtime and C++ STL, so you can compile it
 without any extra dependencies.
 
-The project is currently maintained using Visual Studio 2019. It may well work
-without modification in Visual Studio 2017 but it is not actively supported 
-with that version, so please install and test with Visual Studio 2019 before 
-reporting any bugs.
+The project is currently maintained using Visual Studio 2022. It may well work
+without modification in Visual Studio 2019 and 2017 but it is not actively 
+supported with that version, so please install and test with Visual Studio 2022
+before reporting any bugs.
 
-Some one will notice that this repository had been renamed from 
-`lv_sim_visual_studio_sdl` to `lv_sim_visual_studio`. You can read 
-[here](https://github.com/lvgl/lvgl/issues/2043) and know why.
-
-**This project is not for Visual Studio Code, it is for Visual Studio 2019.**
+**This project is not for Visual Studio Code, it is for Visual Studio.**
 
 Instructions for cloning, building and running the application are found below.
 
@@ -49,25 +34,30 @@ Instructions for cloning, building and running the application are found below.
 
 ### All Mode
 
-- [x] Only depends on Win32 API, C Runtime and C++ STL.
-- [x] Native support for x86, x64 and ARM64 Windows.
-- [x] Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) 
-      toolchain to make the binary size as smaller as using MinGW.
-- [x] Support Windows keyboard and mouse wheel event in the HAL level.
-- [x] Support Windows touch input in the HAL level.
-- [x] Support Windows IME input in the HAL level.
-- [x] Support resizing the Window in the HAL level.
-- [x] Support Per-monitor DPI Aware in the HAL level.
+- Only depends on Win32 API, C Runtime and C++ STL.
+- Native support for x86, x64 and ARM64 Windows.
+- Support compiling with [VC-LTL](https://github.com/Chuyu-Team/VC-LTL) 
+  toolchain to make the binary size as smaller as using MinGW.
+- Support LVGL pointer, keypad and encoder devices integration..
+- Support Windows touch input.
+- Support Windows input method integration input.
+- Support Per-monitor DPI Aware (both V1 and V2).
 
 ### Specific for Simulator Mode
 
-- [x] FreeType integration.
+- Designed for LVGL simulation scenario.
+- Keep the LVGL display resolution all time for trying best to simulate UI 
+  layout which will see in their production devices.
+- When Windows DPI scaling setting is changed, Windows backend will stretch
+  the display content.
+- FreeType integration.
 
 ### Specific for Application Mode
 
-- [x] Provide the easy way to reference lvgl, lv_examples project for Visual
-  Studio.
-- [x] Provide Windows GDI font engine support.
+- Designed for Windows desktop application development scenario.
+- Have the Window resizing support and LVGL display resolution will be changed.
+- When Windows DPI scaling setting is changed, the LVGL display DPI value will 
+  also be changed.
 
 ## How to Clone
 
@@ -78,11 +68,11 @@ needed. There are a couple of techniques to pull in the submodules.
 
 ### Everything at Once
 
-This command will clone the lv_sim_visual_studio repository and all submodules
+This command will clone the lv_port_pc_visual_studio repository and all submodules
 in a single step.
 
 ```
-git clone --recurse-submodules https://github.com/lvgl/lv_sim_visual_studio.git
+git clone --recurse-submodules https://github.com/lvgl/lv_port_pc_visual_studio.git
 ```
 
 ### Main Repository First, Submodules Second
@@ -91,7 +81,7 @@ If you've already cloned the main repository you can pull in the submodules
 with a second command. Both commands are shown below.
 
 ```
-git clone https://github.com/lvgl/lv_sim_visual_studio.git
+git clone https://github.com/lvgl/lv_port_pc_visual_studio.git
 cd lv_port_win_visual_studio
 git submodule update --init --recursive
 ```
@@ -103,7 +93,7 @@ changes, you will have to do this in two steps. The first step will pull in
 updates to the main repo, including updated _references_ to the submodules. The
 second step will update the code in the submodules to match those references.
 The two commands needed to accomplish this are shown below, run these commands
-from inside the main repository's directory (top level `lv_sim_visual_studio`
+from inside the main repository's directory (top level `lv_port_pc_visual_studio`
 directory works fine).
 
 ```
