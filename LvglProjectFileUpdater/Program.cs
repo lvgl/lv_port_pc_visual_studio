@@ -4,7 +4,6 @@ using System.Text;
 
 namespace LvglProjectFileUpdater
 {
-
     internal class Program
     {
         private static string RepositoryRoot = GitRepository.GetRootPath();
