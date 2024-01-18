@@ -7,10 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LvglWindowsSimulator", "Lvg
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LvglWindowsDesktopApplication", "LvglWindowsDesktopApplication\LvglWindowsDesktopApplication.vcxproj", "{7148D2C8-4594-4054-95F2-6211DA069D8F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MaintainerTools", "MaintainerTools", "{85FDA2EE-3116-4F9B-A1F6-902D500D13F6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LvglProjectFileUpdater", "LvglProjectFileUpdater\LvglProjectFileUpdater.csproj", "{BC189C8F-CE33-4E2F-B671-581B9540A977}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -45,20 +41,9 @@ Global
 		{7148D2C8-4594-4054-95F2-6211DA069D8F}.Release|x64.Build.0 = Release|x64
 		{7148D2C8-4594-4054-95F2-6211DA069D8F}.Release|x86.ActiveCfg = Release|Win32
 		{7148D2C8-4594-4054-95F2-6211DA069D8F}.Release|x86.Build.0 = Release|Win32
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Debug|x86.Build.0 = Debug|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Release|x64.ActiveCfg = Release|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Release|x86.ActiveCfg = Release|Any CPU
-		{BC189C8F-CE33-4E2F-B671-581B9540A977}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{BC189C8F-CE33-4E2F-B671-581B9540A977} = {85FDA2EE-3116-4F9B-A1F6-902D500D13F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F07B2868-97B2-414D-A20F-85B77051DE80}
