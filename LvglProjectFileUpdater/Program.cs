@@ -44,6 +44,7 @@ namespace LvglProjectFileUpdater
 
         private static string[] ForceInOthersList = new string[]
         {
+            @".devcontainer",
             @".github",
             @"docs",
             @"tests",
