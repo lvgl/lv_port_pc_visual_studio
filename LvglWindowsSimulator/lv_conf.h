@@ -1,6 +1,6 @@
 ﻿/**
  * @file lv_conf.h
- * Configuration file for v9.0.0-dev
+ * Configuration file for v9.0.0
  */
 
 /*
@@ -42,7 +42,7 @@
 
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
     /*Size of the memory available for `lv_malloc()` in bytes (>= 2kB)*/
-    #define LV_MEM_SIZE (64 * 1024U)          /*[bytes]*/
+    #define LV_MEM_SIZE (256 * 1024U)          /*[bytes]*/
 
     /*Size of the memory expand for `lv_malloc()` in bytes*/
     #define LV_MEM_POOL_EXPAND_SIZE 0
@@ -101,13 +101,16 @@
      * > 1 means multiply threads will render the screen in parallel */
     #define LV_DRAW_SW_DRAW_UNIT_CNT    1
 
+    /* Use Arm-2D to accelerate the sw render */
+    #define LV_USE_DRAW_ARM2D_SYNC      0
+
     /* If a widget has `style_opa < 255` (not `bg_opa`, `text_opa` etc) or not NORMAL blend mode
      * it is buffered into a "simple" layer before rendering. The widget can be buffered in smaller chunks.
      * "Transformed layers" (if `transform_angle/zoom` are set) use larger buffers
      * and can't be drawn in chunks. */
 
     /*The target buffer size for simple layer chunks.*/
-    #define LV_DRAW_SW_LAYER_SIMPLE_BUF_SIZE          (24 * 1024)   /*[bytes]*/
+    #define LV_DRAW_SW_LAYER_SIMPLE_BUF_SIZE    (24 * 1024)   /*[bytes]*/
 
     /* 0: use a simple renderer capable of drawing only simple rectangles with gradient, images, texts, and straight lines only
      * 1: use a complex renderer capable of drawing rounded corners, shadow, skew lines, and arcs too */
@@ -132,9 +135,6 @@
         #define  LV_DRAW_SW_ASM_CUSTOM_INCLUDE ""
     #endif
 #endif
-
-/* Use Arm-2D on Cortex-M based devices. Please only enable it for Helium Powered devices for now */
-#define LV_USE_DRAW_ARM2D 0
 
 /* Use NXP's VG-Lite GPU on iMX RTxxx platforms. */
 #define LV_USE_DRAW_VGLITE 0
@@ -255,28 +255,6 @@
  *For layers add the index number of the draw unit on black background.*/
 #define LV_USE_PARALLEL_DRAW_DEBUG 0
 
-/*------------------
- * STATUS MONITORING
- *------------------*/
-
-/*1: Show CPU usage and FPS count
- * Requires `LV_USE_SYSMON = 1`*/
-#define LV_USE_PERF_MONITOR 1
-#if LV_USE_PERF_MONITOR
-    #define LV_USE_PERF_MONITOR_POS LV_ALIGN_BOTTOM_RIGHT
-
-    /*0: Displays performance data on the screen, 1: Prints performance data using log.*/
-    #define LV_USE_PERF_MONITOR_LOG_MODE 0
-#endif
-
-/*1: Show the used memory and the memory fragmentation
- * Requires `LV_USE_BUILTIN_MALLOC = 1`
- * Requires `LV_USE_SYSMON = 1`*/
-#define LV_USE_MEM_MONITOR 1
-#if LV_USE_MEM_MONITOR
-    #define LV_USE_MEM_MONITOR_POS LV_ALIGN_BOTTOM_LEFT
-#endif
-
 /*-------------
  * Others
  *-----------*/
@@ -292,6 +270,10 @@
  *If size is not set to 0, the decoder will fail to decode when the cache is full.
  *If size is 0, the cache function is not enabled and the decoded mem will be released immediately after use.*/
 #define LV_CACHE_DEF_SIZE       0
+
+/*Default number of image header cache entries. The cache is used to store the headers of images
+ *The main logic is like `LV_CACHE_DEF_SIZE` but for image headers.*/
+#define LV_IMAGE_HEADER_CACHE_DEF_CNT 0
 
 /*Number of stops allowed per gradient. Increase this to allow more stops.
  *This adds (sizeof(lv_color_t) + 1) bytes per additional stop*/
@@ -742,7 +724,30 @@
 #define LV_USE_SNAPSHOT 0
 
 /*1: Enable system monitor component*/
-#define LV_USE_SYSMON   (LV_USE_MEM_MONITOR | LV_USE_PERF_MONITOR)
+#define LV_USE_SYSMON   1
+#if LV_USE_SYSMON
+    /*Get the idle percentage. E.g. uint32_t my_get_idle(void);*/
+    #define LV_SYSMON_GET_IDLE lv_timer_get_idle
+
+    /*1: Show CPU usage and FPS count
+     * Requires `LV_USE_SYSMON = 1`*/
+    #define LV_USE_PERF_MONITOR 1
+    #if LV_USE_PERF_MONITOR
+        #define LV_USE_PERF_MONITOR_POS LV_ALIGN_BOTTOM_RIGHT
+
+        /*0: Displays performance data on the screen, 1: Prints performance data using log.*/
+        #define LV_USE_PERF_MONITOR_LOG_MODE 0
+    #endif
+
+    /*1: Show the used memory and the memory fragmentation
+     * Requires `LV_USE_BUILTIN_MALLOC = 1`
+     * Requires `LV_USE_SYSMON = 1`*/
+    #define LV_USE_MEM_MONITOR 1
+    #if LV_USE_MEM_MONITOR
+        #define LV_USE_MEM_MONITOR_POS LV_ALIGN_BOTTOM_LEFT
+    #endif
+
+#endif /*LV_USE_SYSMON*/
 
 /*1: Enable the runtime performance profiler*/
 #define LV_USE_PROFILER 0
@@ -781,13 +786,6 @@
 
 /*1: Support using images as font in label or span widgets */
 #define LV_USE_IMGFONT 0
-#if LV_USE_IMGFONT
-    /*Imgfont image file path maximum length*/
-    #define LV_IMGFONT_PATH_MAX_LEN 64
-
-    /*1: Use img cache to buffer header information*/
-    #define LV_IMGFONT_USE_IMAGE_CACHE_HEADER 0
-#endif
 
 /*1: Enable an observer pattern implementation*/
 #define LV_USE_OBSERVER 1

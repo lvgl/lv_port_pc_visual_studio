@@ -23,9 +23,9 @@ Instructions for cloning, building and running the application are found below.
 
 ## Known Issues
 
-- The LV_MEM_SIZE macro in lv_conf.h should be 128KiB or larger because you may
+- The LV_MEM_SIZE macro in lv_conf.h should be 128 KiB or larger because you may
   meet the out of memory issue when you are using the 64-bit simulator.
-  - Note: In this project, the size is set to 1024KiB.
+  - Note: In this project, the size is set to 256 KiB.
 - Users need to check the target selected in Visual Studio, because the 
   simulator project support ARM64 and Visual Studio will choose ARM64 in the 
   first time because of the alphabetical order.
