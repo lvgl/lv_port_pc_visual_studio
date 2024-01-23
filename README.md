@@ -1,9 +1,5 @@
 ﻿# LVGL for Windows Visual Studio port
 
-**IMPORTANT NOTE The next major version (v9.0.0) is developed in the 
-master branch. The last stable version is available in the release/v8.3
-branch.**
-
 ![Screenshot](Screenshot.png)
 
 ## Introduction
