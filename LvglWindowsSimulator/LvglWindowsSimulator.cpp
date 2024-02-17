@@ -10,6 +10,17 @@ int main()
 {
     lv_init();
 
+    /*
+     * Optional workaround for users who wants UTF-8 console output.
+     * If you don't want that behavior can comment them out.
+     *
+     * Suggested by jinsc123654.
+     */
+#if LV_TXT_ENC == LV_TXT_ENC_UTF8
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+#endif
+
     int32_t zoom_level = 100;
     bool allow_dpi_override = false;
     bool simulator_mode = true;
