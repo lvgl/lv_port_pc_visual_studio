@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LvglProjectFileUpdater
 {
-    internal class Program
+    public class LvglWindowsLibraryProjectUpdater
     {
         private static string RepositoryRoot = GitRepository.GetRootPath();
 
@@ -49,7 +49,9 @@ namespace LvglProjectFileUpdater
             @"tests",
             @"lvgl\env_support",
             @"lvgl\scripts",
-            @"freetype\"
+            @"freetype\",
+            @"lvgl\demos",
+            @"lvgl\examples"
         };
 
         private static void EnumerateFolder(
@@ -102,147 +104,7 @@ namespace LvglProjectFileUpdater
             }
         }
 
-        static void UpdateLvglWindowsSimulator()
-        {
-            string RootPath = Path.GetFullPath(
-                RepositoryRoot + @"\LvglPlatform\");
-
-            FilterNames.Clear();
-            HeaderNames.Clear();
-            SourceNames.Clear();
-            OtherNames.Clear();
-
-            EnumerateFolder(RootPath + @"freetype");
-            EnumerateFolder(RootPath + @"lvgl");
-
-            List<string> NewFilterNames = new List<string>();
-            List<(string, string)> NewHeaderNames = new List<(string, string)>();
-            List<(string, string)> NewSourceNames = new List<(string, string)>();
-            List<(string, string)> NewOtherNames = new List<(string, string)>();
-
-            foreach (var FilterName in FilterNames)
-            {
-                NewFilterNames.Add(
-                    FilterName.Replace(
-                        RootPath,
-                        @""));
-            }
-
-            foreach (var HeaderName in HeaderNames)
-            {
-                NewHeaderNames.Add((
-                    HeaderName.Item1.Replace(
-                        RootPath,
-                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
-                    HeaderName.Item2.Replace(
-                        RootPath,
-                        @"")));
-            }
-
-            foreach (var SourceName in SourceNames)
-            {
-                NewSourceNames.Add((
-                    SourceName.Item1.Replace(
-                        RootPath,
-                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
-                    SourceName.Item2.Replace(
-                        RootPath,
-                        @"")));
-            }
-
-            foreach (var OtherName in OtherNames)
-            {
-                NewOtherNames.Add((
-                    OtherName.Item1.Replace(
-                        RootPath,
-                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"),
-                    OtherName.Item2.Replace(
-                        RootPath,
-                        @"")));
-            }
-
-            ProjectRootElement ProjectRoot = ProjectRootElement.Open(
-                string.Format(
-                    @"{0}\LvglWindowsSimulator.vcxproj",
-                    Path.GetFullPath(
-                        RepositoryRoot + @"\LvglWindowsSimulator\")));
-
-            foreach (ProjectItemElement Item in ProjectRoot.Items)
-            {
-                if (Item.Include.StartsWith(
-                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
-                {
-                    Item.Parent.RemoveChild(Item);
-                }
-            }
-
-            ProjectRootElement FiltersRoot = ProjectRootElement.Open(
-                string.Format(
-                    @"{0}\LvglWindowsSimulator.vcxproj.filters",
-                    Path.GetFullPath(
-                        RepositoryRoot + @"\LvglWindowsSimulator\")));
-
-            foreach (ProjectItemElement Item in FiltersRoot.Items)
-            {
-                if (Item.Include.StartsWith(
-                        @"lvgl\") ||
-                    Item.Include.StartsWith(
-                        @"freetype\") ||
-                    Item.Include.StartsWith(
-                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
-                {
-                    Item.Parent.RemoveChild(Item);
-                }
-            }
-
-            foreach (var CurrentName in NewFilterNames)
-            {
-                ProjectItemElement Item =
-                    FiltersRoot.AddItem("Filter", CurrentName);
-                Item.AddMetadata(
-                    "UniqueIdentifier",
-                    string.Format("{{{0}}}", Guid.NewGuid()));
-            }
-
-            foreach (var CurrentName in NewHeaderNames)
-            {
-                ProjectRoot.AddItem("ClInclude", CurrentName.Item1);
-
-                {
-                    ProjectItemElement Item =
-                        FiltersRoot.AddItem("ClInclude", CurrentName.Item1);
-                    Item.AddMetadata("Filter", CurrentName.Item2);
-                }
-            }
-
-            foreach (var CurrentName in NewSourceNames)
-            {
-                ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
-
-                {
-                    ProjectItemElement Item =
-                        FiltersRoot.AddItem("ClCompile", CurrentName.Item1);
-                    Item.AddMetadata("Filter", CurrentName.Item2);
-                }
-            }
-
-            foreach (var CurrentName in NewOtherNames)
-            {
-                ProjectRoot.AddItem("None", CurrentName.Item1);
-
-                {
-                    ProjectItemElement Item =
-                        FiltersRoot.AddItem("None", CurrentName.Item1);
-                    Item.AddMetadata("Filter", CurrentName.Item2);
-                }
-            }
-
-            ProjectRoot.Save(Encoding.UTF8);
-
-            FiltersRoot.Save(Encoding.UTF8);
-        }
-
-        static void UpdateLvglWindowsDesktopApplication()
+        public static void Run()
         {
             string RootPath = Path.GetFullPath(
                 RepositoryRoot + @"\LvglPlatform\");
@@ -302,9 +164,9 @@ namespace LvglProjectFileUpdater
 
             ProjectRootElement ProjectRoot = ProjectRootElement.Open(
                 string.Format(
-                    @"{0}\LvglWindowsDesktopApplication.vcxproj",
+                    @"{0}\LvglWindowsStatic.vcxproj",
                     Path.GetFullPath(
-                        RepositoryRoot + @"\LvglWindowsDesktopApplication\")));
+                        RepositoryRoot + @"\LvglWindows\")));
 
             foreach (ProjectItemElement Item in ProjectRoot.Items)
             {
@@ -317,9 +179,9 @@ namespace LvglProjectFileUpdater
 
             ProjectRootElement FiltersRoot = ProjectRootElement.Open(
                 string.Format(
-                    @"{0}\LvglWindowsDesktopApplication.vcxproj.filters",
+                    @"{0}\LvglWindowsStatic.vcxproj.filters",
                     Path.GetFullPath(
-                        RepositoryRoot + @"\LvglWindowsDesktopApplication\")));
+                        RepositoryRoot + @"\LvglWindows\")));
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
@@ -377,23 +239,6 @@ namespace LvglProjectFileUpdater
             ProjectRoot.Save(Encoding.UTF8);
 
             FiltersRoot.Save(Encoding.UTF8);
-        }
-
-        static void Main(string[] args)
-        {
-            if (RepositoryRoot == string.Empty)
-            {
-                throw new NotSupportedException();
-            }
-            Console.WriteLine(RepositoryRoot);
-
-            UpdateLvglWindowsSimulator();
-            UpdateLvglWindowsDesktopApplication();
-            LvglWindowsLibraryProjectUpdater.Run();
-
-            Console.WriteLine("Hello, World!");
-
-            Console.ReadKey();
         }
     }
 }
