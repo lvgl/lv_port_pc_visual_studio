@@ -24,13 +24,11 @@
   <ItemDefinitionGroup>
     <Link>
       <ModuleDefinitionFile>LvglWindows.def</ModuleDefinitionFile>
+      <AdditionalDependencies>$(OutDir)LvglWindowsStatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="LvglWindows.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="LvglWindows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindows.manifest" />
