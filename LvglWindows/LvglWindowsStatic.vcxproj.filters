@@ -1873,7 +1873,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.c">
       <Filter>lvgl\src\widgets\win</Filter>
     </ClCompile>
-    <ClCompile Include="LvglWindowsStatic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lvgl">
@@ -3669,6 +3668,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.h">
       <Filter>lvgl\src\widgets\win</Filter>
     </ClInclude>
+    <ClInclude Include="lv_conf.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\.devcontainer\devcontainer.json">
