@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D574F328-06DA-47AC-9B03-EE01D22C070B}</ProjectGuid>
+    <RootNamespace>LvglWindows</RootNamespace>
+    <MileProjectType>DynamicLibrary</MileProjectType>
+    <MileProjectManifestFile>LvglWindows.manifest</MileProjectManifestFile>
+    <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
+    <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
+    <MileProjectCompanyName>LVGL</MileProjectCompanyName>
+    <MileProjectFileDescription>LVGL Windows Dynamic Library</MileProjectFileDescription>
+    <MileProjectInternalName>LvglWindows</MileProjectInternalName>
+    <MileProjectLegalCopyright>© LVGL. All rights reserved.</MileProjectLegalCopyright>
+    <MileProjectOriginalFilename>LvglWindows.dll</MileProjectOriginalFilename>
+    <MileProjectProductName>LVGL</MileProjectProductName>
+    <MileProjectVersion>9.0.0.0</MileProjectVersion>
+    <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
+  </PropertyGroup>
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x86.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.x64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Platform.ARM64.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
+  <ItemDefinitionGroup>
+    <Link>
+      <ModuleDefinitionFile>LvglWindows.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="LvglWindows.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LvglWindows.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="LvglWindows.manifest" />
+  </ItemGroup>
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
+</Project>
