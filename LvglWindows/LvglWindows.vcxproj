@@ -25,6 +25,8 @@
     <Link>
       <ModuleDefinitionFile>LvglWindows.def</ModuleDefinitionFile>
       <AdditionalDependencies>$(OutDir)LvglWindowsStatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Release'">libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration Condition="'$(Configuration)'=='Release'">Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
