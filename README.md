@@ -135,3 +135,4 @@ visual studio file changes to guide you.
 ## Documents
 
 - [ARM32 Support Removed Notice](Documents/Arm32SupportRemovedNotice.md)
+- [How to synchronize LVGL related submodules](Documents/HowToSynchronizeLvglRelatedSubmodules.md)
