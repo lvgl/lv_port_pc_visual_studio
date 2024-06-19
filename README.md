@@ -102,7 +102,7 @@ will require a different, more involved procedure.
 
 ## How To Build & Run
 
-Open the `LvglWindowsSimulator.sln` solution file in Visual Studio. Set the 
+Open the `LVGL.sln` solution file in Visual Studio. Set the 
 `LvglWindowsSimulator` project as the startup project. Click on the `Local Windows
 Debugger` button in the top toolbar.  The included project will be built and 
 run, launching from a cmd window.
@@ -111,7 +111,7 @@ run, launching from a cmd window.
 
 There are a list of possible test applications in the 
 [LvglWindowsSimulator.cpp](LvglWindowsSimulator/LvglWindowsSimulator.cpp) file. Each test or demo
-is launched via a single function call.  By default the `lv_demo_widgets` 
+is launched via a single function call. By default the `lv_demo_widgets` 
 function is the one that runs, but you can comment that one out and choose any
 of the others to compile and run.
 
