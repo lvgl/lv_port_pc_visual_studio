@@ -81,6 +81,7 @@ lv_table_set_cell_value_fmt
 lv_table_set_column_count
 lv_table_set_column_width
 lv_table_set_row_count
+lv_table_set_selected_cell
 lv_switch_class
 lv_switch_create
 lv_spinner_class
@@ -142,6 +143,7 @@ lv_scale_get_total_tick_count
 lv_scale_section_set_range
 lv_scale_section_set_style
 lv_scale_set_angle_range
+lv_scale_set_draw_ticks_on_top
 lv_scale_set_image_needle_value
 lv_scale_set_label_show
 lv_scale_set_line_needle_value
@@ -413,10 +415,12 @@ lv_bar_create
 lv_bar_get_max_value
 lv_bar_get_min_value
 lv_bar_get_mode
+lv_bar_get_orientation
 lv_bar_get_start_value
 lv_bar_get_value
 lv_bar_is_symmetrical
 lv_bar_set_mode
+lv_bar_set_orientation
 lv_bar_set_range
 lv_bar_set_start_value
 lv_bar_set_value
@@ -496,6 +500,7 @@ lv_strcat
 lv_strcmp
 lv_strcpy
 lv_strdup
+lv_strlcpy
 lv_strlen
 lv_strncat
 lv_strncpy
@@ -529,6 +534,7 @@ lv_subject_add_observer
 lv_subject_add_observer_obj
 lv_subject_add_observer_with_target
 lv_subject_copy_string
+lv_subject_deinit
 lv_subject_get_color
 lv_subject_get_group_element
 lv_subject_get_int
@@ -559,6 +565,10 @@ lv_thread_sync_delete
 lv_thread_sync_init
 lv_thread_sync_signal
 lv_thread_sync_wait
+lv_lock
+lv_lock_isr
+lv_os_init
+lv_unlock
 _lv_utils_bsearch
 lv_draw_buf_save_to_file
 _lv_timer_core_deinit
@@ -852,6 +862,7 @@ lv_pow
 lv_rand
 lv_rand_set_seed
 lv_sqrt
+lv_sqrt32
 lv_trigo_sin
 lv_lru_create
 lv_lru_delete
@@ -1151,6 +1162,7 @@ lv_draw_sw_layer
 lv_gradient_cleanup
 lv_gradient_color_calculate
 lv_gradient_get
+lv_gradient_init_stops
 lv_draw_sw_fill
 lv_draw_sw_box_shadow
 lv_draw_sw_border
@@ -1227,6 +1239,7 @@ lv_draw_buf_create_user
 lv_draw_buf_destroy
 lv_draw_buf_destroy_user
 lv_draw_buf_dup
+lv_draw_buf_dup_user
 lv_draw_buf_flush_cache
 lv_draw_buf_flush_cache_user
 lv_draw_buf_get_handlers
