@@ -1,0 +1,66 @@
+{
+    "name": "Visual Studio Simulator",
+    "maintainer": "LVGL",
+    "hostOperatingsystem": [
+        "Windows"
+    ],
+    "environment": [
+        "Visual Studio"
+    ],
+    "description": "This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The project only depend on Win32 API, C Runtime and C++ STL, so you can compile it without any extra dependencies.",
+    "shortDescription": "Visual Studio Project for Windows PCs.",
+    "urlToClone": "https://github.com/lvgl/lv_port_pc_visual_studio",
+    "logos": ["https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/windows/logo.svg"],
+    "branches": [
+        "release/v9.2"
+    ],
+    "settings": [
+        {
+            "type": "dropdown",
+            "label": "Color Depth",
+            "options": [
+                {
+                    "name": "16 (RGB565)",
+                    "value": "16"
+                },
+                {
+                    "name": "24 (RGB565)",
+                    "value": "24"
+                },
+                {
+                    "name": "32 (RGB565)",
+                    "value": "32"
+                }
+            ],
+            "actions": [
+                {
+                    "toReplace": "#define LV_COLOR_DEPTH \\d+",
+                    "newContent": "#define LV_COLOR_DEPTH {value}",
+                    "filePath": "LvglWindows/lv_conf.h"
+                }
+            ]
+        },
+        {
+            "type": "dropdown",
+            "label": "Show performance monitor",
+            "options": [
+                {
+                    "name": "Yes",
+                    "value": "1"
+                },
+                {
+                    "name": "No",
+                    "value": "0",
+                    "default": "true"
+                }
+            ],
+            "actions": [
+                {
+                    "toReplace": " *#define LV_USE_PERF_MONITOR .*",
+                    "newContent": "    #define LV_USE_PERF_MONITOR {value}",
+                    "filePath": "LvglWindows/lv_conf.h"
+                }
+            ]
+        }
+    ]
+}
