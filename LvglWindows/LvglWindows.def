@@ -179,6 +179,7 @@ lv_roller_get_selected_str
 lv_roller_label_class
 lv_roller_set_options
 lv_roller_set_selected
+lv_roller_set_selected_str
 lv_roller_set_visible_row_count
 lv_msgbox_add_close_button
 lv_msgbox_add_footer_button
@@ -260,12 +261,14 @@ lv_label_cut_text
 lv_label_get_letter_on
 lv_label_get_letter_pos
 lv_label_get_long_mode
+lv_label_get_recolor
 lv_label_get_text
 lv_label_get_text_selection_end
 lv_label_get_text_selection_start
 lv_label_ins_text
 lv_label_is_char_under_pos
 lv_label_set_long_mode
+lv_label_set_recolor
 lv_label_set_text
 lv_label_set_text_fmt
 lv_label_set_text_selection_end
@@ -473,6 +476,7 @@ lv_arc_set_start_angle
 lv_arc_set_value
 lv_animimg_class
 lv_animimg_create
+lv_animimg_get_anim
 lv_animimg_get_duration
 lv_animimg_get_repeat_count
 lv_animimg_get_src
@@ -527,6 +531,7 @@ lv_strdup
 lv_strlcpy
 lv_strlen
 lv_strncat
+lv_strncmp
 lv_strncpy
 lv_snprintf
 lv_vsnprintf
@@ -602,6 +607,10 @@ lv_os_init
 lv_unlock
 lv_draw_buf_save_to_file
 lv_utils_bsearch
+lv_tree_node_class
+lv_tree_node_create
+lv_tree_node_delete
+lv_tree_walk
 lv_timer_core_deinit
 lv_timer_core_init
 lv_timer_create
@@ -638,7 +647,9 @@ lv_text_get_encoded_length
 lv_text_get_next_line
 lv_text_get_size
 lv_text_get_width
+lv_text_get_width_with_flags
 lv_text_ins
+lv_text_is_cmd
 lv_text_set_text_vfmt
 lv_text_unicode_to_encoded
 lv_style_set_align
@@ -718,9 +729,11 @@ lv_style_set_outline_width
 lv_style_set_pad_bottom
 lv_style_set_pad_column
 lv_style_set_pad_left
+lv_style_set_pad_radial
 lv_style_set_pad_right
 lv_style_set_pad_row
 lv_style_set_pad_top
+lv_style_set_radial_offset
 lv_style_set_radius
 lv_style_set_rotary_sensitivity
 lv_style_set_shadow_color
@@ -746,6 +759,7 @@ lv_style_set_transform_skew_x
 lv_style_set_transform_skew_y
 lv_style_set_transform_width
 lv_style_set_transition
+lv_style_set_translate_radial
 lv_style_set_translate_x
 lv_style_set_translate_y
 lv_style_set_width
@@ -895,6 +909,25 @@ lv_color_to_int
 lv_color_to_u16
 lv_color_to_u32
 lv_color_white
+lv_circle_buf_capacity
+lv_circle_buf_create
+lv_circle_buf_create_from_array
+lv_circle_buf_create_from_buf
+lv_circle_buf_destroy
+lv_circle_buf_fill
+lv_circle_buf_head
+lv_circle_buf_is_empty
+lv_circle_buf_is_full
+lv_circle_buf_peek
+lv_circle_buf_peek_at
+lv_circle_buf_read
+lv_circle_buf_remain
+lv_circle_buf_reset
+lv_circle_buf_resize
+lv_circle_buf_size
+lv_circle_buf_skip
+lv_circle_buf_tail
+lv_circle_buf_write
 lv_async_call
 lv_async_call_cancel
 lv_array_assign
@@ -908,6 +941,7 @@ lv_array_deinit
 lv_array_erase
 lv_array_front
 lv_array_init
+lv_array_init_from_buf
 lv_array_is_empty
 lv_array_is_full
 lv_array_push_back
@@ -1092,6 +1126,7 @@ lv_indev_create
 lv_indev_delete
 lv_indev_enable
 lv_indev_get_active_obj
+lv_indev_get_cursor
 lv_indev_get_display
 lv_indev_get_driver_data
 lv_indev_get_event_count
@@ -1189,6 +1224,7 @@ lv_draw_sw_box_shadow
 lv_draw_sw_border
 lv_draw_sw_arc
 lv_draw_sw_deinit
+lv_draw_sw_i1_convert_to_vtiled
 lv_draw_sw_i1_invert
 lv_draw_sw_init
 lv_draw_sw_rgb565_swap
@@ -1265,7 +1301,9 @@ lv_draw_buf_dup
 lv_draw_buf_dup_ex
 lv_draw_buf_flush_cache
 lv_draw_buf_from_image
+lv_draw_buf_get_font_handlers
 lv_draw_buf_get_handlers
+lv_draw_buf_get_image_handlers
 lv_draw_buf_goto_xy
 lv_draw_buf_handlers_init
 lv_draw_buf_has_flag
@@ -1301,6 +1339,7 @@ lv_draw_init
 lv_draw_layer_alloc_buf
 lv_draw_layer_create
 lv_draw_layer_go_to_xy
+lv_draw_layer_init
 lv_draw_task_get_area
 lv_draw_task_get_draw_dsc
 lv_draw_task_get_type
@@ -1337,6 +1376,7 @@ lv_display_get_rotation
 lv_display_get_screen_active
 lv_display_get_screen_prev
 lv_display_get_theme
+lv_display_get_tile_cnt
 lv_display_get_user_data
 lv_display_get_vertical_resolution
 lv_display_is_double_buffered
@@ -1346,6 +1386,7 @@ lv_display_rotate_area
 lv_display_send_event
 lv_display_set_antialiasing
 lv_display_set_buffers
+lv_display_set_buffers_with_stride
 lv_display_set_color_format
 lv_display_set_default
 lv_display_set_dpi
@@ -1359,9 +1400,11 @@ lv_display_set_render_mode
 lv_display_set_resolution
 lv_display_set_rotation
 lv_display_set_theme
+lv_display_set_tile_cnt
 lv_display_set_user_data
 lv_display_trigger_activity
 lv_dpx
+lv_event_get_invalidated_area
 lv_layer_bottom
 lv_layer_sys
 lv_layer_top
@@ -1474,9 +1517,11 @@ lv_obj_set_style_outline_width
 lv_obj_set_style_pad_bottom
 lv_obj_set_style_pad_column
 lv_obj_set_style_pad_left
+lv_obj_set_style_pad_radial
 lv_obj_set_style_pad_right
 lv_obj_set_style_pad_row
 lv_obj_set_style_pad_top
+lv_obj_set_style_radial_offset
 lv_obj_set_style_radius
 lv_obj_set_style_rotary_sensitivity
 lv_obj_set_style_shadow_color
@@ -1502,6 +1547,7 @@ lv_obj_set_style_transform_skew_x
 lv_obj_set_style_transform_skew_y
 lv_obj_set_style_transform_width
 lv_obj_set_style_transition
+lv_obj_set_style_translate_radial
 lv_obj_set_style_translate_x
 lv_obj_set_style_translate_y
 lv_obj_set_style_width
