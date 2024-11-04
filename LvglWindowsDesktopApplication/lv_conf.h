@@ -111,6 +111,14 @@
 #if LV_USE_OS == LV_OS_CUSTOM
     #define LV_OS_CUSTOM_INCLUDE <stdint.h>
 #endif
+#if LV_USE_OS == LV_OS_FREERTOS
+	/*
+	 * Unblocking an RTOS task with a direct notification is 45% faster and uses less RAM
+	 * than unblocking a task using an intermediary object such as a binary semaphore.
+	 * RTOS task notifications can only be used when there is only one task that can be the recipient of the event.
+	 */
+	#define LV_USE_FREERTOS_TASK_NOTIFY 1
+#endif
 
 /*========================
  * RENDERING CONFIGURATION
@@ -198,6 +206,22 @@
     #define LV_USE_DRAW_SW_COMPLEX_GRADIENTS    0
 #endif
 
+/*Use TSi's aka (Think Silicon) NemaGFX */
+#define LV_USE_NEMA_GFX 0
+
+#if LV_USE_NEMA_GFX
+    #define LV_NEMA_GFX_HAL_INCLUDE <stm32u5xx_hal.h>
+
+    /*Enable Vector Graphics Operations. Available only if NemaVG library is present*/
+    #define LV_USE_NEMA_VG 0
+
+    #if LV_USE_NEMA_VG
+        /*Define application's resolution used for VG related buffer allocation */
+        #define LV_NEMA_GFX_MAX_RESX 800
+        #define LV_NEMA_GFX_MAX_RESY 600
+    #endif
+#endif
+
 /** Use NXP's VG-Lite GPU on iMX RTxxx platforms. */
 #define LV_USE_DRAW_VGLITE 0
 
@@ -220,10 +244,16 @@
 #endif
 
 /** Use NXP's PXP on iMX RTxxx platforms. */
-#define LV_USE_DRAW_PXP 0
+#define LV_USE_PXP 0
 
-#if LV_USE_DRAW_PXP
-    #if LV_USE_OS
+#if LV_USE_PXP
+    /** Use PXP for drawing.*/
+    #define LV_USE_DRAW_PXP 1
+
+    /** Use PXP to rotate display.*/
+    #define LV_USE_ROTATE_PXP 0
+
+    #if LV_USE_DRAW_PXP && LV_USE_OS
         /** Use additional draw thread for PXP processing.*/
         #define LV_USE_PXP_DRAW_THREAD 1
     #endif
@@ -264,7 +294,7 @@
     #define LV_VG_LITE_STROKE_CACHE_CNT 32
 #endif
 
-/* Accelerate blends, fills, etc. with STM32 DMA2D */
+/** Accelerate blends, fills, etc. with STM32 DMA2D */
 #define LV_USE_DRAW_DMA2D 0
 
 #if LV_USE_DRAW_DMA2D
@@ -275,6 +305,9 @@
      */
     #define LV_USE_DRAW_DMA2D_INTERRUPT 0
 #endif
+
+/** Draw using cached OpenGLES textures */
+#define LV_USE_DRAW_OPENGLES 0
 
 /*=======================
  * FEATURE CONFIGURATION
@@ -499,10 +532,10 @@
 #define LV_FONT_MONTSERRAT_14 1
 #define LV_FONT_MONTSERRAT_16 0
 #define LV_FONT_MONTSERRAT_18 0
-#define LV_FONT_MONTSERRAT_20 0
+#define LV_FONT_MONTSERRAT_20 1
 #define LV_FONT_MONTSERRAT_22 0
 #define LV_FONT_MONTSERRAT_24 1
-#define LV_FONT_MONTSERRAT_26 0
+#define LV_FONT_MONTSERRAT_26 1
 #define LV_FONT_MONTSERRAT_28 0
 #define LV_FONT_MONTSERRAT_30 0
 #define LV_FONT_MONTSERRAT_32 0
@@ -592,6 +625,9 @@
 /** Enable Arabic/Persian processing
  *  In these languages characters should be replaced with another form based on their position in the text */
 #define LV_USE_ARABIC_PERSIAN_CHARS 0
+
+/*The control character to use for signaling text recoloring*/
+#define LV_TXT_COLOR_CMD "#"
 
 /*==================
  * WIDGETS
@@ -815,7 +851,7 @@
 
 /** GIF decoder library */
 #define LV_USE_GIF 0
-    #if LV_USE_GIF
+#if LV_USE_GIF
     /** GIF decoder accelerate */
     #define LV_GIF_CACHE_DECODE_DATA 0
 #endif
@@ -870,6 +906,12 @@
 
 /** Use external LZ4 library */
 #define LV_USE_LZ4_EXTERNAL  0
+
+/*SVG library
+ *  - Requires `LV_USE_VECTOR_GRAPHIC = 1` */
+#define LV_USE_SVG 0
+#define LV_USE_SVG_ANIMATION 0
+#define LV_USE_SVG_DEBUG 0
 
 /** FFmpeg library for image decoding and playing videos.
  *  Supports all major image formats so do not enable other image decoder with it. */
@@ -936,6 +978,36 @@
 
     /** Profiler end point function with custom tag */
     #define LV_PROFILER_END_TAG   LV_PROFILER_BUILTIN_END_TAG
+
+    /*Enable layout profiler*/
+    #define LV_PROFILER_LAYOUT 1
+
+    /*Enable disp refr profiler*/
+    #define LV_PROFILER_REFR 1
+
+    /*Enable draw profiler*/
+    #define LV_PROFILER_DRAW 1
+
+    /*Enable indev profiler*/
+    #define LV_PROFILER_INDEV 1
+
+    /*Enable decoder profiler*/
+    #define LV_PROFILER_DECODER 1
+
+    /*Enable font profiler*/
+    #define LV_PROFILER_FONT 1
+
+    /*Enable fs profiler*/
+    #define LV_PROFILER_FS 1
+
+    /*Enable style profiler*/
+    #define LV_PROFILER_STYLE 0
+
+    /*Enable timer profiler*/
+    #define LV_PROFILER_TIMER 1
+
+    /*Enable cache profiler*/
+    #define LV_PROFILER_CACHE 1
 #endif
 
 /** 1: Enable Monkey test */
@@ -982,8 +1054,8 @@
     #define LV_FILE_EXPLORER_QUICK_ACCESS        1
 #endif
 
-/*1: Enable freetype font manager*/
-/*Requires: LV_USE_FREETYPE*/
+/** 1: Enable freetype font manager
+ *  - Requires: LV_USE_FREETYPE */
 #define LV_USE_FONT_MANAGER                     0
 #if LV_USE_FONT_MANAGER
 
@@ -1039,6 +1111,8 @@
 #define LV_USE_NUTTX    0
 
 #if LV_USE_NUTTX
+    #define LV_USE_NUTTX_INDEPENDENT_IMAGE_HEAP 0
+
     #define LV_USE_NUTTX_LIBUV    0
 
     /** Use Nuttx custom init API to open window and handle touchscreen */
@@ -1053,6 +1127,9 @@
 
     /** Driver for /dev/input */
     #define LV_USE_NUTTX_TOUCHSCREEN    0
+
+    /*Touchscreen cursor size in pixels(<=0: disable cursor)*/
+    #define LV_NUTTX_TOUCHSCREEN_CURSOR_SIZE    0
 #endif
 
 /** Driver for /dev/dri/card */
@@ -1088,6 +1165,13 @@
 
 /** Driver for Renesas GLCD */
 #define LV_USE_RENESAS_GLCDC    0
+
+/** Driver for ST LTDC */
+#define LV_USE_ST_LTDC    0
+#if LV_USE_ST_LTDC
+    /* Only used for partial. */
+    #define LV_ST_LTDC_USE_DMA2D_FLUSH 0
+#endif
 
 /** LVGL Windows backend */
 #define LV_USE_WINDOWS    1
@@ -1155,6 +1239,12 @@
 
 /** Vector graphic demo */
 #define LV_USE_DEMO_VECTOR_GRAPHIC  0
+
+/*E-bike demo with Lottie animations (if LV_USE_LOTTIE is enabled)*/
+#define LV_USE_DEMO_EBIKE			0
+#if LV_USE_DEMO_EBIKE
+	#define LV_DEMO_EBIKE_PORTRAIT  0    /*0: for 480x270..480x320, 1: for 480x800..720x1280*/
+#endif
 
 /*--END OF LV_CONF_H--*/
 
