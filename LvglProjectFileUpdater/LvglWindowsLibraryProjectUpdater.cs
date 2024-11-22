@@ -185,8 +185,8 @@ namespace LvglProjectFileUpdater
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
-                if (Item.Include.StartsWith(
-                        @"lvgl") ||
+                if (Item.Include.StartsWith(@"lvgl\") ||
+                    Item.Include == "lvgl" ||
                     Item.Include.StartsWith(
                         @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
                 {
