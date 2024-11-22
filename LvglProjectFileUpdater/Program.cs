@@ -185,9 +185,9 @@ namespace LvglProjectFileUpdater
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
                 if (Item.Include.StartsWith(
-                        @"lvgl\") ||
+                        @"lvgl") ||
                     Item.Include.StartsWith(
-                        @"freetype\") ||
+                        @"freetype") ||
                     Item.Include.StartsWith(
                         @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
                 {
@@ -324,7 +324,7 @@ namespace LvglProjectFileUpdater
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
                 if (Item.Include.StartsWith(
-                        @"lvgl\") ||
+                        @"lvgl") ||
                     Item.Include.StartsWith(
                         @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
                 {
