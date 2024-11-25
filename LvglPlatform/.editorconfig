@@ -1,0 +1,17 @@
+﻿##
+## PROJECT:   Mouri Internal Library Essentials
+## FILE:      .editorconfig
+## PURPOSE:   The .editorconfig file for only LVGL and FREETYPE sub-modules.
+              It overrides some editor settings from the root .editorconfig file.
+##
+## LICENSE:   The MIT License
+##
+## MAINTAINER: MouriNaruto (Kenji.Mouri@outlook.com)
+##
+
+[*]
+charset = utf-8-bom
+
+[*.{c,c++,cc,cpp,cxx,h,h++,hh,hpp,hxx,ixx,cppm,ipp,odl,idl,inl,ipp,tlh,tli}]
+charset = utf-8
+
