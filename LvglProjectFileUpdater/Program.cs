@@ -217,7 +217,13 @@ namespace LvglProjectFileUpdater
 
             foreach (var CurrentName in NewSourceNames)
             {
-                ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
+                {
+                    ProjectItemElement Item =
+                        ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
+                    Item.AddMetadata(
+                        "AdditionalOptions",
+                        "/utf-8 %(AdditionalOptions)");
+                }
 
                 {
                     ProjectItemElement Item =
@@ -354,7 +360,13 @@ namespace LvglProjectFileUpdater
 
             foreach (var CurrentName in NewSourceNames)
             {
-                ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
+                {
+                    ProjectItemElement Item =
+                        ProjectRoot.AddItem("ClCompile", CurrentName.Item1);
+                    Item.AddMetadata(
+                        "AdditionalOptions",
+                        "/utf-8 %(AdditionalOptions)");
+                }
 
                 {
                     ProjectItemElement Item =
