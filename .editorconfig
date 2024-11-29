@@ -1,5 +1,5 @@
 ﻿## 
-## PROJECT:   Mouri Internal Library Essentials
+## PROJECT:   LVGL for Windows Visual Studio
 ## FILE:      .editorconfig
 ## PURPOSE:   The root .editorconfig file
 ## 
@@ -13,6 +13,9 @@ root = true
 [*]
 charset = utf-8-bom
 end_of_line = crlf
+
+[LvglPlatform/{freetype,lvgl}/**]
+charset = utf-8
 
 [*.md]
 insert_final_newline = true
