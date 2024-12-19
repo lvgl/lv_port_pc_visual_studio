@@ -223,6 +223,9 @@ namespace LvglProjectFileUpdater
                     Item.AddMetadata(
                         "AdditionalOptions",
                         "/utf-8 %(AdditionalOptions)");
+                    Item.AddMetadata(
+                        "LanguageStandard",
+                        "Default");
                 }
 
                 {
@@ -366,6 +369,9 @@ namespace LvglProjectFileUpdater
                     Item.AddMetadata(
                         "AdditionalOptions",
                         "/utf-8 %(AdditionalOptions)");
+                    Item.AddMetadata(
+                        "LanguageStandard",
+                        "Default");
                 }
 
                 {
