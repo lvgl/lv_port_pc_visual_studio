@@ -139,11 +139,13 @@ lv_slider_get_left_value
 lv_slider_get_max_value
 lv_slider_get_min_value
 lv_slider_get_mode
+lv_slider_get_orientation
 lv_slider_get_value
 lv_slider_is_dragged
 lv_slider_is_symmetrical
 lv_slider_set_left_value
 lv_slider_set_mode
+lv_slider_set_orientation
 lv_slider_set_range
 lv_slider_set_value
 lv_scale_add_section
@@ -155,6 +157,7 @@ lv_scale_get_major_tick_every
 lv_scale_get_mode
 lv_scale_get_range_max_value
 lv_scale_get_range_min_value
+lv_scale_get_rotation
 lv_scale_get_total_tick_count
 lv_scale_section_set_range
 lv_scale_section_set_style
@@ -368,7 +371,7 @@ lv_chart_get_y_array
 lv_chart_hide_series
 lv_chart_refresh
 lv_chart_remove_series
-lv_chart_set_all_value
+lv_chart_set_all_values
 lv_chart_set_cursor_point
 lv_chart_set_cursor_pos
 lv_chart_set_div_line_count
@@ -414,7 +417,7 @@ lv_calendar_get_showed_date
 lv_calendar_get_today_date
 lv_calendar_set_day_names
 lv_calendar_set_highlighted_dates
-lv_calendar_set_showed_date
+lv_calendar_set_month_shown
 lv_calendar_set_today_date
 lv_button_class
 lv_button_create
@@ -589,6 +592,7 @@ lv_subject_notify
 lv_subject_set_color
 lv_subject_set_int
 lv_subject_set_pointer
+lv_subject_snprintf
 lv_mutex_delete
 lv_mutex_init
 lv_mutex_lock
@@ -858,6 +862,7 @@ lv_fs_tell
 lv_fs_up
 lv_fs_write
 lv_event_add
+lv_event_code_get_name
 lv_event_dsc_get_cb
 lv_event_dsc_get_user_data
 lv_event_get_code
@@ -1025,11 +1030,11 @@ lv_anim_set_early_apply
 lv_anim_set_exec_cb
 lv_anim_set_get_value_cb
 lv_anim_set_path_cb
-lv_anim_set_playback_delay
-lv_anim_set_playback_duration
-lv_anim_set_playback_time
 lv_anim_set_repeat_count
 lv_anim_set_repeat_delay
+lv_anim_set_reverse_delay
+lv_anim_set_reverse_duration
+lv_anim_set_reverse_time
 lv_anim_set_start_cb
 lv_anim_set_time
 lv_anim_set_user_data
@@ -1160,6 +1165,7 @@ lv_indev_set_cursor
 lv_indev_set_display
 lv_indev_set_driver_data
 lv_indev_set_group
+lv_indev_set_long_press_repeat_time
 lv_indev_set_long_press_time
 lv_indev_set_mode
 lv_indev_set_read_cb
@@ -1169,7 +1175,9 @@ lv_indev_set_type
 lv_indev_set_user_data
 lv_indev_stop_processing
 lv_indev_wait_release
+lv_font_montserrat_26
 lv_font_montserrat_24
+lv_font_montserrat_20
 lv_font_montserrat_14
 lv_font_get_bitmap_fmt_txt
 lv_font_get_glyph_dsc_fmt_txt
@@ -1197,6 +1205,11 @@ lv_windows_zoom_to_logical
 lv_windows_zoom_to_physical
 lv_windows_get_window_context
 lv_windows_platform_init
+lv_draw_sw_i1_convert_to_vtiled
+lv_draw_sw_i1_invert
+lv_draw_sw_i1_to_argb8888
+lv_draw_sw_rgb565_swap
+lv_draw_sw_rotate
 lv_draw_sw_triangle
 lv_draw_sw_transform
 lv_draw_sw_mask_rect
@@ -1224,11 +1237,7 @@ lv_draw_sw_box_shadow
 lv_draw_sw_border
 lv_draw_sw_arc
 lv_draw_sw_deinit
-lv_draw_sw_i1_convert_to_vtiled
-lv_draw_sw_i1_invert
 lv_draw_sw_init
-lv_draw_sw_rgb565_swap
-lv_draw_sw_rotate
 lv_draw_sw_blend_color_to_rgb888
 lv_draw_sw_blend_image_to_rgb888
 lv_draw_sw_blend_color_to_rgb565
@@ -1358,11 +1367,13 @@ lv_display_get_buf_active
 lv_display_get_color_format
 lv_display_get_default
 lv_display_get_dpi
+lv_display_get_draw_buf_size
 lv_display_get_driver_data
 lv_display_get_event_count
 lv_display_get_event_dsc
 lv_display_get_horizontal_resolution
 lv_display_get_inactive_time
+lv_display_get_invalidated_draw_buf_size
 lv_display_get_layer_bottom
 lv_display_get_layer_sys
 lv_display_get_layer_top
@@ -1617,6 +1628,7 @@ lv_obj_get_coords
 lv_obj_get_height
 lv_obj_get_self_height
 lv_obj_get_self_width
+lv_obj_get_transform
 lv_obj_get_transformed_area
 lv_obj_get_width
 lv_obj_get_x
@@ -1636,6 +1648,7 @@ lv_obj_move_to
 lv_obj_refr_pos
 lv_obj_refr_size
 lv_obj_refresh_self_size
+lv_obj_reset_transform
 lv_obj_set_align
 lv_obj_set_content_height
 lv_obj_set_content_width
@@ -1644,6 +1657,7 @@ lv_obj_set_height
 lv_obj_set_layout
 lv_obj_set_pos
 lv_obj_set_size
+lv_obj_set_transform
 lv_obj_set_width
 lv_obj_set_x
 lv_obj_set_y
