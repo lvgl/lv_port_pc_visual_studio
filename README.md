@@ -115,6 +115,11 @@ is launched via a single function call. By default the `lv_demo_widgets`
 function is the one that runs, but you can comment that one out and choose any
 of the others to compile and run.
 
+Demos outside of the default two widgets (`lv_demo_widgets` and `lv_demo_benchmark`)
+can be enabled by editing [lv_conf.h](LvglWindowsSimulator/lv_conf.h) around line 1199
+(DEMO USAGE section) and setting the associated variable to 1 instead of 0 (i.e., 
+`#define LV_USE_DEMO_MUSIC 0` -> `#define LV_USE_DEMO_MUSIC 1`
+
 Use these examples to start building your own application test code inside the
 simulator.
 
