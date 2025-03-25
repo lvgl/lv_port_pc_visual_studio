@@ -1,6 +1,12 @@
-﻿# LVGL for Windows Visual Studio port
+﻿# LVGL for Visual Studio
 
 ![Screenshot](Screenshot.png)
+
+Note: If you want to use the stable version, please use branches with the
+"release/" prefix. The master branch is the current development version which
+may contains some issues like compilation failed and etc. Read
+https://github.com/lvgl/lv_port_pc_visual_studio/issues/101 for the 2025 Roadmap
+of the LVGL Visual Studio repository.
 
 ## Introduction
 
