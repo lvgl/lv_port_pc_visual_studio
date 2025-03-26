@@ -36,4 +36,11 @@
     <Manifest Include="LvglWindows.manifest" />
   </ItemGroup>
   <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Cpp.targets" />
+  <UsingTask TaskName="Lvgl.Build.Tasks.StaticLibraryExportsDefinitionGenerator" AssemblyFile="$(MSBuildThisFileDirectory)..\LvglPlatform\Lvgl.Build.Tasks.dll" />
+  <Target Name="AddWildCardItems" AfterTargets="BuildGenerateSources">
+    <StaticLibraryExportsDefinitionGenerator
+      InputLibraryFilePath="$(OutDir)LvglWindowsStatic.lib"
+      TargetPlatform="$(PlatformShortName)"
+      OutputExportsDefinitionPath="$(MSBuildThisFileDirectory)LvglWindows.def" />
+  </Target>
 </Project>
