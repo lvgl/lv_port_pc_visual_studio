@@ -12,4 +12,8 @@
     <PackageReference Include="Mile.Project.Helpers" Version="1.0.643" />
   </ItemGroup>
 
+  <Target Name="LvglBuildTasksAfterBuild" AfterTargets="Build">
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)..\LvglPlatform\" />
+  </Target>
+
 </Project>
