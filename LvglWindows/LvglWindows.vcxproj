@@ -16,11 +16,11 @@
     <MileProjectVersion>9.0.0.0</MileProjectVersion>
     <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Platform.x86.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Platform.x64.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Platform.ARM64.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Cpp.Default.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Cpp.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1622" Project="Mile.Project.Platform.x86.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1622" Project="Mile.Project.Platform.x64.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1622" Project="Mile.Project.Platform.ARM64.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1622" Project="Mile.Project.Cpp.Default.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1622" Project="Mile.Project.Cpp.props" />
   <ItemDefinitionGroup>
     <Link>
       <ModuleDefinitionFile>$(IntDir)LvglWindows.def</ModuleDefinitionFile>
@@ -35,7 +35,7 @@
   <ItemGroup>
     <Manifest Include="LvglWindows.manifest" />
   </ItemGroup>
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1426" Project="Mile.Project.Cpp.targets" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1622" Project="Mile.Project.Cpp.targets" />
   <UsingTask TaskName="Lvgl.Build.Tasks.StaticLibraryExportsDefinitionGenerator" AssemblyFile="$(MSBuildThisFileDirectory)..\LvglPlatform\Lvgl.Build.Tasks.dll" />
   <Target Name="AddWildCardItems" AfterTargets="BuildGenerateSources">
     <StaticLibraryExportsDefinitionGenerator
