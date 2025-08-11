@@ -5,11 +5,11 @@
 #include "lvgl/lvgl.h"
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
-#include "my_ui.h"
+#include <my_ui.c>
 
 int main()
 {
-    MessageBoxA(NULL, "THIS IS THE MAIN THAT RUNS", "DEBUG", MB_OK);
+    // MessageBoxA(NULL, "THIS IS THE MAIN THAT RUNS", "DEBUG", MB_OK);
 
     lv_init();
 
