@@ -5,9 +5,12 @@
 #include "lvgl/lvgl.h"
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
+#include "my_ui.h"
 
 int main()
 {
+    MessageBoxA(NULL, "THIS IS THE MAIN THAT RUNS", "DEBUG", MB_OK);
+
     lv_init();
 
     /*
@@ -77,7 +80,8 @@ int main()
         return -1;
     }
 
-    lv_demo_widgets();
+    my_ui_init();
+    //lv_demo_widgets();
     //lv_demo_benchmark();
 
     while (1)

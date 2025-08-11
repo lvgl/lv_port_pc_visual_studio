@@ -4013,6 +4013,8 @@
       <Filter>lvgl\src\widgets\win</Filter>
     </ClCompile>
     <ClCompile Include="LvglWindowsSimulator.cpp" />
+    <ClCompile Include="my_ui.c" />
+    <ClCompile Include="my_ui.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="freetype">
@@ -14853,5 +14855,6 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\zephyr\module.yml">
       <Filter>lvgl\zephyr</Filter>
     </None>
+    <None Include="freetype.props" />
   </ItemGroup>
 </Project>
