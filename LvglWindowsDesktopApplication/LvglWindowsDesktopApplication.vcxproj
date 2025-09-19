@@ -16,11 +16,11 @@
     <MileProjectVersion>9.0.0.0</MileProjectVersion>
     <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1766" Project="Mile.Project.Platform.x86.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1766" Project="Mile.Project.Platform.x64.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1766" Project="Mile.Project.Platform.ARM64.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1766" Project="Mile.Project.Cpp.Default.props" />
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1766" Project="Mile.Project.Cpp.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1768" Project="Mile.Project.Platform.x86.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1768" Project="Mile.Project.Platform.x64.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1768" Project="Mile.Project.Platform.ARM64.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1768" Project="Mile.Project.Cpp.Default.props" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1768" Project="Mile.Project.Cpp.props" />
   <Import Project="..\LvglPlatform\LvglWindowsIconResource\LvglWindowsIconResource.props" />
   <PropertyGroup>
     <IncludePath>$(MSBuildThisFileDirectory);$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\;$(MSBuildThisFileDirectory)..\LvglPlatform\;$(IncludePath)</IncludePath>
@@ -6046,5 +6046,5 @@
     </ClCompile>
     <ClCompile Include="LvglWindowsDesktopApplication.cpp" />
   </ItemGroup>
-  <Import Sdk="Mile.Project.Configurations" Version="1.0.1766" Project="Mile.Project.Cpp.targets" />
+  <Import Sdk="Mile.Project.Configurations" Version="1.0.1768" Project="Mile.Project.Cpp.targets" />
 </Project>
