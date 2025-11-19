@@ -14,10 +14,13 @@ This is a pre-configured Visual Studio project to try LVGL on a Windows PC. The
 project only depend on Win32 API, C Runtime and C++ STL, so you can compile it
 without any extra dependencies.
 
-The project is currently maintained using Visual Studio 2022. It may well work
-without modification in Visual Studio 2019 and 2017 but it is not actively 
-supported with that version, so please install and test with Visual Studio 2022
-before reporting any bugs.
+The project is currently maintained using Visual Studio 2026. It may well work
+without modification in Visual Studio 2022 version 17.13 or later but it is not
+actively supported with that version, so please install and test with Visual
+Studio 2026 before reporting any bugs.
+
+If you want to use this project with Visual Studio 2017, 2019, or 2022 version
+before 17.13, you should use the `release/v9.4/legacy-vs-solution` branch.
 
 **This project is not for Visual Studio Code, it is for Visual Studio.**
 
@@ -108,7 +111,7 @@ will require a different, more involved procedure.
 
 ## How To Build & Run
 
-Open the `LVGL.sln` solution file in Visual Studio. Set the 
+Open the `LVGL.slnx` solution file in Visual Studio. Set the 
 `LvglWindowsSimulator` project as the startup project. Click on the `Local Windows
 Debugger` button in the top toolbar.  The included project will be built and 
 run, launching from a cmd window.

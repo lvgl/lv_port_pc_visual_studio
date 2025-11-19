@@ -1,0 +1,13 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="LvglWindows/LvglWindows.vcxproj" Id="d574f328-06da-47ac-9b03-ee01d22c070b">
+    <BuildDependency Project="LvglWindows/LvglWindowsStatic.vcxproj" />
+  </Project>
+  <Project Path="LvglWindows/LvglWindowsStatic.vcxproj" Id="d7a206a8-0825-4e30-8c28-6dcb817917e0" />
+  <Project Path="LvglWindowsDesktopApplication/LvglWindowsDesktopApplication.vcxproj" Id="7148d2c8-4594-4054-95f2-6211da069d8f" />
+  <Project Path="LvglWindowsSimulator/LvglWindowsSimulator.vcxproj" Id="3ca6e070-4ac1-475e-bb17-cf29ae4806df" />
+</Solution>

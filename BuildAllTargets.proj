@@ -3,7 +3,7 @@
   DefaultTargets="Restore;Build"
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SolutionPath>$(MSBuildThisFileDirectory)LVGL.sln</SolutionPath>
+    <SolutionPath>$(MSBuildThisFileDirectory)LVGL.slnx</SolutionPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionPath)">
