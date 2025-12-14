@@ -146,6 +146,39 @@ removed in the submodules then the visual studio project will likely need
 adjusting. See the commit log for examples of submodule updates and associated
 visual studio file changes to guide you.
 
+## Application
+
+The lvgl source code that Visual Studio depends on is located in the 
+LvglPlatform folder (LvglPlatform/lvgl). If your actual project directory 
+already contains the lvgl source code, to avoid wasting storage space redundantly, 
+you can have Visual Studio share the lvgl source code with the actual project, 
+and you can directly delete the lvgl source code in the LvglPlatform folder. 
+After deletion, you need to redirect 
+
+Visual Studio to depend on the lvgl directory in the actual project.
+By examining Visual Studio project files, it can be seen that Visual Studio 
+manages source code locations through .vcxproj and .vcxproj.filters.
+Taking LvglWindowsSimulator as an example, the files that need to be 
+
+modified are as follows (if not modified correctly, compilation will fail):
+
+- LvglWindowsSimulator/LvglWindowsSimulator.vcxproj, storing project configurations
+  and specifying dependent header files.
+
+- LvglWindowsSimulator/LvglWindowsSimulator.vcxproj.filters,
+  specifying source files to compile in the project, which will
+  appear as virtual files/folders in Visual Studio.
+
+- LvglWindowsSimulator/freetype.props, configuring the location
+- of freetype source files, which Visual Studio projects depend on.
+
+Note: Since the executables compiled by Visual Studio and the actual project 
+target different platforms, the lvgl configuration needs to be different. 
+Therefore, lv_conf.h files must be written for each platform, and the 
+differently configured lv_conf.h files should be placed in the directories for 
+the corresponding platforms (sharing the same lv_conf.h file across platforms 
+will cause errors during compilation in Visual Studio or the actual project).
+
 ## Documents
 
 - [ARM32 Support Removed Notice](Documents/Arm32SupportRemovedNotice.md)
