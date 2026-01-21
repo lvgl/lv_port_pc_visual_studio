@@ -1,5 +1,14 @@
 ﻿# LVGL for Visual Studio
 
+> [!NOTE]
+> If you want to use CMake-based LVGL projects, please use [lv_port_pc_vscode]
+> in Visual Studio. This repository is for MSBuild-based LVGL projects, which is
+> suitable for traditional Visual Studio (not Code) users.
+> The Windows backend integration support for [lv_port_pc_vscode] is on the way,
+> read https://github.com/lvgl/lv_port_pc_vscode/pull/106 for more information.
+
+[lv_port_pc_vscode]: https://github.com/lvgl/lv_port_pc_vscode
+
 ![Screenshot](Screenshot.png)
 
 Note: If you want to use the stable version, please use branches with the
