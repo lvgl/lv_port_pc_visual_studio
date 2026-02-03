@@ -184,12 +184,8 @@ namespace LvglProjectFileUpdater
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
-                if (Item.Include.StartsWith(@"lvgl\") ||
-                    Item.Include == "lvgl" ||
-                    Item.Include.StartsWith(@"freetype\") ||
-                    Item.Include == "freetype" ||
-                    Item.Include.StartsWith(
-                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
+                if (Item.Include.StartsWith(
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
                 {
                     Item.Parent.RemoveChild(Item);
                 }
@@ -197,11 +193,21 @@ namespace LvglProjectFileUpdater
 
             foreach (var CurrentName in NewFilterNames)
             {
-                ProjectItemElement Item =
-                    FiltersRoot.AddItem("Filter", CurrentName);
-                Item.AddMetadata(
-                    "UniqueIdentifier",
-                    string.Format("{{{0}}}", Guid.NewGuid()));
+                if (Utilities.CheckProjectItemElementExists(
+                    FiltersRoot,
+                    "Filter",
+                    CurrentName))
+                {
+                    continue;
+                }
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("Filter", CurrentName);
+                    Item.AddMetadata(
+                        "UniqueIdentifier",
+                        string.Format("{{{0}}}", Guid.NewGuid()));
+                }
             }
 
             foreach (var CurrentName in NewHeaderNames)
@@ -332,10 +338,8 @@ namespace LvglProjectFileUpdater
 
             foreach (ProjectItemElement Item in FiltersRoot.Items)
             {
-                if (Item.Include.StartsWith(@"lvgl\") ||
-                    Item.Include == "lvgl" ||
-                    Item.Include.StartsWith(
-                        @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
+                if (Item.Include.StartsWith(
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
                 {
                     Item.Parent.RemoveChild(Item);
                 }
@@ -343,11 +347,21 @@ namespace LvglProjectFileUpdater
 
             foreach (var CurrentName in NewFilterNames)
             {
-                ProjectItemElement Item =
-                    FiltersRoot.AddItem("Filter", CurrentName);
-                Item.AddMetadata(
-                    "UniqueIdentifier",
-                    string.Format("{{{0}}}", Guid.NewGuid()));
+                if (Utilities.CheckProjectItemElementExists(
+                    FiltersRoot,
+                    "Filter",
+                    CurrentName))
+                {
+                    continue;
+                }
+
+                {
+                    ProjectItemElement Item =
+                        FiltersRoot.AddItem("Filter", CurrentName);
+                    Item.AddMetadata(
+                        "UniqueIdentifier",
+                        string.Format("{{{0}}}", Guid.NewGuid()));
+                }
             }
 
             foreach (var CurrentName in NewHeaderNames)
