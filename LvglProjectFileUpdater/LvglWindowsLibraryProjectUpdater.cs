@@ -17,30 +17,6 @@ namespace LvglProjectFileUpdater
         private static List<(string Target, string Filter)> OtherNames =
             new List<(string Target, string Filter)>();
 
-        private static string[] HeaderFileTypes = new string[]
-        {
-            ".h",
-            ".hh",
-            ".hpp",
-            ".hxx",
-            ".h++",
-            ".hm",
-            ".inl",
-            ".inc",
-            ".ipp"
-        };
-
-        private static string[] SourceFileTypes = new string[]
-        {
-            ".cpp",
-            ".c",
-            ".cc",
-            ".cxx",
-            ".c++",
-            ".cppm",
-            ".ixx"
-        };
-
         private static string[] ForceInOthersList = new string[]
         {
             @".devcontainer",
@@ -89,11 +65,11 @@ namespace LvglProjectFileUpdater
                     continue;
                 }
 
-                if (HeaderFileTypes.Contains(Item.Extension))
+                if (Utilities.IsHeaderFile(Current.Target))
                 {
                     HeaderNames.Add(Current);
                 }
-                else if (SourceFileTypes.Contains(Item.Extension))
+                else if (Utilities.IsSourceFile(Current.Target))
                 {
                     SourceNames.Add(Current);
                 }
