@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D574F328-06DA-47AC-9B03-EE01D22C070B}</ProjectGuid>
     <RootNamespace>LvglWindows</RootNamespace>
     <MileProjectType>DynamicLibrary</MileProjectType>
     <MileProjectManifestFile>LvglWindows.manifest</MileProjectManifestFile>
-    <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
     <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
     <MileProjectCompanyName>LVGL</MileProjectCompanyName>
     <MileProjectFileDescription>LVGL Windows Dynamic Library</MileProjectFileDescription>
@@ -22,6 +21,12 @@
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
   <ItemDefinitionGroup>
+    <ClCompile>
+      <RuntimeLibrary Condition="'$(UseDebugLibraries)' == 'true'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(UseDebugLibraries)' != 'true'">MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
     <Link>
       <ModuleDefinitionFile>$(IntDir)LvglWindows.def</ModuleDefinitionFile>
       <AdditionalDependencies>$(OutDir)LvglWindowsStatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -34,6 +39,11 @@
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindows.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="VC-LTL">
+      <Version>5.3.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
   <UsingTask TaskName="Lvgl.Build.Tasks.StaticLibraryExportsDefinitionGenerator" AssemblyFile="$(MSBuildThisFileDirectory)..\LvglPlatform\Lvgl.Build.Tasks.dll" />
