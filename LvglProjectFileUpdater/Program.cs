@@ -1,12 +1,12 @@
 ﻿using Microsoft.Build.Construction;
-using Mile.Project.Helpers;
+using Mile.DotNet.Helpers;
 using System.Text;
 
 namespace LvglProjectFileUpdater
 {
     internal class Program
     {
-        private static string RepositoryRoot = GitRepository.GetRootPath();
+        private static string RepositoryRoot = Git.GetRootPath();
 
         private static List<string> FilterNames =
             new List<string>();

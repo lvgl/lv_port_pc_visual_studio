@@ -1,4 +1,4 @@
-﻿using Mile.Project.Helpers;
+﻿using Mile.DotNet.Helpers;
 using System.Collections.Generic;
 
 namespace Lvgl.Build.Tasks
@@ -19,7 +19,7 @@ namespace Lvgl.Build.Tasks
                 Content += string.Format("{0}\r\n", Symbol);
             }
 
-            FileUtilities.SaveTextToFileAsUtf8Bom(OutputFilePath, Content);
+            Text.SaveTextToFileAsUtf8WithBom(OutputFilePath, Content);
         }
     }
 }
