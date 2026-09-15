@@ -16,17 +16,17 @@ jobs:
     env:
       POWERSHELL_TELEMETRY_OPTOUT: 1
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
       with:
         submodules: 'recursive'
-    - uses: microsoft/setup-msbuild@v1
+    - uses: microsoft/setup-msbuild@v2
     - name: Clear local NuGet cache (workaround for failed restores on windows-latest)
       run: dotnet nuget locals all --clear
     - name: Build
       run: msbuild /m BuildAllTargets.proj
     - name: Prepare artifacts
       run: rm Output\* -vb -Recurse -Force -Include *.exp, *.idb, *.ilk, *.iobj, *.ipdb, *.lastbuildstate, *.lib, *.obj, *.res, *.tlog
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       with:
         name: LVGL_CI_Build
         path: Output
