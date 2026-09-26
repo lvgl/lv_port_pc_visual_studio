@@ -6,7 +6,7 @@ namespace LvglProjectFileUpdater
 {
     internal class Program
     {
-        private static bool IsHeaderFile(string FilePath)
+        private static string GetItemType(string FilePath)
         {
             switch (Path.GetExtension(FilePath).ToLowerInvariant())
             {
@@ -19,16 +19,7 @@ namespace LvglProjectFileUpdater
                 case ".inl":
                 case ".inc":
                 case ".ipp":
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private static bool IsSourceFile(string FilePath)
-        {
-            switch (Path.GetExtension(FilePath).ToLowerInvariant())
-            {
+                    return "ClInclude";
                 case ".cpp":
                 case ".c":
                 case ".cc":
@@ -36,9 +27,9 @@ namespace LvglProjectFileUpdater
                 case ".c++":
                 case ".cppm":
                 case ".ixx":
-                    return true;
+                    return "ClCompile";
                 default:
-                    return false;
+                    return "None";
             }
         }
 
@@ -78,19 +69,9 @@ namespace LvglProjectFileUpdater
             {
                 string CurrentName =
                     Path.GetRelativePath(RootPath, Item.FullName);
-                string ItemType = "None";
-
-                if (!ForceInOthers)
-                {
-                    if (IsHeaderFile(Item.FullName))
-                    {
-                        ItemType = "ClInclude";
-                    }
-                    else if (IsSourceFile(Item.FullName))
-                    {
-                        ItemType = "ClCompile";
-                    }
-                }
+                string ItemType = ForceInOthers
+                    ? "None"
+                    : GetItemType(Item.FullName);
 
                 FileNames.Add((CurrentName, ItemType));
             }
