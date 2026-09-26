@@ -10,6 +10,9 @@ namespace Lvgl.Build.Tasks
     public class MigrateLvglConfiguration : Task
     {
         [Required]
+        public string SubmodulePath { get; set; }
+
+        [Required]
         public string TargetFilePath { get; set; }
 
         [Required]
@@ -53,53 +56,15 @@ namespace Lvgl.Build.Tasks
             return Result;
         }
 
-        public override bool Execute()
+        private string GenerateConfiguration(
+            IEnumerable<string> TemplateLines,
+            Dictionary<string, string> DefaultConfiguration,
+            out HashSet<string> UsedKeys)
         {
-            string TargetFileFullPath = Path.GetFullPath(TargetFilePath);
-            if (!File.Exists(TargetFileFullPath))
-            {
-                Log.LogError(
-                    "Please ensure that the target file '{0}' exists.",
-                    TargetFileFullPath);
-                return false;
-            }
-
-            string TemplateFileFullPath = Path.GetFullPath(TemplateFilePath);
-            if (!File.Exists(TemplateFileFullPath))
-            {
-                Log.LogError(
-                    "Please ensure that the template file '{0}' exists.",
-                    TemplateFileFullPath);
-                return false;
-            }
-
-            string DefaultConfigurationFileFullPath = Path.GetFullPath(
-                DefaultConfigurationFilePath);
-            if (!File.Exists(DefaultConfigurationFileFullPath))
-            {
-                Log.LogError(
-                    "Please ensure that the default configuration file '{0}' exists.",
-                    DefaultConfigurationFileFullPath);
-                return false;
-            }
-
-            Log.LogMessage(
-                MessageImportance.High,
-                "Migrating LVGL configuration '{0}' with template '{1}' " +
-                "and default configuration '{2}'.",
-                TargetFileFullPath,
-                TemplateFileFullPath,
-                DefaultConfigurationFileFullPath);
-
-            Dictionary<string, string> DefaultConfiguration =
-                ParseDefaultConfiguration(DefaultConfigurationFileFullPath);
-
-            HashSet<string> UsedKeys = new HashSet<string>();
+            UsedKeys = new HashSet<string>();
             StringBuilder Content = new StringBuilder();
 
-            foreach (string SourceLine in File.ReadLines(
-                TemplateFileFullPath,
-                Encoding.UTF8))
+            foreach (string SourceLine in TemplateLines)
             {
                 string DestinationLine = SourceLine;
                 Match MatchedResult = OptionRule.Match(SourceLine);
@@ -140,6 +105,60 @@ namespace Lvgl.Build.Tasks
                 Content.Append("\r\n");
             }
 
+            return Content.ToString();
+        }
+
+        public override bool Execute()
+        {
+            if (!Utilities.IsSubmoduleMigrationRequired(SubmodulePath))
+            {
+                return true;
+            }
+
+            string TargetFileFullPath = Path.GetFullPath(TargetFilePath);
+            if (!File.Exists(TargetFileFullPath))
+            {
+                Log.LogError(
+                    "Please ensure that the target file '{0}' exists.",
+                    TargetFileFullPath);
+                return false;
+            }
+
+            string TemplateFileFullPath = Path.GetFullPath(TemplateFilePath);
+            if (!File.Exists(TemplateFileFullPath))
+            {
+                Log.LogError(
+                    "Please ensure that the template file '{0}' exists.",
+                    TemplateFileFullPath);
+                return false;
+            }
+
+            string DefaultConfigurationFileFullPath = Path.GetFullPath(
+                DefaultConfigurationFilePath);
+            if (!File.Exists(DefaultConfigurationFileFullPath))
+            {
+                Log.LogError(
+                    "Please ensure that the default configuration file '{0}' exists.",
+                    DefaultConfigurationFileFullPath);
+                return false;
+            }
+
+            Log.LogMessage(
+                MessageImportance.High,
+                "Migrating LVGL configuration '{0}' with template '{1}' " +
+                "and default configuration '{2}'.",
+                TargetFileFullPath,
+                TemplateFileFullPath,
+                DefaultConfigurationFileFullPath);
+
+            Dictionary<string, string> DefaultConfiguration =
+                ParseDefaultConfiguration(DefaultConfigurationFileFullPath);
+
+            string Content = GenerateConfiguration(
+                File.ReadLines(TemplateFileFullPath, Encoding.UTF8),
+                DefaultConfiguration,
+                out HashSet<string> UsedKeys);
+
             foreach (string Key in DefaultConfiguration.Keys)
             {
                 if (!UsedKeys.Contains(Key))
@@ -151,10 +170,7 @@ namespace Lvgl.Build.Tasks
                 }
             }
 
-            File.WriteAllText(
-                TargetFileFullPath,
-                Content.ToString(),
-                Encoding.UTF8);
+            File.WriteAllText(TargetFileFullPath, Content, Encoding.UTF8);
 
             Log.LogMessage(
                 MessageImportance.High,
