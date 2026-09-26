@@ -1,6 +1,6 @@
-﻿using Microsoft.Build.Construction;
-using Mile.DotNet.Helpers;
+﻿using Mile.DotNet.Helpers;
 using System.Text;
+using System.Xml;
 
 namespace LvglProjectFileUpdater
 {
@@ -77,9 +77,105 @@ namespace LvglProjectFileUpdater
             }
         }
 
+        private static XmlElement AddItem(
+            XmlDocument Document,
+            string ItemType,
+            string Include)
+        {
+            XmlElement Root = Document.DocumentElement
+                ?? throw new InvalidDataException(
+                    "The project document has no root element.");
+
+            XmlElement? TargetGroup = null;
+            XmlElement? EmptyGroup = null;
+
+            foreach (XmlNode Node in Root.ChildNodes)
+            {
+                if (!(Node is XmlElement Group) ||
+                    Group.LocalName != "ItemGroup" ||
+                    Group.NamespaceURI != Root.NamespaceURI ||
+                    Group.HasAttribute("Condition"))
+                {
+                    continue;
+                }
+
+                bool HasElements = false;
+
+                foreach (XmlNode Child in Group.ChildNodes)
+                {
+                    if (!(Child is XmlElement Item))
+                    {
+                        continue;
+                    }
+
+                    HasElements = true;
+
+                    if (Item.LocalName == ItemType &&
+                        Item.NamespaceURI == Root.NamespaceURI)
+                    {
+                        TargetGroup = Group;
+                        break;
+                    }
+                }
+
+                if (TargetGroup != null)
+                {
+                    break;
+                }
+
+                if (!HasElements && EmptyGroup == null)
+                {
+                    EmptyGroup = Group;
+                }
+            }
+
+            if (TargetGroup == null)
+            {
+                TargetGroup = EmptyGroup;
+            }
+
+            if (TargetGroup == null)
+            {
+                TargetGroup = Document.CreateElement(
+                    Root.Prefix,
+                    "ItemGroup",
+                    Root.NamespaceURI);
+
+                Root.AppendChild(TargetGroup);
+            }
+
+            XmlElement Result = Document.CreateElement(
+                Root.Prefix,
+                ItemType,
+                Root.NamespaceURI);
+
+            Result.SetAttribute("Include", Include);
+            TargetGroup.AppendChild(Result);
+
+            return Result;
+        }
+
+        private static void AddMetadata(
+            XmlElement Item,
+            string Name,
+            string Value)
+        {
+            XmlDocument Document = Item.OwnerDocument
+                ?? throw new InvalidOperationException(
+                    "The item does not belong to a document.");
+
+            XmlElement Metadata = Document.CreateElement(
+                Item.Prefix,
+                Name,
+                Item.NamespaceURI);
+
+            Metadata.InnerText = Value;
+            Item.AppendChild(Metadata);
+        }
+
         private static void AddFiles(
-            ProjectRootElement ProjectRoot,
-            ProjectRootElement FiltersRoot,
+            XmlDocument ProjectRoot,
+            XmlDocument FiltersRoot,
             IEnumerable<(string Target, string ItemType)> Names)
         {
             foreach (var CurrentName in Names)
@@ -92,24 +188,70 @@ namespace LvglProjectFileUpdater
                 string ItemType = CurrentName.ItemType;
 
                 {
-                    ProjectItemElement Item =
-                        ProjectRoot.AddItem(ItemType, Include);
+                    XmlElement Item =
+                        AddItem(ProjectRoot, ItemType, Include);
 
                     if (ItemType == "ClCompile")
                     {
-                        Item.AddMetadata(
+                        AddMetadata(
+                            Item,
                             "AdditionalOptions",
                             "/utf-8 %(AdditionalOptions)");
-                        Item.AddMetadata(
+                        AddMetadata(
+                            Item,
                             "LanguageStandard",
                             "Default");
                     }
                 }
 
                 {
-                    ProjectItemElement Item =
-                        FiltersRoot.AddItem(ItemType, Include);
-                    Item.AddMetadata("Filter", Filter);
+                    XmlElement Item =
+                        AddItem(FiltersRoot, ItemType, Include);
+                    AddMetadata(Item, "Filter", Filter);
+                }
+            }
+        }
+
+        private static List<XmlElement> GetProjectItems(
+            XmlDocument Document)
+        {
+            XmlElement Root = Document.DocumentElement
+                ?? throw new InvalidDataException(
+                    "The project document has no root element.");
+
+            List<XmlElement> Result = new List<XmlElement>();
+
+            foreach (XmlNode Node in Root.ChildNodes)
+            {
+                if (!(Node is XmlElement Group) ||
+                    Group.LocalName != "ItemGroup" ||
+                    Group.NamespaceURI != Root.NamespaceURI)
+                {
+                    continue;
+                }
+
+                foreach (XmlNode Child in Group.ChildNodes)
+                {
+                    if (Child is XmlElement Item &&
+                        Item.NamespaceURI == Root.NamespaceURI)
+                    {
+                        Result.Add(Item);
+                    }
+                }
+            }
+
+            return Result;
+        }
+
+        private static void RemoveGeneratedItems(XmlDocument Document)
+        {
+            foreach (XmlElement Item in GetProjectItems(Document))
+            {
+                if (Item.GetAttribute("Include").StartsWith(
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\",
+                    StringComparison.Ordinal))
+                {
+                    Item.ParentNode?.RemoveChild(Item);
                 }
             }
         }
@@ -141,38 +283,23 @@ namespace LvglProjectFileUpdater
             string FullProjectPath = Path.GetFullPath(
                 Path.Combine(RepositoryRoot, ProjectPath));
 
-            ProjectRootElement ProjectRoot =
-                ProjectRootElement.Open(FullProjectPath);
+            XmlDocument ProjectRoot = new XmlDocument();
+            ProjectRoot.Load(FullProjectPath);
 
-            foreach (ProjectItemElement Item in ProjectRoot.Items)
-            {
-                if (Item.Include.StartsWith(
-                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
-                {
-                    Item.Parent.RemoveChild(Item);
-                }
-            }
+            XmlDocument FiltersRoot = new XmlDocument();
+            FiltersRoot.Load(FullProjectPath + ".filters");
 
-            ProjectRootElement FiltersRoot =
-                ProjectRootElement.Open(FullProjectPath + ".filters");
-
-            foreach (ProjectItemElement Item in FiltersRoot.Items)
-            {
-                if (Item.Include.StartsWith(
-                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\"))
-                {
-                    Item.Parent.RemoveChild(Item);
-                }
-            }
+            RemoveGeneratedItems(ProjectRoot);
+            RemoveGeneratedItems(FiltersRoot);
 
             HashSet<string> ExistingFilters =
                 new HashSet<string>(StringComparer.Ordinal);
 
-            foreach (ProjectItemElement Item in FiltersRoot.Items)
+            foreach (XmlElement Item in GetProjectItems(FiltersRoot))
             {
-                if (Item.ItemType == "Filter")
+                if (Item.LocalName == "Filter")
                 {
-                    ExistingFilters.Add(Item.Include);
+                    ExistingFilters.Add(Item.GetAttribute("Include"));
                 }
             }
 
@@ -184,9 +311,10 @@ namespace LvglProjectFileUpdater
                 }
 
                 {
-                    ProjectItemElement Item =
-                        FiltersRoot.AddItem("Filter", CurrentName);
-                    Item.AddMetadata(
+                    XmlElement Item =
+                        AddItem(FiltersRoot, "Filter", CurrentName);
+                    AddMetadata(
+                        Item,
                         "UniqueIdentifier",
                         string.Format("{{{0}}}", Guid.NewGuid()));
                 }
@@ -194,9 +322,27 @@ namespace LvglProjectFileUpdater
 
             AddFiles(ProjectRoot, FiltersRoot, FileNames);
 
-            ProjectRoot.Save(Encoding.UTF8);
+            XmlWriterSettings Settings = new XmlWriterSettings
+            {
+                Encoding = Encoding.UTF8,
+                Indent = true,
+                IndentChars = "  ",
+                NewLineChars = "\r\n"
+            };
 
-            FiltersRoot.Save(Encoding.UTF8);
+            using (XmlWriter Writer = XmlWriter.Create(
+                FullProjectPath,
+                Settings))
+            {
+                ProjectRoot.Save(Writer);
+            }
+
+            using (XmlWriter Writer = XmlWriter.Create(
+                FullProjectPath + ".filters",
+                Settings))
+            {
+                FiltersRoot.Save(Writer);
+            }
         }
 
         static void Main(string[] args)
@@ -229,14 +375,25 @@ namespace LvglProjectFileUpdater
                 ForceInOthersList,
                 "lvgl");
 
-            UpdateProject(
-                @"LvglWindows\LvglWindowsStatic.vcxproj",
-                ForceInOthersList.Concat(new string[]
-                {
-                    @"lvgl\demos",
-                    @"lvgl\examples"
-                }).ToArray(),
-                "lvgl");
+            {
+                string[] LibraryForceInOthersList =
+                    new string[ForceInOthersList.Length + 2];
+
+                Array.Copy(
+                    ForceInOthersList,
+                    LibraryForceInOthersList,
+                    ForceInOthersList.Length);
+
+                LibraryForceInOthersList[ForceInOthersList.Length] =
+                    @"lvgl\demos";
+                LibraryForceInOthersList[ForceInOthersList.Length + 1] =
+                    @"lvgl\examples";
+
+                UpdateProject(
+                    @"LvglWindows\LvglWindowsStatic.vcxproj",
+                    LibraryForceInOthersList,
+                    "lvgl");
+            }
 
             Console.WriteLine("Hello, World!");
 
