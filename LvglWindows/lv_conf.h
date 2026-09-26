@@ -12,7 +12,7 @@
  */
 
 /* clang-format off */
-#if 1 /* Set this to "1" to enable content */
+#if 1 /* Enable content */
 
 #ifndef LV_CONF_H
 #define LV_CONF_H

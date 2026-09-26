@@ -15,43 +15,39 @@ namespace Lvgl.Build.Tasks
         [Required]
         public string TemplateFilePath { get; set; }
 
+        [Required]
+        public string DefaultConfigurationFilePath { get; set; }
+
         private static readonly Regex OptionRule = new Regex(
-            @"^#define\s+([A-Z0-9_]+)\s+((?:.|\n)*?)(?:\s*(?:\/\/|\/\*)|(?:\n\s*#))",
-            RegexOptions.Compiled | RegexOptions.Multiline);
+            @"#define\s+([A-Z0-9_]+)[^\S\r\n]*",
+            RegexOptions.Compiled);
 
-        private static SortedDictionary<string, string> ParseLvglConfiguration(
-            string FilePath)
+        private Dictionary<string, string> ParseDefaultConfiguration(string FilePath)
         {
-            SortedDictionary<string, string> Result =
-                new SortedDictionary<string, string>();
+            Dictionary<string, string> Result =
+                new Dictionary<string, string>();
 
-            string Content = File.ReadAllText(FilePath, Encoding.UTF8);
-
-            // Normalize line endings to Unix style for easier processing.
-            Content = Content.Replace("\r\n", "\n").Replace('\r', '\n');
-
-            // Add a sentinel to the end of the file to ensure the last macro
-            // is matched correctly.
-            Content += "\n#";
-
-            MatchCollection Matches = OptionRule.Matches(Content);
-
-            foreach (Match MatchedResult in Matches)
+            foreach (string Line in File.ReadLines(FilePath, Encoding.UTF8))
             {
-                if (!MatchedResult.Success)
+                if (string.IsNullOrWhiteSpace(Line) || Line.StartsWith("#"))
                 {
                     continue;
                 }
 
-                // Remove newlines and backslashes, merging multi-line values
-                // into one line.
-                string PreprocessedValue = Regex.Replace(
-                    MatchedResult.Groups[2].Value,
-                    @"\s*\\\s*\n\s*", " ").Trim();
+                Match MatchedResult = Regex.Match(
+                    Line,
+                    @"([A-Z0-9_]+)\s+(.+)");
 
-                Result.Add(
-                    MatchedResult.Groups[1].Value,
-                    PreprocessedValue);
+                if (!MatchedResult.Success)
+                {
+                    Log.LogWarning(
+                        "Ignoring invalid default configuration line: {0}",
+                        Line);
+                    continue;
+                }
+
+                Result[MatchedResult.Groups[1].Value] =
+                    MatchedResult.Groups[2].Value;
             }
 
             return Result;
@@ -77,87 +73,88 @@ namespace Lvgl.Build.Tasks
                 return false;
             }
 
-            Log.LogMessage(
-                MessageImportance.High,
-                "Migrating LVGL configuration '{0}' with template '{1}'.",
-                TargetFileFullPath,
-                TemplateFileFullPath);
-
-
-            SortedDictionary<string, string> CurrentOptions =
-                ParseLvglConfiguration(TargetFileFullPath);
-
-            SortedDictionary<string, string> TemplateOptions =
-               ParseLvglConfiguration(TemplateFileFullPath);
-
-            foreach (var CurrentOption in CurrentOptions)
+            string DefaultConfigurationFileFullPath = Path.GetFullPath(
+                DefaultConfigurationFilePath);
+            if (!File.Exists(DefaultConfigurationFileFullPath))
             {
-                if (!TemplateOptions.ContainsKey(CurrentOption.Key))
-                {
-                    Log.LogError(
-                        "Please remove obsolete option '{0}' from '{1}'.",
-                        CurrentOption.Key,
-                        TargetFileFullPath);
-                }
-            }
-            if (Log.HasLoggedErrors)
-            {
+                Log.LogError(
+                    "Please ensure that the default configuration file '{0}' exists.",
+                    DefaultConfigurationFileFullPath);
                 return false;
             }
 
-            string Content = File.ReadAllText(
+            Log.LogMessage(
+                MessageImportance.High,
+                "Migrating LVGL configuration '{0}' with template '{1}' " +
+                "and default configuration '{2}'.",
+                TargetFileFullPath,
                 TemplateFileFullPath,
-                Encoding.UTF8);
+                DefaultConfigurationFileFullPath);
 
-            // Normalize line endings to Unix style for easier processing.
-            Content = Content.Replace("\r\n", "\n").Replace('\r', '\n');
+            Dictionary<string, string> DefaultConfiguration =
+                ParseDefaultConfiguration(DefaultConfigurationFileFullPath);
 
-            Content = Regex.Replace(
-                Content,
-                @"^.*Set this to ""1"" to enable content.*$",
-                "#if 1 /* Enable content */",
-                RegexOptions.Multiline);
+            HashSet<string> UsedKeys = new HashSet<string>();
+            StringBuilder Content = new StringBuilder();
 
-            Content = OptionRule.Replace(Content, MatchedResult =>
+            foreach (string SourceLine in File.ReadLines(
+                TemplateFileFullPath,
+                Encoding.UTF8))
             {
-                string Key = MatchedResult.Groups[1].Value;
+                string DestinationLine = SourceLine;
+                Match MatchedResult = OptionRule.Match(SourceLine);
 
-                // Directly use the value from the pre-parsed dictionary.
-                string TemplateValue = TemplateOptions[Key];
-
-                if (CurrentOptions.TryGetValue(Key, out string CurrentValue) &&
-                    CurrentValue != TemplateValue)
+                if (MatchedResult.Success &&
+                    DefaultConfiguration.TryGetValue(
+                        MatchedResult.Groups[1].Value,
+                        out string Value))
                 {
+                    string Key = MatchedResult.Groups[1].Value;
+                    string Prefix = MatchedResult.Value;
+
+                    if (!char.IsWhiteSpace(Prefix[Prefix.Length - 1]))
+                    {
+                        Prefix += " ";
+                    }
+
+                    DestinationLine =
+                        SourceLine.Substring(0, MatchedResult.Index) +
+                        Prefix +
+                        Value;
+
+                    UsedKeys.Add(Key);
+
                     Log.LogMessage(
                         MessageImportance.Normal,
-                        "Applying {0} to {1} (Original: {2}).",
+                        "Applying: {0} = {1}",
                         Key,
-                        CurrentValue,
-                        TemplateValue);
-
-                    // Reconstruct the line with the new value.
-
-                    int PrefixLength =
-                        MatchedResult.Groups[2].Index - MatchedResult.Index;
-                    int SuffixLength =
-                        PrefixLength + MatchedResult.Groups[2].Length;
-
-                    return string.Format(
-                        "{0}{1}{2}",
-                        MatchedResult.Value.Substring(0, PrefixLength),
-                        CurrentValue,
-                        MatchedResult.Value.Substring(SuffixLength));
+                        Value);
+                }
+                else if (SourceLine.Contains(
+                    "Set this to \"1\" to enable content"))
+                {
+                    DestinationLine = "#if 1 /* Enable content */";
                 }
 
-                // If no changes are needed for this key, return the original
-                // matched string.
-                return MatchedResult.Value;
-            });
+                Content.Append(DestinationLine);
+                Content.Append("\r\n");
+            }
 
-            // Normalize line endings to Windows style for the output file.
-            Content = Content.Replace("\n", "\r\n");
+            foreach (string Key in DefaultConfiguration.Keys)
+            {
+                if (!UsedKeys.Contains(Key))
+                {
+                    Log.LogWarning(
+                        "Default configuration option '{0}' was not found in " +
+                        "the template.",
+                        Key);
+                }
+            }
 
-            File.WriteAllText(TargetFileFullPath, Content, Encoding.UTF8);
+            File.WriteAllText(
+                TargetFileFullPath,
+                Content.ToString(),
+                Encoding.UTF8);
 
             Log.LogMessage(
                 MessageImportance.High,
