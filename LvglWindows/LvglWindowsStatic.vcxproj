@@ -8309,12 +8309,8 @@
     </PackageReference>
   </ItemGroup>
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
-  <UsingTask TaskName="Lvgl.Build.Tasks.MigrateLvglConfiguration" AssemblyFile="$(MSBuildThisFileDirectory)..\LvglPlatform\Lvgl.Build.Tasks.dll" />
-  <Target Name="AddWildCardItems" AfterTargets="BuildGenerateSources">
-    <MigrateLvglConfiguration
-      SubmodulePath="LvglPlatform/lvgl"
-      TargetFilePath="$(MSBuildProjectDirectory)\lv_conf.h"
-      TemplateFilePath="$(MSBuildProjectDirectory)\..\LvglPlatform\lvgl\lv_conf_template.h"
-      DefaultConfigurationFilePath="$(MSBuildProjectDirectory)\lv_conf.defaults" />
-  </Target>
+  <PropertyGroup>
+    <LvglMigrationExcludeDemosAndExamples>true</LvglMigrationExcludeDemosAndExamples>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\LvglPlatform\LvglProjectMigration.targets" />
 </Project>

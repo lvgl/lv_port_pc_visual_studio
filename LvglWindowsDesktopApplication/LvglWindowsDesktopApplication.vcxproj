@@ -5693,6 +5693,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\tests\unity\yaml_helper.rb" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\zephyr\Kconfig" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\zephyr\module.yml" />
+    <None Include="lv_conf.defaults" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -9547,4 +9548,9 @@
     </PackageReference>
   </ItemGroup>
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
+  <PropertyGroup>
+    <LvglMigrationIncludeFreetype>false</LvglMigrationIncludeFreetype>
+    <LvglMigrationExcludeDemosAndExamples>false</LvglMigrationExcludeDemosAndExamples>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\LvglPlatform\LvglProjectMigration.targets" />
 </Project>

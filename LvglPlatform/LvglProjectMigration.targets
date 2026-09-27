@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PROJECT:    LVGL Platform for Windows
+  FILE:       LvglProjectMigration.targets
+  PURPOSE:    MSBuild Targets for LVGL Project and Configuration Migration
+
+  LICENSE:    The MIT License
+
+  MAINTAINER: MouriNaruto (Kenji.Mouri@outlook.com)
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask
+    TaskName="Lvgl.Build.Tasks.MigrateLvglProject"
+    AssemblyFile="$(MSBuildThisFileDirectory)Lvgl.Build.Tasks.dll" />
+  <UsingTask
+    TaskName="Lvgl.Build.Tasks.MigrateLvglConfiguration"
+    AssemblyFile="$(MSBuildThisFileDirectory)Lvgl.Build.Tasks.dll" />
+  <PropertyGroup>
+    <LvglMigrationSubmodulePath Condition="'$(LvglMigrationSubmodulePath)' == ''">LvglPlatform/lvgl</LvglMigrationSubmodulePath>
+    <LvglMigrationRootPath Condition="'$(LvglMigrationRootPath)' == ''">$(MSBuildThisFileDirectory)</LvglMigrationRootPath>
+    <LvglMigrationIncludeFreetype Condition="'$(LvglMigrationIncludeFreetype)' == ''">false</LvglMigrationIncludeFreetype>
+    <LvglMigrationExcludeDemosAndExamples Condition="'$(LvglMigrationExcludeDemosAndExamples)' == ''">false</LvglMigrationExcludeDemosAndExamples>
+  </PropertyGroup>
+  <Target Name="LvglProjectMigration"
+          AfterTargets="BuildGenerateSources"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+    <MigrateLvglProject
+      TargetFilePath="$(MSBuildProjectFullPath)"
+      RootPath="$(LvglMigrationRootPath)"
+      IncludeFreetype="$(LvglMigrationIncludeFreetype)"
+      ExcludeDemosAndExamples="$(LvglMigrationExcludeDemosAndExamples)">
+      <Output
+        TaskParameter="ProjectChanged"
+        PropertyName="_LvglProjectChanged" />
+    </MigrateLvglProject>
+    <MigrateLvglConfiguration
+      SubmodulePath="$(LvglMigrationSubmodulePath)"
+      TargetFilePath="$(MSBuildProjectDirectory)\lv_conf.h"
+      TemplateFilePath="$(LvglMigrationRootPath)\lvgl\lv_conf_template.h"
+      DefaultConfigurationFilePath="$(MSBuildProjectDirectory)\lv_conf.defaults" />
+    <Error
+      Condition="'$(_LvglProjectChanged)' == 'true'"
+      Text="LVGL project migration has completed. Review the migrated files, reload the project if necessary, and build again." />
+  </Target>
+</Project>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Xml;
 
 namespace Lvgl.Build.Tasks
 {
@@ -136,6 +137,258 @@ namespace Lvgl.Build.Tasks
             {
                 // Skip automatic migration when Git inspection fails.
                 return false;
+            }
+        }
+
+        public static string GetItemType(string FilePath)
+        {
+            switch (Path.GetExtension(FilePath).ToLowerInvariant())
+            {
+                case ".h":
+                case ".hh":
+                case ".hpp":
+                case ".hxx":
+                case ".h++":
+                case ".hm":
+                case ".inl":
+                case ".inc":
+                case ".ipp":
+                    return "ClInclude";
+                case ".cpp":
+                case ".c":
+                case ".cc":
+                case ".cxx":
+                case ".c++":
+                case ".cppm":
+                case ".ixx":
+                    return "ClCompile";
+                default:
+                    return "None";
+            }
+        }
+
+        public static void AddMetadata(
+            XmlElement Item,
+            string Name,
+            string Value)
+        {
+            XmlDocument Document = Item.OwnerDocument
+                ?? throw new InvalidOperationException(
+                    "The item does not belong to a document.");
+
+            XmlElement Metadata = Document.CreateElement(
+                Item.Prefix,
+                Name,
+                Item.NamespaceURI);
+
+            Metadata.InnerText = Value;
+            Item.AppendChild(Metadata);
+        }
+
+        public static List<XmlElement> GetProjectItems(
+            XmlDocument Document)
+        {
+            XmlElement Root = Document.DocumentElement
+                ?? throw new InvalidDataException(
+                    "The project document has no root element.");
+
+            List<XmlElement> Result = new List<XmlElement>();
+
+            foreach (XmlNode Node in Root.ChildNodes)
+            {
+                if (!(Node is XmlElement Group) ||
+                    Group.LocalName != "ItemGroup" ||
+                    Group.NamespaceURI != Root.NamespaceURI)
+                {
+                    continue;
+                }
+
+                foreach (XmlNode Child in Group.ChildNodes)
+                {
+                    if (Child is XmlElement Item &&
+                        Item.NamespaceURI == Root.NamespaceURI)
+                    {
+                        Result.Add(Item);
+                    }
+                }
+            }
+
+            return Result;
+        }
+
+        public static XmlElement AddItem(
+            XmlDocument Document,
+            string ItemType,
+            string Include)
+        {
+            XmlElement Root = Document.DocumentElement
+                ?? throw new InvalidDataException(
+                    "The project document has no root element.");
+
+            XmlElement TargetGroup = null;
+            XmlElement EmptyGroup = null;
+
+            foreach (XmlNode Node in Root.ChildNodes)
+            {
+                if (!(Node is XmlElement Group) ||
+                    Group.LocalName != "ItemGroup" ||
+                    Group.NamespaceURI != Root.NamespaceURI ||
+                    Group.HasAttribute("Condition"))
+                {
+                    continue;
+                }
+
+                bool HasElements = false;
+
+                foreach (XmlNode Child in Group.ChildNodes)
+                {
+                    if (!(Child is XmlElement Item))
+                    {
+                        continue;
+                    }
+
+                    HasElements = true;
+
+                    if (Item.LocalName == ItemType &&
+                        Item.NamespaceURI == Root.NamespaceURI)
+                    {
+                        TargetGroup = Group;
+                        break;
+                    }
+                }
+
+                if (TargetGroup != null)
+                {
+                    break;
+                }
+
+                if (!HasElements && EmptyGroup == null)
+                {
+                    EmptyGroup = Group;
+                }
+            }
+
+            if (TargetGroup == null)
+            {
+                TargetGroup = EmptyGroup;
+            }
+
+            if (TargetGroup == null)
+            {
+                TargetGroup = Document.CreateElement(
+                    Root.Prefix,
+                    "ItemGroup",
+                    Root.NamespaceURI);
+
+                Root.AppendChild(TargetGroup);
+            }
+
+            XmlElement Result = Document.CreateElement(
+                Root.Prefix,
+                ItemType,
+                Root.NamespaceURI);
+
+            Result.SetAttribute("Include", Include);
+            TargetGroup.AppendChild(Result);
+
+            return Result;
+        }
+
+        public static void EnumerateFolder(
+            string RootPath,
+            string RelativeFolderPath,
+            List<string> FilterNames,
+            List<(string Target, string ItemType)> FileNames,
+            string[] ForceInOthersList,
+            bool ForceInOthers = false)
+        {
+            DirectoryInfo Folder = new DirectoryInfo(
+                Path.Combine(RootPath, RelativeFolderPath));
+
+            FilterNames.Add(RelativeFolderPath);
+
+            foreach (var Item in Folder.GetDirectories())
+            {
+                bool CurrentForceInOthers = false;
+                foreach (var ListItem in ForceInOthersList)
+                {
+                    if (Item.FullName.Contains(ListItem))
+                    {
+                        CurrentForceInOthers = true;
+                        break;
+                    }
+                }
+
+                EnumerateFolder(
+                    RootPath,
+                    Path.Combine(RelativeFolderPath, Item.Name),
+                    FilterNames,
+                    FileNames,
+                    ForceInOthersList,
+                    ForceInOthers || CurrentForceInOthers);
+            }
+
+            foreach (var Item in Folder.GetFiles())
+            {
+                string CurrentName =
+                    Path.Combine(RelativeFolderPath, Item.Name);
+                string ItemType = ForceInOthers
+                    ? "None"
+                    : GetItemType(Item.FullName);
+
+                FileNames.Add((CurrentName, ItemType));
+            }
+        }
+
+        public static void AddFiles(
+            XmlDocument ProjectRoot,
+            XmlDocument FiltersRoot,
+            IEnumerable<(string Target, string ItemType)> Names)
+        {
+            foreach (var CurrentName in Names)
+            {
+                string Include =
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\" +
+                    CurrentName.Target;
+                string Filter =
+                    Path.GetDirectoryName(CurrentName.Target) ?? "";
+                string ItemType = CurrentName.ItemType;
+
+                {
+                    XmlElement Item =
+                        AddItem(ProjectRoot, ItemType, Include);
+
+                    if (ItemType == "ClCompile")
+                    {
+                        AddMetadata(
+                            Item,
+                            "AdditionalOptions",
+                            "/utf-8 %(AdditionalOptions)");
+                        AddMetadata(
+                            Item,
+                            "LanguageStandard",
+                            "Default");
+                    }
+                }
+
+                {
+                    XmlElement Item =
+                        AddItem(FiltersRoot, ItemType, Include);
+                    AddMetadata(Item, "Filter", Filter);
+                }
+            }
+        }
+
+        public static void RemoveGeneratedItems(XmlDocument Document)
+        {
+            foreach (XmlElement Item in GetProjectItems(Document))
+            {
+                if (Item.GetAttribute("Include").StartsWith(
+                    @"$(MSBuildThisFileDirectory)..\LvglPlatform\",
+                    StringComparison.Ordinal))
+                {
+                    Item.ParentNode?.RemoveChild(Item);
+                }
             }
         }
     }

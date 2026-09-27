@@ -2,6 +2,7 @@
 using Microsoft.Build.Utilities;
 using Mile.Project.Helpers;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Lvgl.Build.Tasks
 {
@@ -18,6 +19,19 @@ namespace Lvgl.Build.Tasks
 
         public override bool Execute()
         {
+            if (!File.Exists(InputLibraryFilePath))
+            {
+                Log.LogError(
+                    "Cannot generate the exports definition because the " +
+                    "input library '{0}' does not exist. Build the static " +
+                    "library successfully first. If project migration " +
+                    "stopped the build, reload the updated projects and " +
+                    "build again.",
+                    InputLibraryFilePath);
+
+                return false;
+            }
+
             ImageArchive.Archive Archive =
                 ImageArchive.Parse(InputLibraryFilePath);
 

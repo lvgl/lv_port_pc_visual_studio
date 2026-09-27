@@ -10318,6 +10318,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\zephyr\Kconfig" />
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\zephyr\module.yml" />
     <None Include="freetype.props" />
+    <None Include="lv_conf.defaults" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="VC-LTL">
@@ -10325,4 +10326,9 @@
     </PackageReference>
   </ItemGroup>
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.targets" />
+  <PropertyGroup>
+    <LvglMigrationIncludeFreetype>true</LvglMigrationIncludeFreetype>
+    <LvglMigrationExcludeDemosAndExamples>false</LvglMigrationExcludeDemosAndExamples>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\LvglPlatform\LvglProjectMigration.targets" />
 </Project>
