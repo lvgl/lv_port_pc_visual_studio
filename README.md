@@ -160,3 +160,7 @@ visual studio file changes to guide you.
 - [ARM32 Support Removed Notice](Documents/Arm32SupportRemovedNotice.md)
 - [How to synchronize LVGL related submodules](Documents/HowToSynchronizeLvglRelatedSubmodules.md)
 - [Default lv_conf.h Configuration](Documents/DefaultLvglConfigurations.md)
+
+## Examples
+
+- [ESP32 Smart Gauge (Arduino-ESP32, LVGL 9, 320x240)](Examples/ArduinoSmartGauge/README.md)
